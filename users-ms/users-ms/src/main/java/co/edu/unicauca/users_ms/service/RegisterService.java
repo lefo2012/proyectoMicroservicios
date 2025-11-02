@@ -6,6 +6,7 @@ import co.edu.unicauca.users_ms.infra.dto.PersonaDto;
 import co.edu.unicauca.users_ms.infra.dto.PersonaRegistrarDto;
 import co.edu.unicauca.users_ms.repository.DepartamentoRepository;
 import co.edu.unicauca.users_ms.repository.ProgramaRepository;
+import co.edu.unicauca.users_ms.util.Encriptador;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,16 +30,17 @@ public class RegisterService {
     ProgramaRepository programaRepository;
     @Autowired
     DepartamentoRepository departamentoRepository;
-
+    @Autowired
+    Encriptador encriptador;
 
     @Transactional
     public PersonaDto registrarPersona(PersonaRegistrarDto personaDto) throws Exception
     {
-
+        
         String rol= personaDto.getCargo();
         Persona persona;
         PersonaDto personaSegura=new PersonaDto();
-
+        String passwordEncripted = encriptador.passwordEncoder().encode(personaDto.getPassword());
 
             try {
                 if(rol.equals("Estudiante")){
@@ -47,7 +49,7 @@ public class RegisterService {
                     estudiante.setApellido(personaDto.getApellido());
                     estudiante.setCelular(personaDto.getCelular());
                     estudiante.setCorreoElectronico(personaDto.getCorreoElectronico());
-                    estudiante.setPassword(personaDto.getPassword());
+                    estudiante.setPassword(passwordEncripted);
                     Programa programa = programaRepository.findById(personaDto.getIdPrograma()).orElseThrow(() -> new RuntimeException("Programa no encontrado"));
                     estudiante.relacionarPrograma(programa);
                     persona = estudianteService.save(estudiante);
@@ -62,7 +64,7 @@ public class RegisterService {
                     profesor.setApellido(personaDto.getApellido());
                     profesor.setCelular(personaDto.getCelular());
                     profesor.setCorreoElectronico(personaDto.getCorreoElectronico());
-                    profesor.setPassword(personaDto.getPassword());
+                    profesor.setPassword(passwordEncripted);
                     Departamento departamento= departamentoRepository.findById(personaDto.getIdDepartamento()).orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
                     profesor.setDepartamento(departamento);
                     persona = profesorService.save(profesor);
@@ -76,7 +78,7 @@ public class RegisterService {
                     coordinador.setApellido(personaDto.getApellido());
                     coordinador.setCelular(personaDto.getCelular());
                     coordinador.setCorreoElectronico(personaDto.getCorreoElectronico());
-                    coordinador.setPassword(personaDto.getPassword());
+                    coordinador.setPassword(passwordEncripted);
                     Departamento departamento= departamentoRepository.findById(personaDto.getIdDepartamento()).orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
                     coordinador.setDepartamento(departamento);
                     persona = coordinadorService.save(coordinador);
@@ -90,7 +92,7 @@ public class RegisterService {
                     jefeDepartamento.setApellido(personaDto.getApellido());
                     jefeDepartamento.setCelular(personaDto.getCelular());
                     jefeDepartamento.setCorreoElectronico(personaDto.getCorreoElectronico());
-                    jefeDepartamento.setPassword(personaDto.getPassword());
+                    jefeDepartamento.setPassword(passwordEncripted);
                     Departamento departamento= departamentoRepository.findById(personaDto.getIdDepartamento()).orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
                     jefeDepartamento.setDepartamento(departamento);
                     persona = jefeDepartamentoService.save(jefeDepartamento);

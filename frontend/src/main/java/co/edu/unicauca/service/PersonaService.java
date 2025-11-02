@@ -37,4 +37,19 @@ public class PersonaService {
 
 
     }
+    public String iniciarSesion(String username, String password){
+
+        ResponseEntity<String> response = restTemplate.getForEntity(
+                USUARIO_URL + "/iniciarSesion/" + username + "/" + password,
+                String.class
+        );
+
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return "c";
+        } else if (response.getStatusCode() == HttpStatus.UNAUTHORIZED) {
+            return "Credenciales invalidas o formato incorrecto";
+        } else {
+            return "Error: " + response.getStatusCode();
+        }
+    }
 }

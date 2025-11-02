@@ -5,13 +5,10 @@ import co.edu.unicauca.users_ms.entity.Estudiante;
 import co.edu.unicauca.users_ms.entity.JefeDepartamento;
 import co.edu.unicauca.users_ms.entity.Profesor;
 import co.edu.unicauca.users_ms.infra.dto.PersonaDto;
-import jakarta.transaction.Transactional;
+import co.edu.unicauca.users_ms.util.Encriptador;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +24,8 @@ public class LoginService {
     ProfesorService profesorService;
     @Autowired
     EstudianteService estudianteService;
-
+    @Autowired
+    private Encriptador encriptador;
 
     public PersonaDto iniciarSesion(String username,String password) throws Exception {
 
@@ -36,11 +34,12 @@ public class LoginService {
         boolean usuarioValido = false;
 
         Profesor profesor = profesorService.findById(username);
-        if(profesor != null && profesor.getPassword().equals(password))
+
+        if(profesor != null && verificarContrasenia(profesor.getPassword(),password))
         {
 
             usuarioValido = true;
-            listaDeRoles.add("Profesor");
+            listaDeRoles.add("PROFESOR");
             personaDto.setNombre(profesor.getNombre());
             personaDto.setApellido(profesor.getApellido());
             personaDto.setCelular(profesor.getCelular());
@@ -52,10 +51,10 @@ public class LoginService {
 
         Coordinador coordinador = coordinadorService.findById(username);
 
-        if(coordinador!=null && coordinador.getPassword().equals(password))
+        if(coordinador!=null && verificarContrasenia(coordinador.getPassword(),password))
         {
             usuarioValido = true;
-            listaDeRoles.add("Coordinador");
+            listaDeRoles.add("COORDINADOR");
             personaDto.setNombre(coordinador.getNombre());
             personaDto.setApellido(coordinador.getApellido());
             personaDto.setCelular(coordinador.getCelular());
@@ -66,12 +65,10 @@ public class LoginService {
         }
 
         Estudiante estudiante = estudianteService.findById(username);
-
-
-        if(estudiante!=null && estudiante.getPassword().equals(password))
+        if(estudiante!=null && verificarContrasenia(estudiante.getPassword(),password))
         {
             usuarioValido = true;
-            listaDeRoles.add("Estudiante");
+            listaDeRoles.add("ESTUDIANTE");
             personaDto.setNombre(estudiante.getNombre());
             personaDto.setApellido(estudiante.getApellido());
             personaDto.setCelular(estudiante.getCelular());
@@ -80,13 +77,13 @@ public class LoginService {
             personaDto.setIdPrograma(estudiante.getPrograma().getId());
 
         }
-        System.out.println("buscando jefe");
-        JefeDepartamento jefeDepartamento = jefeDepartamentoService.findById(username);
-        System.out.println(jefeDepartamento);
 
-        if (jefeDepartamento!=null && jefeDepartamento.getPassword().equals(password)) {
+        JefeDepartamento jefeDepartamento = jefeDepartamentoService.findById(username);
+
+
+        if (jefeDepartamento!=null && verificarContrasenia(jefeDepartamento.getPassword(),password)) {
             usuarioValido = true;
-            listaDeRoles.add("JefeDepartamento");
+            listaDeRoles.add("JEFEDEPARTAMENTO");
             personaDto.setNombre(jefeDepartamento.getNombre());
             personaDto.setApellido(jefeDepartamento.getApellido());
             personaDto.setCelular(jefeDepartamento.getCelular());
@@ -105,6 +102,11 @@ public class LoginService {
             return null;
         }
 
-
     }
+
+    private boolean verificarContrasenia (String contraseniaEncriptada, String contraseniaDigitada){
+        return encriptador.passwordEncoder().matches(contraseniaDigitada,contraseniaEncriptada);
+    }
+
+
 }
