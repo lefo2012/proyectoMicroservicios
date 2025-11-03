@@ -2,6 +2,7 @@ package co.edu.unicauca.administracionDocumental_ms.builder;
 
 
 import co.edu.unicauca.administracionDocumental_ms.entities.Estudiante;
+import co.edu.unicauca.administracionDocumental_ms.entities.ProyectoDeGrado;
 import co.edu.unicauca.administracionDocumental_ms.entities.TipoProyecto;
 import co.edu.unicauca.administracionDocumental_ms.state.EstadoInicio;
 
@@ -10,7 +11,8 @@ public class InvestigacionBuilder extends Builder{
 
     @Override
     public void crearNuevoFormato() {
-        this.proyectoDeGrado.setTipoProyecto(TipoProyecto.PRACTICA_LABORAL);
+        this.proyectoDeGrado = new ProyectoDeGrado();
+        this.proyectoDeGrado.setTipoProyecto(TipoProyecto.INVESTIGACION);
         this.proyectoDeGrado.setEstadoProyecto(new EstadoInicio());
     }
 

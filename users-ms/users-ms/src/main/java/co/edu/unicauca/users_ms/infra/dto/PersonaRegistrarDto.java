@@ -14,7 +14,7 @@ public class PersonaRegistrarDto {
     private String celular;
     private String correoElectronico;
     private String password;
-    private String cargo;
+    private String rol;
     private String nombreDepartamento;
     private int idDepartamento;
     private String nombreProgama;

@@ -3,6 +3,7 @@ package co.edu.unicauca.administracionDocumental_ms.state;
 import co.edu.unicauca.administracionDocumental_ms.entities.ProyectoDeGrado;
 
 public class EstadoFormatoaRechazado implements EstadoProyecto{
+    private final String nombre = "RECHAZADO";
     @Override
     public void avanzar(ProyectoDeGrado proyectoDeGrado) {
         System.out.println("No se puede avanzar, el Formato A fue Rechazado");
@@ -25,6 +26,6 @@ public class EstadoFormatoaRechazado implements EstadoProyecto{
 
     @Override
     public String getNombre() {
-        return "RECHAZADO";
+        return nombre;
     }
 }

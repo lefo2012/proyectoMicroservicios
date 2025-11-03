@@ -3,8 +3,8 @@ package co.edu.unicauca.administracionDocumental_ms.state;
 import co.edu.unicauca.administracionDocumental_ms.entities.ProyectoDeGrado;
 import co.edu.unicauca.administracionDocumental_ms.entities.TipoProyecto;
 
-public class EstadoInicio  implements EstadoProyecto{
-
+public class EstadoInicio implements EstadoProyecto{
+    private final String nombre = "REVISION";
     @Override
     public void avanzar(ProyectoDeGrado proyectoDeGrado) {
         System.out.println("Formato A Aprobado");
@@ -37,6 +37,6 @@ public class EstadoInicio  implements EstadoProyecto{
 
     @Override
     public String getNombre() {
-        return "REVISION_FORMATOA";
+        return nombre;
     }
 }

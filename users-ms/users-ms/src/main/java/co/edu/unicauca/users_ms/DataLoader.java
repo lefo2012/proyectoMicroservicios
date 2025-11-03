@@ -2,6 +2,7 @@ package co.edu.unicauca.users_ms;
 
 import co.edu.unicauca.users_ms.entity.*;
 import co.edu.unicauca.users_ms.repository.*;
+import co.edu.unicauca.users_ms.util.Encriptador;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -24,6 +25,12 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     private FacultadRepository facultadRepository;
 
+    @Autowired
+    Encriptador encriptador;
+
+    @Autowired
+    private CoordinadorRepository coordinadorRepository;
+
     @Override
     public void run(String... args) throws Exception {
         try {
@@ -31,20 +38,25 @@ public class DataLoader implements CommandLineRunner {
             jefeDepartamento.setNombre("Usuario");
             jefeDepartamento.setApellido("Apellido");
             jefeDepartamento.setCorreoElectronico("usuario@unicauca.edu.co");
-            jefeDepartamento.setPassword("123");
+            jefeDepartamento.setPassword(encriptador.passwordEncoder().encode("123"));
 
+            Coordinador coordinador = new Coordinador();
+            coordinador.setNombre("Coordinador");
+            coordinador.setApellido("Apellido");
+            coordinador.setCorreoElectronico("usuario@unicauca.edu.co");
+            coordinador.setPassword(encriptador.passwordEncoder().encode("123"));
 
             Profesor profesor = new Profesor();
             profesor.setNombre("Usuario");
             profesor.setApellido("Apellido");
             profesor.setCorreoElectronico("usuario@unicauca.edu.co");
-            profesor.setPassword("123");
+            profesor.setPassword(encriptador.passwordEncoder().encode("123"));
 
             Estudiante estudiante = new Estudiante();
             estudiante.setNombre("Usuario");
             estudiante.setApellido("Apellido");
             estudiante.setCorreoElectronico("usuario@unicauca.edu.co");
-            estudiante.setPassword("123");
+            estudiante.setPassword(encriptador.passwordEncoder().encode("123"));
 
             Programa programa = new Programa();
             programa.setNombre("Programa1");
@@ -64,7 +76,9 @@ public class DataLoader implements CommandLineRunner {
             estudiante.relacionarPrograma(programa);
             jefeDepartamento.relacionarDepartamento(departamento);
             profesor.relacionarDepartamento(departamento);
+            coordinador.relacionarDepartamento(departamento);
 
+            coordinadorRepository.save(coordinador);
             estudianteRepository.save(estudiante);
             jefeDepartamentoRepository.save(jefeDepartamento);
             profesorRepository.save(profesor);

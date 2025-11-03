@@ -1,6 +1,6 @@
 package co.edu.unicauca.util;
 
-public enum Cargo {
+public enum Rol {
     PROFESOR,
     ESTUDIANTE,
     COORDINADOR,

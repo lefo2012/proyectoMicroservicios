@@ -28,7 +28,7 @@
                   <TextField fx:id="textFieldNombre" layoutX="176.0" layoutY="202.0" promptText="NOMBRE *" style="-fx-alignment: center;" />
                   <TextField fx:id="textFieldApellido" layoutX="176.0" layoutY="233.0" promptText="APELLIDO *" style="-fx-alignment: center;" />
                   <TextField fx:id="textFieldCelular" layoutX="175.0" layoutY="264.0" promptText="TELEFONO" style="-fx-alignment: center;" />
-                  <ComboBox fx:id="comboBoxCargo" editable="false" layoutX="174.0" layoutY="295.0" onAction="#cambiarDepartamentoPrograma" prefWidth="150.0" promptText="CARGO" style="-fx-background-color: white; -fx-border-color: #dddddd;" />
+                  <ComboBox fx:id="comboBoxRol" editable="false" layoutX="174.0" layoutY="295.0" onAction="#cambiarDepartamentoPrograma" prefWidth="150.0" promptText="CARGO" style="-fx-background-color: white; -fx-border-color: #dddddd;" />
                   <Pane layoutX="175.0" prefHeight="150.0" prefWidth="150.0">
                      <children>
                         <ImageView fitHeight="150.0" fitWidth="100.0" layoutX="25.0">

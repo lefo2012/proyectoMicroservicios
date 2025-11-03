@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 public class Estudiante extends Persona{
 
@@ -32,12 +34,13 @@ public class Estudiante extends Persona{
     }
 
     public boolean disponible() {
-        if (proyectosDeGrado != null)
+        if (proyectosDeGrado != null && !proyectosDeGrado.isEmpty())
         {
             return false;
         }
         return true;
     }
+
     public boolean addProyectoDeGrado(ProyectoDeGrado proyectoDeGrado)
     {
         if(!this.proyectosDeGrado.contains(proyectoDeGrado)){

@@ -23,15 +23,13 @@ public class CoordinadorService implements BaseService<Coordinador,String>{
 
     @Override
     @Transactional
-    public Coordinador findById(String id) throws Exception {
+    public Coordinador findById(String correo) throws Exception {
         try {
-            System.out.println("Estoy entrando a coordinador finById id:"+id);
-            Optional<Coordinador> coordinador = coordinadorRepository.findByCorreoElectronico(id);
-
-            System.out.println(coordinador);
+            System.out.println("Estoy entrando a coordinador finById id (id=correo) :"+correo);
+            Optional<Coordinador> coordinador = coordinadorRepository.findByCorreoElectronico(correo);
             return coordinador.orElse(null);
         }catch(Exception ex){
-            throw new Exception("Error al buscar el coordinador con id: "+id+" :"+ex.getMessage());
+            throw new Exception("Error al buscar el coordinador con id (id=correo) : "+correo+" :"+ex.getMessage());
         }
 
     }
@@ -56,5 +54,9 @@ public class CoordinadorService implements BaseService<Coordinador,String>{
     @Transactional
     public boolean deleteById(String id) throws Exception {
         return false;
+    }
+
+    public boolean existsByCorreo(String correo) {
+        return coordinadorRepository.findByCorreoElectronico(correo).isPresent();
     }
 }

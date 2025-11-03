@@ -27,16 +27,15 @@ public class ProfesorService implements BaseService<Profesor,String>{
 
     @Override
     @Transactional
-    public Profesor findById(String id) throws Exception {
+    public Profesor findById(String correo) throws Exception {
         try
         {
-            System.out.println("Estoy entrando a findById profesor finById id:"+ id);
-            Optional<Profesor> profesor = profesorRepository.findByCorreoElectronico(id);
-            System.out.println(profesor);
+            System.out.println("Estoy entrando a findById profesor finById id (id=correo) :"+ correo);
+            Optional<Profesor> profesor = profesorRepository.findByCorreoElectronico(correo);
             return profesor.orElse(null);
         }catch(Exception ex)
         {
-            throw new Exception("Error al buscar el profesor con id: "+id+" :"+ex.getMessage());
+            throw new Exception("Error al buscar el profesor con id (id=correo) : "+correo+" :"+ex.getMessage());
         }
 
     }
@@ -66,5 +65,9 @@ public class ProfesorService implements BaseService<Profesor,String>{
     @Transactional
     public boolean deleteById(String id) throws Exception {
         return false;
+    }
+
+    public boolean existsByCorreo(String correo) {
+        return profesorRepository.findByCorreoElectronico(correo).isPresent();
     }
 }

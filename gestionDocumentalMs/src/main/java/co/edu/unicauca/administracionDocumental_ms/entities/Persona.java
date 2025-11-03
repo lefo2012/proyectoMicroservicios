@@ -26,5 +26,4 @@ public class Persona {
     @Column(unique = true)
     String correoElectronico;
 
-
 }

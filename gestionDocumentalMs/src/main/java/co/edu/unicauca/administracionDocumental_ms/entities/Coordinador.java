@@ -1,8 +1,10 @@
 package co.edu.unicauca.administracionDocumental_ms.entities;
 
+import co.edu.unicauca.administracionDocumental_ms.factory.StateFactory;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,44 +17,51 @@ public class Coordinador extends Persona{
 
     @OneToOne
     private Departamento departamento;
+
     @OneToMany
     private List<ProyectoDeGrado> proyectosDeGrado;
+
+    @Transient
+    private StateFactory stateFactory;
     public Coordinador()
     {
         proyectosDeGrado = new ArrayList<>();
     }
 
-    public boolean aprobarFormatoA(ProyectoDeGrado proyectoDeGrado)
+    public ProyectoDeGrado aprobarFormatoA(ProyectoDeGrado proyectoDeGrado)
     {
+        proyectoDeGrado.setEstadoProyecto(stateFactory.getInstance().getInstance(proyectoDeGrado.getEstado()));
 
-        if(proyectoDeGrado!=null && proyectoDeGrado.getEstadoProyecto().equals("REVISION_FORMATOA"))
+        if(proyectoDeGrado!=null && proyectoDeGrado.getEstadoProyecto().equals("REVISION"))
         {
             proyectoDeGrado.aprobar();
-            return true;
+            return proyectoDeGrado;
         }
-        return false;
+        return proyectoDeGrado;
     }
-    public boolean rechazarFormatoA(ProyectoDeGrado proyectoDeGrado)
+    public ProyectoDeGrado rechazarFormatoA(ProyectoDeGrado proyectoDeGrado)
     {
-
-        if(proyectoDeGrado!=null && proyectoDeGrado.getEstadoProyecto().equals("REVISION_FORMATOA"))
+        proyectoDeGrado.setEstadoProyecto(stateFactory.getInstance().getInstance(proyectoDeGrado.getEstado()));
+        if(proyectoDeGrado!=null && proyectoDeGrado.getEstadoProyecto().equals("REVISION"))
         {
             proyectoDeGrado.rechazar();
-            return true;
+            return proyectoDeGrado;
         }
-        return false;
+        return proyectoDeGrado;
     }
-    public boolean mandarACorregir(ProyectoDeGrado proyectoDeGrado)
+    public ProyectoDeGrado mandarACorregir(ProyectoDeGrado proyectoDeGrado)
     {
-        if(proyectoDeGrado!=null && proyectoDeGrado.getEstadoProyecto().equals("REVISION_FORMATOA"))
+        proyectoDeGrado.setEstadoProyecto(stateFactory.getInstance().getInstance(proyectoDeGrado.getEstado()));
+
+        if(proyectoDeGrado!=null && proyectoDeGrado.getEstadoProyecto().equals("REVISION"))
         {
             proyectoDeGrado.correccion();
-            return true;
+            return proyectoDeGrado;
         }
-        return false;
+        return proyectoDeGrado;
     }
 
-    public boolean setDepartamento(Departamento departamento)
+    public boolean relacionarDepartamento(Departamento departamento)
     {
         if(this.departamento==null)
         {

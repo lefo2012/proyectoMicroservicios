@@ -23,14 +23,14 @@ public class JefeDepartamentoService implements BaseService<JefeDepartamento,Str
 
     @Override
     @Transactional
-    public JefeDepartamento findById(String id) throws Exception {
+    public JefeDepartamento findById(String correo) throws Exception {
         try{
-            System.out.println("Entrando a buscar jefe de departamento finById id: "+ id);
-            Optional<JefeDepartamento> jefeDepartamento = jefeDepartamentoRepository.findByCorreoElectronico(id);
+            System.out.println("Entrando a buscar jefe de departamento finById id (id=correo): "+ correo);
+            Optional<JefeDepartamento> jefeDepartamento = jefeDepartamentoRepository.findByCorreoElectronico(correo);
             System.out.println(jefeDepartamento);
             return jefeDepartamento.orElse(null);
         } catch (Exception ex) {
-            throw new RuntimeException("Error al buscar al jefe de departamento con id: "+id+" "+ ex.getMessage());
+            throw new RuntimeException("Error al buscar al jefe de departamento con id (id=correo): "+correo+" "+ ex.getMessage());
         }
 
     }
@@ -55,5 +55,9 @@ public class JefeDepartamentoService implements BaseService<JefeDepartamento,Str
     @Transactional
     public boolean deleteById(String id) throws Exception {
         return false;
+    }
+
+    public boolean existsByCorreo(String correo) {
+        return jefeDepartamentoRepository.findByCorreoElectronico(correo).isPresent();
     }
 }

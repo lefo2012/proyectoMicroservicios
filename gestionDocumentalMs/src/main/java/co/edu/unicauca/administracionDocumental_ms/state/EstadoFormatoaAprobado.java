@@ -4,7 +4,7 @@ import co.edu.unicauca.administracionDocumental_ms.entities.ProyectoDeGrado;
 
 
 public class EstadoFormatoaAprobado implements EstadoProyecto{
-
+    private final String nombre = "APROBADO";
     @Override
     public void avanzar(ProyectoDeGrado proyectoDeGrado) {
         proyectoDeGrado.setEstadoProyecto(new EstadoRevisionAnteProyecto());
@@ -27,6 +27,6 @@ public class EstadoFormatoaAprobado implements EstadoProyecto{
 
     @Override
     public String getNombre() {
-        return "FORMATOA_APROBADO";
+        return nombre;
     }
 }

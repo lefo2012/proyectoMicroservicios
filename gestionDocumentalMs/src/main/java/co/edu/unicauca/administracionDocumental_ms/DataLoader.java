@@ -2,8 +2,6 @@ package co.edu.unicauca.administracionDocumental_ms;
 
 import co.edu.unicauca.administracionDocumental_ms.entities.*;
 import co.edu.unicauca.administracionDocumental_ms.repository.*;
-import co.edu.unicauca.administracionDocumental_ms.entities.*;
-import co.edu.unicauca.administracionDocumental_ms.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -35,12 +33,10 @@ public class DataLoader implements CommandLineRunner {
             jefeDepartamento.setApellido("Apellido");
             jefeDepartamento.setCorreoElectronico("usuario@unicauca.edu.co");
 
-
             Coordinador coordinador = new Coordinador();
             coordinador.setNombre("Coordinador");
             coordinador.setApellido("Apellido");
-            coordinador.setCorreoElectronico("coordinador@unicauca.edu.co");
-
+            coordinador.setCorreoElectronico("usuario@unicauca.edu.co");
 
             Profesor profesor = new Profesor();
             profesor.setNombre("Usuario");
@@ -70,12 +66,12 @@ public class DataLoader implements CommandLineRunner {
             estudiante.relacionarPrograma(programa);
             jefeDepartamento.relacionarDepartamento(departamento);
             profesor.relacionarDepartamento(departamento);
-            coordinador.setDepartamento(departamento);
+            coordinador.relacionarDepartamento(departamento);
 
+            coordinadorRepository.save(coordinador);
             estudianteRepository.save(estudiante);
             jefeDepartamentoRepository.save(jefeDepartamento);
             profesorRepository.save(profesor);
-            coordinadorRepository.save(coordinador);
 
             programaRepository.save(programa);
             departamentoRepository.save(departamento);

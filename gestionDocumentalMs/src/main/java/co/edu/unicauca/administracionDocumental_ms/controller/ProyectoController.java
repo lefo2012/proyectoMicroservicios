@@ -1,6 +1,12 @@
 package co.edu.unicauca.administracionDocumental_ms.controller;
 
-import co.edu.unicauca.administracionDocumental_ms.infra.dto.FormatoARequest;
+import co.edu.unicauca.administracionDocumental_ms.entities.Coordinador;
+import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoDto;
+import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoRequest;
+import co.edu.unicauca.administracionDocumental_ms.repository.ProyectoReposiroty;
+import co.edu.unicauca.administracionDocumental_ms.service.CoordinadorService;
+import co.edu.unicauca.administracionDocumental_ms.service.EstudianteService;
+import co.edu.unicauca.administracionDocumental_ms.service.ProfesorService;
 import co.edu.unicauca.administracionDocumental_ms.service.ProyectoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,11 +22,20 @@ public class ProyectoController {
 
     @Autowired
     private ProyectoService proyectoService;
+    @Autowired
+    private EstudianteService estudianteService;
+    @Autowired
+    private ProfesorService profesorService;
+    @Autowired
+    private CoordinadorService coordinadorService;
+    @Autowired
+    private ProyectoReposiroty proyectoReposiroty;
+
 
     @PostMapping("/investigacion")
-    public ResponseEntity<?> subirFormatoInvestigacion(@RequestBody FormatoARequest req) {
+    public ResponseEntity<?> subirFormatoInvestigacion(@RequestBody ProyectoRequest req) {
         try {
-            FormatoARequest formatoCreado = proyectoService.crearProyectoInvestigacion(req);
+            ProyectoRequest formatoCreado = proyectoService.crearProyectoInvestigacion(req);
             return ResponseEntity.status(HttpStatus.CREATED).body(formatoCreado);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Error al crear proyecto: " + e.getMessage()));
@@ -28,9 +43,9 @@ public class ProyectoController {
     }
 
     @PostMapping("/practica")
-    public ResponseEntity<?> subirFormatoPractica(@RequestBody FormatoARequest req) {
+    public ResponseEntity<?> subirFormatoPractica(@RequestBody ProyectoRequest req) {
         try {
-            FormatoARequest formatoCreado = proyectoService.crearProyectoPractica(req);
+            ProyectoRequest formatoCreado = proyectoService.crearProyectoPractica(req);
             return ResponseEntity.status(HttpStatus.CREATED).body(formatoCreado);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Error al crear proyecto: " + e.getMessage()));
@@ -40,7 +55,7 @@ public class ProyectoController {
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerProyecto(@PathVariable Long id) {
         try {
-            FormatoARequest proyecto = proyectoService.findById(id);
+            ProyectoRequest proyecto = proyectoService.findById(id);
             return ResponseEntity.ok(proyecto);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -51,7 +66,7 @@ public class ProyectoController {
     @GetMapping
     public ResponseEntity<?> obtenerTodosLosProyectos() {
         try {
-            List<FormatoARequest> proyectos = proyectoService.findAll();
+            List<ProyectoRequest> proyectos = proyectoService.findAll();
             return ResponseEntity.ok(proyectos);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -60,9 +75,9 @@ public class ProyectoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarProyecto(@PathVariable Long id, @RequestBody FormatoARequest req) {
+    public ResponseEntity<?> actualizarProyecto(@PathVariable Long id, @RequestBody ProyectoRequest req) {
         try {
-            FormatoARequest proyectoActualizado = proyectoService.updateById(id, req);
+            ProyectoRequest proyectoActualizado = proyectoService.updateById(id, req);
             return ResponseEntity.ok(proyectoActualizado);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -78,6 +93,63 @@ public class ProyectoController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("error", "Error al eliminar proyecto: " + e.getMessage()));
+        }
+    }
+
+    @GetMapping ("/getProyectos/estudiante/{correoElectronico}")
+    public ResponseEntity<?> obtenerProyectosEstudiante(@PathVariable String correoElectronico) {
+        try{
+            List<ProyectoDto> proyectos = estudianteService.listaProyecto(correoElectronico);
+            return ResponseEntity.ok(proyectos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Error al listar proyectos: " + e.getMessage()));
+        }
+    }
+    @GetMapping("/getProyectos/profesor/{correoElectronico}")
+    public ResponseEntity<?> obtenerProyectosProfesor(@PathVariable String correoElectronico) {
+        try{
+            List<ProyectoDto> proyectos = profesorService.listaProyecto(correoElectronico);
+            return ResponseEntity.ok(proyectos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Error al listar proyectos: " + e.getMessage()));
+        }
+    }
+    @GetMapping ("/getProyectos/coordinador/{correoElectronico}")
+    public ResponseEntity<?> obtenerProyectosCoordinador(@PathVariable String correoElectronico) {
+        try{
+            List<ProyectoDto> proyectos = coordinadorService.listaProyecto(correoElectronico);
+            return ResponseEntity.ok(proyectos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Error al listar proyectos: " + e.getMessage()));
+        }
+    }
+
+    @GetMapping("/calificarProyecto/aprobar/{idProyecto}/{correoElectronico}/{fecha}")
+    public ResponseEntity<?> aprobarProyecto(@PathVariable long idProyecto, @PathVariable String correoElectronico, @PathVariable String fecha)
+    {
+        try
+        {
+            Coordinador coordinador = coordinadorService.findById(correoElectronico);
+            proyectoReposiroty.save(coordinador.aprobarFormatoA(proyectoReposiroty.findById(idProyecto).get()));
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+    @GetMapping("/calificarProyecto/rechazar/{idProyecto}/{correoElectronico}/{fecha}")
+    public ResponseEntity<String> rechazarProyecto(@PathVariable long idProyecto, @PathVariable String correoElectronico, @PathVariable String fecha)
+    {
+        try
+        {
+            Coordinador coordinador = coordinadorService.findById(correoElectronico);
+            proyectoReposiroty.save(coordinador.rechazarFormatoA(proyectoReposiroty.findById(idProyecto).get()));
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

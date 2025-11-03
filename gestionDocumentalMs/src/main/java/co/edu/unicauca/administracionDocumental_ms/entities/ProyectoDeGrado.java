@@ -24,14 +24,17 @@ public class ProyectoDeGrado {
 
     private String objetivoEspecifico;
 
-    private Date fechaSubida;
+    private Date   fechaSubida;
 
     private Date fechaRevision;
 
     private String archivoAdjunto;
 
-    @OneToOne
+    @ManyToOne
     private Estudiante estudiante1;
+
+    @ManyToOne
+    private Estudiante estudiante2;
 
     @ManyToOne
     private Coordinador coordinador;
@@ -52,13 +55,13 @@ public class ProyectoDeGrado {
     @OneToMany
     private List<AnteProyecto> anteProyectos;
 
-    @OneToOne
-    private Estudiante estudiante2;
+
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_proyecto")
     private TipoProyecto tipoProyecto;
 
+    //nos iba a volver locos
     private String descripcion = "Un proyecto de grado";
 
     public ProyectoDeGrado(TipoProyecto tipoProyecto)
@@ -92,20 +95,18 @@ public class ProyectoDeGrado {
         this.coordinador.addProyectoDeGrado(this);
     }
 
-    public boolean setCodirectores(List<Profesor> codirectores){
-        if(codirectores == null || codirectores.isEmpty())
-        {
-            return false;
+    public void setCodirectores(List<Profesor> codirectores) {
+        if (codirectores == null) {
+            return;
         }
-        for(Profesor codirector : codirectores){
-            if(!codirectores.contains(codirector))
-            {
-                codirector.addProyectoDeGradoCodirigidos(this);
-                codirectores.add(codirector);
-            }
+
+        this.codirectores = codirectores;
+
+        for (Profesor codirector : codirectores) {
+            codirector.addProyectoDeGradoCodirigidos(this);
         }
-        return true;
     }
+
 
     public void setEstadoProyecto(EstadoProyecto estadoProyecto){
         this.estadoProyecto = estadoProyecto;

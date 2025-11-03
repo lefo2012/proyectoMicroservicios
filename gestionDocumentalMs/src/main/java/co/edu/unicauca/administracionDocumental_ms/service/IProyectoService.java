@@ -1,6 +1,6 @@
 package co.edu.unicauca.administracionDocumental_ms.service;
 
-import co.edu.unicauca.administracionDocumental_ms.infra.dto.FormatoARequest;
+import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoRequest;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
@@ -8,16 +8,17 @@ import java.util.List;
 public interface IProyectoService {
 
     @Transactional
-    FormatoARequest crearProyectoInvestigacion(FormatoARequest req) throws Exception;
+    ProyectoRequest crearProyectoInvestigacion(ProyectoRequest req) throws Exception;
     @Transactional
-    FormatoARequest crearProyectoPractica(FormatoARequest req) throws Exception;
+    ProyectoRequest crearProyectoPractica(ProyectoRequest req) throws Exception;
     @Transactional
-    FormatoARequest findById(Long id) throws Exception;
+    ProyectoRequest findById(Long id) throws Exception;
     @Transactional
-    List<FormatoARequest> findAll() throws Exception;
+    List<ProyectoRequest> findAll() throws Exception;
     @Transactional
-    FormatoARequest updateById(Long id, FormatoARequest req) throws Exception;
-    @Transactional
+    ProyectoRequest updateById(Long id, ProyectoRequest req) throws Exception;
+
+
     boolean deleteById(Long id) throws Exception;
 
 

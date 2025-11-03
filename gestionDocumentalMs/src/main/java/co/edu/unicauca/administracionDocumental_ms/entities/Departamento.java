@@ -53,7 +53,7 @@ public class Departamento {
         if(this.coordinador==null)
         {
             this.coordinador=coordinador;
-            this.coordinador.setDepartamento(this);
+            this.coordinador.relacionarDepartamento(this);
             return true;
         }
 

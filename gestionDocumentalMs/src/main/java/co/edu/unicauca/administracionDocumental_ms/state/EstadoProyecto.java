@@ -3,9 +3,10 @@ package co.edu.unicauca.administracionDocumental_ms.state;
 import co.edu.unicauca.administracionDocumental_ms.entities.ProyectoDeGrado;
 
 public interface EstadoProyecto {
-    void avanzar(ProyectoDeGrado proyectoDeGrado);
-    void correciones (ProyectoDeGrado proyectoDeGrado);
-    void aprobar (ProyectoDeGrado proyectoDeGrado);
-    void rechazar(ProyectoDeGrado proyectoDeGrado);
-    String getNombre();
+
+    public abstract void avanzar(ProyectoDeGrado proyectoDeGrado);
+    public abstract void correciones (ProyectoDeGrado proyectoDeGrado);
+    public abstract void aprobar (ProyectoDeGrado proyectoDeGrado);
+    public abstract void rechazar(ProyectoDeGrado proyectoDeGrado);
+    public abstract String getNombre();
 }

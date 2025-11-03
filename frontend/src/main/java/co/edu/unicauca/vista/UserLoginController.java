@@ -1,15 +1,11 @@
 package co.edu.unicauca.vista;
 
-
-import java.io.IOException;
-
 import co.edu.unicauca.frontend.FrontendApplication;
 import co.edu.unicauca.service.PersonaService;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * FXML Controller class
@@ -43,13 +39,13 @@ public class UserLoginController {
     @FXML
     public void iniciarSesion() throws Exception
     {
-        PersonaService personaService = new PersonaService();
-        if(personaService.iniciarSesion(textFieldCorreoElectronico.getText(), passwordFieldContrasenia.getText()).equals("c"))
+        try {
+            PersonaService personaService = new PersonaService();
+            FrontendApplication.goSeleccionarModo(personaService.iniciarSesion(textFieldCorreoElectronico.getText(), passwordFieldContrasenia.getText()));
+        }catch (Exception e)
         {
-            System.out.println("Se ha iniciado correctamente");
-            vaciarCampos();
+            textCorreoOContraseniaIncorrecto.setText(e.getMessage());
         }
-
     }
 
 

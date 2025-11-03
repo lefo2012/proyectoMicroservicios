@@ -2,11 +2,11 @@ package co.edu.unicauca.vista;
 
 
 
-import co.edu.unicauca.infra.dto.PersonaDto;
+import co.edu.unicauca.infra.dto.PersonaRegistrarDto;
 import co.edu.unicauca.service.DepartamentoService;
 import co.edu.unicauca.service.PersonaService;
 import co.edu.unicauca.service.ProgramaService;
-import co.edu.unicauca.util.Cargo;
+import co.edu.unicauca.util.Rol;
 import co.edu.unicauca.frontend.FrontendApplication;
 import java.io.IOException;
 
@@ -19,7 +19,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -31,7 +30,7 @@ public class UserRegisterController {
     @FXML
     PasswordField passwordFieldContrasenia;
     @FXML
-    ComboBox<Cargo> comboBoxCargo;
+    ComboBox<Rol> comboBoxRol;
     @FXML
     ComboBox<Programa> comboBoxPrograma;
     @FXML
@@ -53,8 +52,8 @@ public class UserRegisterController {
 
         try{
 
-        comboBoxCargo.setItems(FXCollections.observableArrayList(Cargo.values()));
-        comboBoxCargo.getSelectionModel().selectFirst();
+        comboBoxRol.setItems(FXCollections.observableArrayList(Rol.values()));
+        comboBoxRol.getSelectionModel().selectFirst();
         comboBoxPrograma.setItems(FXCollections.observableArrayList(ProgramaService.obtenerTodos()));
 
         comboBoxPrograma.setCellFactory(param -> new ListCell<Programa>() {
@@ -90,7 +89,7 @@ public class UserRegisterController {
         comboBoxDepartamento.getSelectionModel().selectFirst();
         comboBoxPrograma.getSelectionModel().selectFirst();
 
-        if(comboBoxCargo.getValue().equals(Cargo.ESTUDIANTE))
+        if(comboBoxRol.getValue().equals(Rol.ESTUDIANTE))
         {
             comboBoxDepartamento.setVisible(false);
             comboBoxPrograma.setVisible(true);
@@ -115,8 +114,8 @@ public class UserRegisterController {
       passwordFieldContrasenia.clear();
       textoAviso.setText(""); 
 
-      if (comboBoxCargo.getItems() != null && !comboBoxCargo.getItems().isEmpty()) {
-          comboBoxCargo.getSelectionModel().selectFirst(); 
+      if (comboBoxRol.getItems() != null && !comboBoxRol.getItems().isEmpty()) {
+          comboBoxRol.getSelectionModel().selectFirst();
       }
 
       textFieldCorreoElectronico.setStyle("-fx-alignment: CENTER;");
@@ -133,25 +132,25 @@ public class UserRegisterController {
 
         if (validarCampos())
         {
-            PersonaDto personaRegistrar =new PersonaDto();
+            PersonaRegistrarDto personaRegistrar =new PersonaRegistrarDto();
             personaRegistrar.setNombre(textFieldNombre.getText());
             personaRegistrar.setApellido(textFieldApellido.getText());
             personaRegistrar.setCelular(textFieldCelular.getText());
             personaRegistrar.setCorreoElectronico(textFieldCorreoElectronico.getText());
             personaRegistrar.setPassword(passwordFieldContrasenia.getText());
 
-            if(comboBoxCargo.getValue().equals(Cargo.ESTUDIANTE)){
-                personaRegistrar.setCargo("Estudiante");
+            if(comboBoxRol.getValue().equals(Rol.ESTUDIANTE)){
+                personaRegistrar.setRol("ESTUDIANTE");
                 personaRegistrar.setIdPrograma(comboBoxPrograma.getValue().getId());
             }
 
-            else if(comboBoxCargo.getValue().equals(Cargo.PROFESOR)){
-                personaRegistrar.setCargo("Profesor");
+            else if(comboBoxRol.getValue().equals(Rol.PROFESOR)){
+                personaRegistrar.setRol("PROFESOR");
                 personaRegistrar.setIdDepartamento(comboBoxDepartamento.getValue().getId());
             }
 
             else{
-                personaRegistrar.setCargo("Coordinador");
+                personaRegistrar.setRol("COORDINADOR");
                 personaRegistrar.setIdDepartamento(comboBoxDepartamento.getValue().getId());
             }
 
@@ -198,7 +197,7 @@ public class UserRegisterController {
     public void cambiarDepartamentoPrograma()
     {
         
-        if(comboBoxCargo.getValue().equals(Cargo.ESTUDIANTE))
+        if(comboBoxRol.getValue().equals(Rol.ESTUDIANTE))
         {
             comboBoxDepartamento.setVisible(false);
             comboBoxPrograma.setVisible(true);

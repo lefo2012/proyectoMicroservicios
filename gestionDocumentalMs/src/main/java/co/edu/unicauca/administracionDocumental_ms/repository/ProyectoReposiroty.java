@@ -2,6 +2,10 @@ package co.edu.unicauca.administracionDocumental_ms.repository;
 
 import co.edu.unicauca.administracionDocumental_ms.entities.ProyectoDeGrado;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-public interface FormatoARepository extends JpaRepository<ProyectoDeGrado,Long> {
+import java.util.List;
+
+public interface ProyectoReposiroty extends JpaRepository<ProyectoDeGrado,Long> {
+
 }

@@ -40,11 +40,13 @@ public class Profesor extends Persona{
         }
         return false;
     }
+
     public Profesor()
     {
         this.anteProyectos=new ArrayList<>();
         this.proyectosDeGradoDirigidos=new ArrayList<>();
     }
+
     public ProyectoDeGrado iniciarProyectoDeGradoInvestigacion(String titulo, String objetivo, String objetivoEspecifico, String archivoAdjunto, Estudiante estudiante1, Estudiante estudiante2, List<Profesor> codirectores) throws Exception {
 
         if(!estudiante1.disponible() && !estudiante1.investigacionDisponible())

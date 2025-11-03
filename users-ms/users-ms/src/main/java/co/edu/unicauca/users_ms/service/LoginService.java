@@ -40,6 +40,7 @@ public class LoginService {
 
             usuarioValido = true;
             listaDeRoles.add("PROFESOR");
+            personaDto.setId(profesor.getId());
             personaDto.setNombre(profesor.getNombre());
             personaDto.setApellido(profesor.getApellido());
             personaDto.setCelular(profesor.getCelular());
@@ -55,6 +56,7 @@ public class LoginService {
         {
             usuarioValido = true;
             listaDeRoles.add("COORDINADOR");
+            personaDto.setId(coordinador.getId());
             personaDto.setNombre(coordinador.getNombre());
             personaDto.setApellido(coordinador.getApellido());
             personaDto.setCelular(coordinador.getCelular());
@@ -69,6 +71,7 @@ public class LoginService {
         {
             usuarioValido = true;
             listaDeRoles.add("ESTUDIANTE");
+            personaDto.setId(estudiante.getId());
             personaDto.setNombre(estudiante.getNombre());
             personaDto.setApellido(estudiante.getApellido());
             personaDto.setCelular(estudiante.getCelular());
@@ -84,6 +87,7 @@ public class LoginService {
         if (jefeDepartamento!=null && verificarContrasenia(jefeDepartamento.getPassword(),password)) {
             usuarioValido = true;
             listaDeRoles.add("JEFEDEPARTAMENTO");
+            personaDto.setId(jefeDepartamento.getId());
             personaDto.setNombre(jefeDepartamento.getNombre());
             personaDto.setApellido(jefeDepartamento.getApellido());
             personaDto.setCelular(jefeDepartamento.getCelular());
@@ -94,7 +98,7 @@ public class LoginService {
         }
         if(usuarioValido)
         {
-            personaDto.setCargos(listaDeRoles);
+            personaDto.setRoles(listaDeRoles);
             return personaDto;
 
         }else

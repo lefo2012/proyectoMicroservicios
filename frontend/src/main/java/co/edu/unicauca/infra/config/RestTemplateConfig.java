@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class RestTemplateConfig {
 
     public static RestTemplate getInstance(){
+
         return new RestTemplate();
     }
 }

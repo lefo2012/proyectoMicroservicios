@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="100.0" prefHeight="100.0" prefWidth="1650.0" style="-fx-background-color: white;" styleClass="hbox-borde" stylesheets="@../css/hBoxBorde.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.unicauca.vista.EstudianteDatosFormatoController">
+<HBox maxHeight="100.0" prefHeight="100.0" prefWidth="1650.0" style="-fx-background-color: white;" styleClass="hbox-borde" stylesheets="@../css/hBoxBorde.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.unicauca.vista.EstudianteDatosFormatosController">
    <children>
       <Label fx:id="lblFormato" alignment="CENTER" layoutY="1.0" prefHeight="98.0" prefWidth="300.0" style="-fx-background-color: white;">
          <font>

@@ -11,11 +11,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PersonaDto {
+    private long id;
     private String nombre;
     private String apellido;
     private String celular;
     private String correoElectronico;
-    private List<String> cargos = new ArrayList<>();
+    private List<String> roles = new ArrayList<>();
     private String nombreDepartamento;
     private int idDepartamento;
     private String nombreProgama;
