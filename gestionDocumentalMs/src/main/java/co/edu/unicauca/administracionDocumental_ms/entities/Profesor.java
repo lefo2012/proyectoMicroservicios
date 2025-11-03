@@ -110,7 +110,8 @@ public class Profesor extends Persona{
         StateFactory stateFactory = StateFactory.getInstance();
         if(proyectoDeGrado.getEstado().equals("APROBADO"))
         {
-            proyectoDeGrado.addAnteProyecto(new AnteProyecto(nombre,this.departamento.getJefeDepartamento()));
+            proyectoDeGrado.setJefeDepartamento(this.departamento.getJefeDepartamento());
+            proyectoDeGrado.addAnteProyecto(new AnteProyecto(nombre));
             proyectoDeGrado.setEstadoProyecto(stateFactory.getInstance("REVISION_ANTEPROYECTO"));
         }
         return proyectoDeGrado;

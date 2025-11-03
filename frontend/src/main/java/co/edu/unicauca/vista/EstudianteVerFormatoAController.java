@@ -52,7 +52,10 @@ public class EstudianteVerFormatoAController {
         textAreaObjetivosEspecificos.setText(proyectoDto.getObjetivoEspecifico());
 
         textFieldDirector.setText(proyectoDto.getNombreDirector());
-        textFieldCodirector.setText(proyectoDto.getNombreCodirectores().getFirst());
+
+        if (proyectoDto.getNombreCodirectores() != null && !proyectoDto.getNombreCodirectores().isEmpty()) {
+            textFieldCodirector.setText(proyectoDto.getNombreCodirectores().getFirst());
+        }
 
 
         textFieldEstudiante.setText(proyectoDto.getNombreEstudiante1());

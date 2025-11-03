@@ -4,6 +4,7 @@ package co.edu.unicauca.users_ms.service;
 import co.edu.unicauca.users_ms.entity.*;
 import co.edu.unicauca.users_ms.infra.dto.PersonaDto;
 import co.edu.unicauca.users_ms.infra.dto.PersonaRegistrarDto;
+import co.edu.unicauca.users_ms.rabbitConfig.PersonaProducer;
 import co.edu.unicauca.users_ms.repository.DepartamentoRepository;
 import co.edu.unicauca.users_ms.repository.ProgramaRepository;
 import co.edu.unicauca.users_ms.util.Encriptador;
@@ -32,6 +33,8 @@ public class RegisterService {
     Encriptador encriptador;
     @Autowired
     private GestionProyectoCliente gestionProyectoCliente;
+    @Autowired
+    private PersonaProducer personaProducer;
 
     @Transactional
     public PersonaDto registrarPersona(PersonaRegistrarDto personaDto) throws Exception {
@@ -69,7 +72,7 @@ public class RegisterService {
             }
 
             try{
-                gestionProyectoCliente.registrar(personaSegura);
+                personaProducer.enviarPersona(personaSegura);
             } catch (Exception e) {
                 throw new RuntimeException("No se pudo registrar la persona en gestionProyecto " + e.getMessage());
             }

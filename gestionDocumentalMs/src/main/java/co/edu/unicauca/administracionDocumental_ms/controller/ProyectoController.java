@@ -4,10 +4,7 @@ import co.edu.unicauca.administracionDocumental_ms.entities.Coordinador;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoRequest;
 import co.edu.unicauca.administracionDocumental_ms.repository.ProyectoReposiroty;
-import co.edu.unicauca.administracionDocumental_ms.service.CoordinadorService;
-import co.edu.unicauca.administracionDocumental_ms.service.EstudianteService;
-import co.edu.unicauca.administracionDocumental_ms.service.ProfesorService;
-import co.edu.unicauca.administracionDocumental_ms.service.ProyectoService;
+import co.edu.unicauca.administracionDocumental_ms.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +27,8 @@ public class ProyectoController {
     private CoordinadorService coordinadorService;
     @Autowired
     private ProyectoReposiroty proyectoReposiroty;
-
+    @Autowired
+    private JefeDepService jefeDepService;
 
     @PostMapping("/investigacion")
     public ResponseEntity<?> subirFormatoInvestigacion(@RequestBody ProyectoRequest req) {
@@ -123,6 +121,15 @@ public class ProyectoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Error al listar proyectos: " + e.getMessage()));
         }
     }
+    @GetMapping ("/getProyectos/jefeDepartamento/{correoElectronico}")
+    public ResponseEntity<?> obtenerProyectosJefeDepartamento(@PathVariable String correoElectronico) {
+        try{
+            List<ProyectoDto> proyectos = jefeDepService.listaProyecto(correoElectronico);
+            return ResponseEntity.ok(proyectos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Error al listar proyectos: " + e.getMessage()));
+        }
+    }
 
     @GetMapping("/calificarProyecto/aprobar/{idProyecto}/{correoElectronico}/{fecha}")
     public ResponseEntity<?> aprobarProyecto(@PathVariable long idProyecto, @PathVariable String correoElectronico, @PathVariable String fecha)
@@ -130,7 +137,7 @@ public class ProyectoController {
         try
         {
             Coordinador coordinador = coordinadorService.findById(correoElectronico);
-            proyectoReposiroty.save(coordinador.aprobarFormatoA(proyectoReposiroty.findById(idProyecto).get()));
+            proyectoReposiroty.save(coordinadorService.aprobarFormatoA(proyectoReposiroty.findById(idProyecto).get(),coordinador));
             return new ResponseEntity<>(HttpStatus.OK);
 
         } catch (Exception e) {
@@ -144,7 +151,7 @@ public class ProyectoController {
         try
         {
             Coordinador coordinador = coordinadorService.findById(correoElectronico);
-            proyectoReposiroty.save(coordinador.rechazarFormatoA(proyectoReposiroty.findById(idProyecto).get()));
+            proyectoReposiroty.save(coordinadorService.rechazarFormatoA(proyectoReposiroty.findById(idProyecto).get(),coordinador));
             return new ResponseEntity<>(HttpStatus.OK);
 
         } catch (Exception e) {

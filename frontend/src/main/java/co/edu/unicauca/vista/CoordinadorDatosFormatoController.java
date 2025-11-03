@@ -39,6 +39,9 @@ public class CoordinadorDatosFormatoController implements Initializable{
         if(proyectoSeleccionado.getNombreEstudiante2()!=null)
         {
             lblName1.setText("2. "+proyectoSeleccionado.getNombreEstudiante2());
+        }else{
+            lblName1.setManaged(false);
+            lblName.setLayoutY(22.5);
         }
 
         lblEstado.getStyleClass().removeAll("label-pendiente", "label-revision", "label-aprobado", "label-rechazado");

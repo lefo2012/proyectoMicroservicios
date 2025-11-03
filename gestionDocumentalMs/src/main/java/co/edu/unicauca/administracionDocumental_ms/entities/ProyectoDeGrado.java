@@ -31,6 +31,8 @@ public class ProyectoDeGrado {
     private String archivoAdjunto;
 
     @ManyToOne
+    private JefeDepartamento jefeDepartamento;
+    @ManyToOne
     private Estudiante estudiante1;
 
     @ManyToOne

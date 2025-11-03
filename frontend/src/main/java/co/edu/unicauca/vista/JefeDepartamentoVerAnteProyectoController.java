@@ -4,16 +4,13 @@ import co.edu.unicauca.frontend.FrontendApplication;
 import co.edu.unicauca.infra.dto.ProyectoDto;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.image.ImageView;
 
 import java.awt.*;
 import java.io.File;
 
+public class JefeDepartamentoVerAnteProyectoController {
 
-public class ProfesorVerFormatoAController {
     @FXML
     private Label textAreaObjetivoGeneral;
 
@@ -40,12 +37,31 @@ public class ProfesorVerFormatoAController {
 
     @FXML
     private Label labelObservaciones;
-    @FXML
-    private Button btnSubirAnteproyecto;
-    @FXML
+
+
     private ProyectoDto proyectoDto;
+
+    public void setFormato(ProyectoDto proyectoDto) {
+
+
+        this.proyectoDto = proyectoDto;
+        textFieldTituloProyecto.setText(proyectoDto.getTitulo());
+        textFieldModalidad.setText(proyectoDto.getTipo());
+        textAreaObjetivoGeneral.setText(proyectoDto.getObjetivo());
+        textAreaObjetivosEspecificos.setText(proyectoDto.getObjetivoEspecifico());
+
+        textFieldDirector.setText(proyectoDto.getNombreDirector());
+
+        if (proyectoDto.getNombreCodirectores() != null && !proyectoDto.getNombreCodirectores().isEmpty()) {
+            textFieldCodirector.setText(proyectoDto.getNombreCodirectores().getFirst());
+        }
+
+
+        textFieldEstudiante.setText(proyectoDto.getNombreEstudiante1());
+        textFieldEstudiante1.setText(proyectoDto.getNombreEstudiante2());
+
+    }
     @FXML
-    ImageView imagenArchivoPlano,imagenPdf;
     void verDocumento(ActionEvent event) {
         if (proyectoDto != null && proyectoDto.getArchivoAdjunto() != null) {
             try {
@@ -64,47 +80,13 @@ public class ProfesorVerFormatoAController {
             }
         }
     }
-    public void setFormato(ProyectoDto proyectoDto) {
-        this.proyectoDto = proyectoDto;
 
-
-        textFieldTituloProyecto.setText(proyectoDto.getTitulo());
-        textFieldModalidad.setText(proyectoDto.getTipo());
-        textAreaObjetivoGeneral.setText(proyectoDto.getObjetivo());
-        textAreaObjetivosEspecificos.setText(proyectoDto.getObjetivoEspecifico());
-
-        textFieldDirector.setText(proyectoDto.getNombreDirector());
-
-        if (proyectoDto.getNombreCodirectores() != null && !proyectoDto.getNombreCodirectores().isEmpty()) {
-            textFieldCodirector.setText(proyectoDto.getNombreCodirectores().getFirst());
-        }
-
-
-        textFieldEstudiante.setText(proyectoDto.getNombreEstudiante1());
-        textFieldEstudiante1.setText(proyectoDto.getNombreEstudiante2());
-        if(proyectoDto.getEstado().equals("APROBADO"))
-        {
-            imagenArchivoPlano.setVisible(true);
-            btnSubirAnteproyecto.setVisible(true);
-        }
-    }
-    public void subirAnteproyecto()
-    {
-
-    }
-    public void verDocumento()
-    {
-
-    }
-    public void goProfesorSubirFormato()
-    {
-        FrontendApplication.goProfesorSubirProyecto();
-    }
-    public void salir() {
-        FrontendApplication.goProfesorFormatos();
-    }
-    public void cerrarSesion()
-    {
+    @FXML
+    public void cerrarSesion(ActionEvent event) {
         FrontendApplication.goLogin();
+    }
+    public void salir()
+    {
+        FrontendApplication.goJefeDepartamentoAnteProyectos();
     }
 }

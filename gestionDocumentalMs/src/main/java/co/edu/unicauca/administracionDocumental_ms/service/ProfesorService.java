@@ -7,6 +7,7 @@ import co.edu.unicauca.administracionDocumental_ms.infra.dto.PersonaDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoDto;
 import co.edu.unicauca.administracionDocumental_ms.repository.DepartamentoRepository;
 import co.edu.unicauca.administracionDocumental_ms.repository.ProfesorRepository;
+import co.edu.unicauca.administracionDocumental_ms.repository.ProyectoReposiroty;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ import java.util.Optional;
 
 @Service
 public class ProfesorService implements BaseService<Profesor,String>{
+    @Autowired
+    ProyectoReposiroty proyectoReposiroty;
     @Autowired
     ProfesorRepository profesorRepository;
     @Autowired
@@ -104,7 +107,23 @@ public class ProfesorService implements BaseService<Profesor,String>{
             throw new Exception("Error al listar proyectos de grado: "+ex.getMessage());
         }
     }
+    public void subirAnteproyecto(ProyectoDeGrado proyectoDeGrado,Profesor profesor,String nombreAnteproyecto) throws Exception
+    {
+        try
+        {
 
+            proyectoReposiroty.save(profesor.subirAnteproyecto(proyectoDeGrado,nombreAnteproyecto));
+
+        }catch (Exception ex)
+        {
+
+            ex.printStackTrace();
+            System.out.println(ex.getMessage());
+            throw new Exception("Error al subir anteproyecto: "+ex.getMessage());
+
+        }
+
+    }
     public Profesor mapearDto(PersonaDto personaDto)
     {
         Profesor profesor = new Profesor();

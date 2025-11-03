@@ -11,19 +11,15 @@ public class AnteProyecto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private String nombre;
     @ManyToOne
     private ProyectoDeGrado proyectoDeGrado;
-    @OneToOne
-    private JefeDepartamento jefeDepartamento;
     @ManyToOne
     private Profesor evaluador1;
     @ManyToOne
     private Profesor evaluador2;
-    public AnteProyecto(String nombre, JefeDepartamento jefeDepartamento)
+    public AnteProyecto(String nombre)
     {
-        this.jefeDepartamento=jefeDepartamento;
         this.nombre = nombre;
     }
 }

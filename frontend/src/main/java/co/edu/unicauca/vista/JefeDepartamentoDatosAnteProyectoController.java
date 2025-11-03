@@ -1,14 +1,13 @@
 package co.edu.unicauca.vista;
 
-import java.io.IOException;
-
 import co.edu.unicauca.frontend.FrontendApplication;
 import co.edu.unicauca.infra.dto.ProyectoDto;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
+import java.io.IOException;
 
-public class EstudianteDatosFormatosController {
+public class JefeDepartamentoDatosAnteProyectoController {
     @FXML
     private Label lblEstado;
 
@@ -52,9 +51,7 @@ public class EstudianteDatosFormatosController {
             default -> {} // sin estilo extra
         }
     }
-
-
-    public void verDetalles() throws IOException{
-       FrontendApplication.goEstudianteVerFormatos(this.proyectoSeleccionado);
+    public void verDetalles() throws IOException {
+        FrontendApplication.goEstudianteVerFormatos(this.proyectoSeleccionado);
     }
 }

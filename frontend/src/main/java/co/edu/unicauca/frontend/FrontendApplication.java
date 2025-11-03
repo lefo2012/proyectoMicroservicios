@@ -20,13 +20,17 @@ public class FrontendApplication extends Application {
     private static Parent loginRoot;
     private static Parent registroRoot;
     private static Parent seleccionadorRoot;
-    private static Parent profesorSubirProyectoRoot;
+    private static Parent jefeDepartamento;
+    private static Parent jefeDepartamentoVerAnteProyecto;
     private static Parent coordinadorFormatos;
     private static Parent coordinadorEvaluarFormato;
     private static Parent estudianteFormatos;
     private static Parent estudianteVerFormato;
     private static Parent profesorFormatos;
     private static Parent profesorVerFormato;
+    private static Parent profesorSubirProyectoRoot;
+    private static JefeDepartamentoAnteProyectosController jefeDepartamentoController;
+    private static JefeDepartamentoVerAnteProyectoController jefeDepartamentoVerAnteProyectoController;
     private static CoordinadorFormatosController coordinadorFormatosController;
     private static CoordinadorEvaluarFormatosAController  coordinadorEvaluarFormatosAController;
     private static EstudianteFormatosController estudianteFormatosController;
@@ -88,6 +92,14 @@ public class FrontendApplication extends Application {
         coordinadorEvaluarFormato = loader.load();
         coordinadorEvaluarFormatosAController = loader.getController();
 
+        loader = loadIntance("JefeDepartamentoFormatos");
+        jefeDepartamento = loader.load();
+        jefeDepartamentoController = loader.getController();
+
+        loader = loadIntance("JefeDepartamentoVerFormatos");
+        jefeDepartamentoVerAnteProyecto = loader.load();
+        jefeDepartamentoVerAnteProyectoController = loader.getController();
+
     }
 
     public static void main(String[] args) {
@@ -139,6 +151,16 @@ public class FrontendApplication extends Application {
     {
         coordinadorEvaluarFormatosAController.setFormato(proyecto);
         scene.setRoot(coordinadorEvaluarFormato);
+    }
+
+    public static void goJefeDepartamentoAnteProyectos(){
+        jefeDepartamentoController.actualizarFormatos();
+        scene.setRoot(jefeDepartamento);
+    }
+    public static void goJefeDepartamentoVerAnteProyecto(ProyectoDto proyecto)
+    {
+        jefeDepartamentoVerAnteProyectoController.setFormato(proyecto);
+        scene.setRoot(jefeDepartamentoVerAnteProyecto);
     }
     public static void goSeleccionarModo(PersonaDto persona)
     {

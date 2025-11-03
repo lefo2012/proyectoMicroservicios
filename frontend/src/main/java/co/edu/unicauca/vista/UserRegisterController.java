@@ -43,7 +43,7 @@ public class UserRegisterController {
     
     public void irALogin() throws IOException
     {
-
+        limpiarCampos();
         FrontendApplication.goLogin();
     
     }

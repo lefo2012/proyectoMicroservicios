@@ -48,7 +48,6 @@ public class CoordinadorEvaluarFormatosAController {
     @FXML
     private Button botonRechazarFormato;
 
-    private Boolean bandera=false;
     private LocalDate hoy = LocalDate.now();
     private String fecha = hoy.format(DateTimeFormatter.ISO_DATE);
     private ProyectoService proyectoService;
@@ -65,9 +64,8 @@ public class CoordinadorEvaluarFormatosAController {
             proyectoService.aceptarProyecto(proyectoDto, FrontendApplication.getPersona().getCorreoElectronico() ,fecha);
             System.out.println("Proyecto aceptado con comentario");
             textAreaObservaciones.setText("");
-            if(bandera){
-                FrontendApplication.goCoordinadorFormatos();
-            }
+            FrontendApplication.goCoordinadorFormatos();
+
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -79,9 +77,7 @@ public class CoordinadorEvaluarFormatosAController {
             proyectoService.rechazarProyecto(proyectoDto, FrontendApplication.getPersona().getCorreoElectronico() ,fecha);
             System.out.println("Proyecto rechazado con comentario");
             textAreaObservaciones.setText("");
-            if(bandera){
-                FrontendApplication.goCoordinadorFormatos();
-            }
+            FrontendApplication.goCoordinadorFormatos();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -125,7 +121,9 @@ public class CoordinadorEvaluarFormatosAController {
         textAreaObjetivosEspecificos.setText(proyectoDto.getObjetivoEspecifico());
 
         textFieldDirector.setText(proyectoDto.getNombreDirector());
-        textFieldCodirector.setText(proyectoDto.getNombreCodirectores().getFirst());
+        if (proyectoDto.getNombreCodirectores() != null && !proyectoDto.getNombreCodirectores().isEmpty()) {
+            textFieldCodirector.setText(proyectoDto.getNombreCodirectores().getFirst());
+        }
 
 
         textFieldEstudiante.setText(proyectoDto.getNombreEstudiante1());

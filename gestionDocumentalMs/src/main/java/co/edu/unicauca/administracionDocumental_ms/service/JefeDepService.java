@@ -1,15 +1,19 @@
 package co.edu.unicauca.administracionDocumental_ms.service;
 
 
+import co.edu.unicauca.administracionDocumental_ms.entities.Estudiante;
 import co.edu.unicauca.administracionDocumental_ms.entities.JefeDepartamento;
 import co.edu.unicauca.administracionDocumental_ms.entities.Profesor;
+import co.edu.unicauca.administracionDocumental_ms.entities.ProyectoDeGrado;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.PersonaDto;
+import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoDto;
 import co.edu.unicauca.administracionDocumental_ms.repository.DepartamentoRepository;
 import co.edu.unicauca.administracionDocumental_ms.repository.JefeDepartamentoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,6 +79,29 @@ public class JefeDepService implements  BaseService <JefeDepartamento,String>{
         return false;
     }
 
+    @Transactional
+    public List<ProyectoDto> listaProyecto(String correoElectronico) throws Exception{
+        try{
+            List<ProyectoDto> listaProyectos;
+            Optional<JefeDepartamento> jefeDepartamentoR = JefeDepRepository.findByCorreoElectronico(correoElectronico);
+            JefeDepartamento jefeDepartamento = jefeDepartamentoR.orElse(null);
+            if(jefeDepartamento != null)
+            {
+                listaProyectos = new ArrayList<>();
+                for(ProyectoDeGrado proyecto : jefeDepartamento.getProyectosDeGrado())
+                {
+                    listaProyectos.add(proyectoService.mapearProyecto(proyecto));
+                }
+                return listaProyectos;
+            }else
+            {
+                throw new Exception("Jefe de departamento no encontrado: "+correoElectronico);
+            }
+
+        }catch(Exception ex){
+            throw new Exception("Error al listar proyectos de grado: "+ex.getMessage());
+        }
+    }
     public JefeDepartamento mapearDto(PersonaDto personaDto)
     {
         JefeDepartamento jefeDepartamento = new JefeDepartamento();

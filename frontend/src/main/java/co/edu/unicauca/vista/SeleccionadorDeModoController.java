@@ -49,7 +49,7 @@ public class SeleccionadorDeModoController {
         } else if (comboBoxRol.getValue().equals("COORDINADOR")) {
             FrontendApplication.goCoordinadorFormatos();
         } else if (comboBoxRol.getValue().equals("JEFEDEPARTAMENTO")) {
-            System.out.println("Redirigiendo a JefeDepartamento");
+            FrontendApplication.goJefeDepartamentoAnteProyectos();
         }
     }
 }

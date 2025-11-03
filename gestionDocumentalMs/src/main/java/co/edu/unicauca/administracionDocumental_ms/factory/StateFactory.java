@@ -2,6 +2,7 @@ package co.edu.unicauca.administracionDocumental_ms.factory;
 
 import co.edu.unicauca.administracionDocumental_ms.state.*;
 
+
 public class StateFactory {
     private static StateFactory instance;
     private StateFactory()

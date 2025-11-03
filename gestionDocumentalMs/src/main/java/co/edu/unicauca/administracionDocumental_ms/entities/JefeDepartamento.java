@@ -1,5 +1,6 @@
 package co.edu.unicauca.administracionDocumental_ms.entities;
 
+import co.edu.unicauca.administracionDocumental_ms.service.ProyectoService;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -16,7 +17,8 @@ public class JefeDepartamento extends Persona{
     @OneToOne
     private Departamento departamento;
     @OneToMany
-    private List<AnteProyecto> anteProyectos;
+    private List<ProyectoDeGrado> proyectosDeGrado;
+
     public boolean relacionarDepartamento(Departamento departamento)
     {
         if(this.departamento==null)

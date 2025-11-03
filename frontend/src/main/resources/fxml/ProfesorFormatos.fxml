@@ -69,7 +69,7 @@
             </Button>
          </children>
       </Pane>
-      <Label layoutX="216.0" layoutY="6.0" text="Previsualización de Formatos" textFill="WHITE">
+      <Label layoutX="216.0" layoutY="6.0" text="Previsualización de Proyectos" textFill="WHITE">
          <font>
             <Font size="48.0" />
          </font>
@@ -119,7 +119,7 @@
                         </ScrollPane>
                         <HBox fx:id="row" layoutY="3.0" maxHeight="100" minHeight="100" prefHeight="896.0" prefWidth="1528.0" style="-fx-background-color: white;" styleClass="hbox-borde" stylesheets="@../css/hBoxBorde.css">
                            <children>
-                              <Label alignment="CENTER" prefHeight="100.0" prefWidth="300.0" style="-fx-background-color: white;" text="ID Formato" textFill="#001282">
+                              <Label alignment="CENTER" prefHeight="100.0" prefWidth="300.0" style="-fx-background-color: white;" text="ID Proyectos" textFill="#001282">
                                  <font>
                                     <Font name="System Bold" size="24.0" />
                                  </font>

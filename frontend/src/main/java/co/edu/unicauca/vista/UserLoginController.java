@@ -31,9 +31,8 @@ public class UserLoginController {
     }
     public void irARegistrarse()
     {
-
         FrontendApplication.goRegistrarse();
-
+        vaciarCampos();
     }
 
     @FXML
@@ -42,9 +41,10 @@ public class UserLoginController {
         try {
             PersonaService personaService = new PersonaService();
             FrontendApplication.goSeleccionarModo(personaService.iniciarSesion(textFieldCorreoElectronico.getText(), passwordFieldContrasenia.getText()));
+            vaciarCampos();
         }catch (Exception e)
         {
-            textCorreoOContraseniaIncorrecto.setText(e.getMessage());
+            textCorreoOContraseniaIncorrecto.setText("Correo o contrasenia incorrecto");
         }
     }
 
@@ -52,6 +52,7 @@ public class UserLoginController {
     private void vaciarCampos() {
         textFieldCorreoElectronico.setText("");
         passwordFieldContrasenia.setText("");
+        textCorreoOContraseniaIncorrecto.setText("");
     }
 
 }

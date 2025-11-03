@@ -201,10 +201,12 @@ public class ProfesorSubirProyectoDeGradoController {
 
     public void goProfesorFormatos()
     {
+        vaciarCampos();
         FrontendApplication.goProfesorFormatos();
     }
     public void goProfesorNotificaciones()
     {
+        vaciarCampos();
         FrontendApplication.goProfesorNotificaciones();
     }
     public void cerrarSesion()
