@@ -67,33 +67,8 @@ public class ProyectoService implements IProyectoService {
                     est2,
                     codirectores
             );
-            
-            NotificationRequest notification = new NotificationRequest();
 
-            List<String> emails = new ArrayList<>();
-            emails.add(prof.getCorreoElectronico());
-            emails.add(est1.getCorreoElectronico());
-            if (est2 != null)
-                emails.add(est2.getCorreoElectronico());
-            for (Profesor codirector : codirectores) {
-                emails.add(codirector.getCorreoElectronico());
-            }
-            emails.add(proyecto.getCoordinador().getCorreoElectronico());
-            notification.setEmail(emails);
-            notification.setSubject("Nuevo proyecto de investigación creado: " + req.getTitulo());
-            notification.setMessage(
-                            "Se ha creado el proyecto de grado:\n\n" +
-                            "Título: " + req.getTitulo() + "\n" +
-                            "Director: " + prof.getNombre() + "\n" +
-                            (est2 != null ? "Estudiantes: " + est1.getNombre() + ", " + est2.getNombre() : "Estudiante: " + est1.getNombre()) + "\n\n" +
-                            "Saludos,\nSistema de Proyectos"
-            );
-
-            try {
-                notificationClient.sendNotification(notification);
-            } catch (Exception e) {
-                System.err.println("No se pudo enviar la notificación: " + e.getMessage());
-            }
+            enviarNotificacionProyecto(proyecto, prof, est1, est2, codirectores, req.getTitulo());
             
             proyectoRepository.save(proyecto);
 
@@ -139,6 +114,8 @@ public class ProyectoService implements IProyectoService {
                     est2,
                     codirectores
             );
+
+            enviarNotificacionProyecto(proyecto, prof, est1, est2, codirectores, req.getTitulo());
 
             proyectoRepository.save(proyecto);
 
@@ -213,7 +190,6 @@ public class ProyectoService implements IProyectoService {
         }
     }
 
-
     private ProyectoRequest construirRespuesta(ProyectoDeGrado proyecto, Estudiante est1, Estudiante est2) {
         ProyectoRequest respuesta = new ProyectoRequest();
 
@@ -270,4 +246,37 @@ public class ProyectoService implements IProyectoService {
         respuesta.setCoordinadorId(proyectoDeGrado.getCoordinador().getId());
         return respuesta;
     }
+
+    private void enviarNotificacionProyecto(ProyectoDeGrado proyecto, Profesor director, Estudiante est1, Estudiante est2, List<Profesor> codirectores, String titulo) {
+        NotificationRequest notification = new NotificationRequest();
+
+        List<String> emails = new ArrayList<>();
+        if (proyecto.getCoordinador() != null && proyecto.getCoordinador().getCorreoElectronico() != null)
+            emails.add(proyecto.getCoordinador().getCorreoElectronico());
+
+        notification.setEmail(emails);
+        notification.setSubject("Nuevo proyecto de grado subido: " + titulo);
+        notification.setMessage(
+                "Se ha subido un nuevo proyecto de grado.\n\n" +
+                        "Título: " + titulo + "\n" +
+                        "Director: " + director.getNombre() + " " + director.getApellido() + "\n" +
+                        (codirectores != null && !codirectores.isEmpty() ?
+                                "Codirectores: " + codirectores.stream()
+                                        .map(p -> p.getNombre() + " " + p.getApellido())
+                                        .collect(Collectors.joining(", ")) + "\n" : "") +
+                        (est2 != null ?
+                                "Estudiantes: " + est1.getNombre() + " " + est1.getApellido() + ", " +
+                                        est2.getNombre() + " " + est2.getApellido() + "\n\n"
+                                :
+                                "Estudiante: " + est1.getNombre() + " " + est1.getApellido() + "\n\n") +
+                        "Saludos,\nSistema de Proyectos"
+        );
+
+        try {
+            notificationClient.sendNotification(notification);
+        } catch (Exception e) {
+            System.err.println("No se pudo enviar la notificación: " + e.getMessage());
+        }
+    }
+
 }

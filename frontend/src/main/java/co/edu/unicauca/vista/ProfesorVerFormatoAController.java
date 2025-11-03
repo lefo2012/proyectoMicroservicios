@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
 
 import java.awt.*;
 import java.io.File;
@@ -39,9 +40,12 @@ public class ProfesorVerFormatoAController {
 
     @FXML
     private Label labelObservaciones;
-
+    @FXML
+    private Button btnSubirAnteproyecto;
+    @FXML
     private ProyectoDto proyectoDto;
     @FXML
+    ImageView imagenArchivoPlano,imagenPdf;
     void verDocumento(ActionEvent event) {
         if (proyectoDto != null && proyectoDto.getArchivoAdjunto() != null) {
             try {
@@ -75,6 +79,18 @@ public class ProfesorVerFormatoAController {
 
         textFieldEstudiante.setText(proyectoDto.getNombreEstudiante1());
         textFieldEstudiante1.setText(proyectoDto.getNombreEstudiante2());
+        if(proyectoDto.getEstado().equals("APROBADO"))
+        {
+            imagenArchivoPlano.setVisible(true);
+            btnSubirAnteproyecto.setVisible(true);
+        }
+    }
+    public void subirAnteproyecto()
+    {
+
+    }
+    public void verDocumento()
+    {
 
     }
     public void goProfesorSubirFormato()

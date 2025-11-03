@@ -163,4 +163,8 @@ public class ProyectoDeGrado {
         }
         return false;
     }
+    public void addAnteProyecto(AnteProyecto anteProyecto)
+    {
+        anteProyectos.add(anteProyecto);
+    }
 }

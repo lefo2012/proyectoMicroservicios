@@ -39,6 +39,7 @@ public class EstudianteVerFormatoAController {
     @FXML
     private Label labelObservaciones;
 
+
     private ProyectoDto proyectoDto;
 
     public void setFormato(ProyectoDto proyectoDto) {

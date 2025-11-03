@@ -51,6 +51,15 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Rectangle>
+            <Button fx:id="botonCerrarSesion" layoutX="25.0" layoutY="1014.0" mnemonicParsing="false" onAction="#cerrarSesion" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 10px; -fx-background-color: #9F0E13;" stylesheets="@../css/sombraBoton.css" text="Cerrar sesion" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <styleClass>
+                  <String fx:value="btn-hover-shadow" />
+                  <String fx:value="btn-hover-scale" />
+               </styleClass>
+            </Button>
          </children>
       </Pane>
       <Pane fx:id="PanelSubirFormatoA" layoutX="210.0" layoutY="40.0" prefHeight="1000.0" prefWidth="1650.0" style="-fx-background-color: white; visibility: true;">
@@ -129,6 +138,20 @@
                      </font>
                   </Text>
                   <Label fx:id="labelObservaciones" alignment="TOP_LEFT" layoutX="15.0" layoutY="423.0" prefHeight="188.0" prefWidth="418.0" style="-fx-border-color: gray;" />
+                  <Button fx:id="btnSubirAnteproyecto" layoutX="153.0" layoutY="793.0" mnemonicParsing="false" onAction="#subirAnteproyecto" prefHeight="47.0" prefWidth="150.0" style="-fx-background-color: #1B21D4; -fx-background-radius: 30px;" stylesheets="@../css/sombraBoton.css" text="Subir Anteproyecto" textFill="WHITE" visible="false">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <styleClass>
+                        <String fx:value="btn-hover-scale" />
+                        <String fx:value="btn-hover-shadow" />
+                     </styleClass>
+                  </Button>
+                  <ImageView fx:id="imagenArchivoPlano" fitHeight="144.0" fitWidth="139.0" layoutX="34.0" layoutY="466.0" visible="false" x="125.0" y="175.0">
+                     <image>
+                        <Image url="@../imagenes/enviar.png" />
+                     </image>
+                  </ImageView>
                </children>
             </Pane>
             <Text fx:id="advertencia" fill="RED" layoutX="1007.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="396.1029052734375">
@@ -171,14 +194,5 @@
             <Font size="10.0" />
          </font>
       </Text>
-      <Button fx:id="botonCerrarSesion" layoutX="21.0" layoutY="1078.0" mnemonicParsing="false" onAction="#cerrarSesion" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 10px; -fx-background-color: #9F0E13;" stylesheets="@../css/sombraBoton.css" text="Cerrar sesion" textFill="WHITE">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-         <styleClass>
-            <String fx:value="btn-hover-shadow" />
-            <String fx:value="btn-hover-scale" />
-         </styleClass>
-      </Button>
    </children>
 </AnchorPane>

@@ -4,6 +4,7 @@ package co.edu.unicauca.administracionDocumental_ms.entities;
 import co.edu.unicauca.administracionDocumental_ms.builder.Director;
 import co.edu.unicauca.administracionDocumental_ms.builder.InvestigacionBuilder;
 import co.edu.unicauca.administracionDocumental_ms.builder.PracticaBuilder;
+import co.edu.unicauca.administracionDocumental_ms.factory.StateFactory;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -103,6 +104,17 @@ public class Profesor extends Persona{
         );
 
         return director.getProyectoDeGrado();
+    }
+    public ProyectoDeGrado subirAnteproyecto(ProyectoDeGrado proyectoDeGrado,String nombre)
+    {
+        StateFactory stateFactory = StateFactory.getInstance();
+        if(proyectoDeGrado.getEstado().equals("APROBADO"))
+        {
+            proyectoDeGrado.addAnteProyecto(new AnteProyecto(nombre,this.departamento.getJefeDepartamento()));
+            proyectoDeGrado.setEstadoProyecto(stateFactory.getInstance("REVISION_ANTEPROYECTO"));
+        }
+        return proyectoDeGrado;
+
     }
 
     public boolean addProyectoDeGradoDirigido(ProyectoDeGrado proyectoDeGrado)
