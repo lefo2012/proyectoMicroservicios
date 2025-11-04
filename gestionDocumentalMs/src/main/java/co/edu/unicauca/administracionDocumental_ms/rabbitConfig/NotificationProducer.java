@@ -10,10 +10,10 @@ public class NotificationProducer {
 
     private final RabbitTemplate rabbitTemplate;
 
-    @Value("${rabbitmq.exchange}")
+    @Value("${rabbitmq.exchange1}")
     private String exchange;
 
-    @Value("${rabbitmq.routingKey}")
+    @Value("${rabbitmq.routingKey1}")
     private String routingKey;
 
     public NotificationProducer(RabbitTemplate rabbitTemplate) {
@@ -22,6 +22,6 @@ public class NotificationProducer {
 
     public void enviarNotificacion(NotificationRequest notification) {
         rabbitTemplate.convertAndSend(exchange, routingKey, notification);
-        System.out.println("✅ Notificación enviada a RabbitMQ para: " + notification.getEmail());
+        System.out.println("Notificación enviada a RabbitMQ para: " + notification.getEmail());
     }
 }

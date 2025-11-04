@@ -2,15 +2,21 @@ package co.edu.unicauca.vista;
 
 import co.edu.unicauca.frontend.FrontendApplication;
 import co.edu.unicauca.infra.dto.ProyectoDto;
+import co.edu.unicauca.service.ProyectoService;
+import co.edu.unicauca.util.ArchivosProyecto;
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 
 
 public class ProfesorVerFormatoAController {
@@ -39,37 +45,27 @@ public class ProfesorVerFormatoAController {
     private Label textFieldTituloProyecto;
 
     @FXML
+    Pane PanelSubirFormatoA,PaneSeleccionarModalidad,panelInformacionOk,panelInformacion;
+    @FXML
     private Label labelObservaciones;
     @FXML
     private Button btnSubirAnteproyecto;
     @FXML
     private ProyectoDto proyectoDto;
     @FXML
-    ImageView imagenArchivoPlano,imagenPdf;
-    void verDocumento(ActionEvent event) {
-        if (proyectoDto != null && proyectoDto.getArchivoAdjunto() != null) {
-            try {
-                File file = new File(proyectoDto.getArchivoAdjunto()); // aquí tienes la ruta completa
+    private ImageView imagenArchivoPlano,imagenPdf;
 
-                if (!file.exists()) {
-                    System.out.println("No se encontró el archivo en: " + file.getAbsolutePath());
-                    return;
-                }
+    private ProyectoService proyectoService;
 
-                // Abrir con el visor de PDF predeterminado del SO
-                Desktop.getDesktop().open(file);
+    private File archivo=null;
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
+    
     public void setFormato(ProyectoDto proyectoDto) {
         this.proyectoDto = proyectoDto;
 
 
         textFieldTituloProyecto.setText(proyectoDto.getTitulo());
-        textFieldModalidad.setText(proyectoDto.getTipo());
+        textFieldModalidad.setText(proyectoDto.getTipoProyecto());
         textAreaObjetivoGeneral.setText(proyectoDto.getObjetivo());
         textAreaObjetivosEspecificos.setText(proyectoDto.getObjetivoEspecifico());
 
@@ -87,13 +83,84 @@ public class ProfesorVerFormatoAController {
             imagenArchivoPlano.setVisible(true);
             btnSubirAnteproyecto.setVisible(true);
         }
+        else {
+            imagenArchivoPlano.setVisible(false);
+            btnSubirAnteproyecto.setVisible(false);
+        }
     }
     public void subirAnteproyecto()
     {
+        proyectoService = ProyectoService.getIntance();
+        FileChooser fc = new FileChooser();
 
+        fc.setTitle("Selecciona un archivo");
+
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
+
+        File archivo = fc.showOpenDialog(btnSubirAnteproyecto.getScene().getWindow());
+
+
+        if (!ArchivosProyecto.validarArchivo(archivo)){
+
+            System.out.println("El archivo elegido no cumple con los parametros requeridos");
+        }else
+        {
+            imagenArchivoPlano.setDisable(true);
+            this.archivo=archivo;
+        }
+        if(proyectoService.subirAnteProyecto(proyectoDto,archivo.getName()).equals("Anteproyecto subido correctamente")){
+            informacionOk();
+        }
     }
-    public void verDocumento()
+    @FXML
+    void verDocumento(ActionEvent event) {
+        if (proyectoDto != null && proyectoDto.getArchivoAdjunto() != null) {
+            try {
+                File file = new File(proyectoDto.getArchivoAdjunto());
+
+                if (!file.exists()) {
+                    System.out.println("No se encontró el archivo en: " + file.getAbsolutePath());
+                    return;
+                }
+
+                // Solución directa con Runtime
+                abrirArchivoDirecto(file);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void abrirArchivoDirecto(File file) {
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+
+            if (os.contains("win")) {
+                Runtime.getRuntime().exec(new String[]{"cmd", "/c", "start", "\"\"", "\"" + file.getAbsolutePath() + "\""});
+            } else if (os.contains("mac")) {
+                Runtime.getRuntime().exec(new String[]{"open", file.getAbsolutePath()});
+            } else {
+                Runtime.getRuntime().exec(new String[]{"xdg-open", file.getAbsolutePath()});
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void informacionOk()
     {
+        panelInformacion.setVisible(true);
+        panelInformacionOk.setVisible(true);
+
+        PauseTransition delay = new PauseTransition(Duration.seconds(1));
+        delay.setOnFinished(e -> {
+            panelInformacion.setVisible(false);
+            panelInformacionOk.setVisible(false);
+            panelInformacion.setManaged(false);
+            panelInformacionOk.setManaged(false);
+        });
+        delay.play();
 
     }
     public void goProfesorSubirFormato()

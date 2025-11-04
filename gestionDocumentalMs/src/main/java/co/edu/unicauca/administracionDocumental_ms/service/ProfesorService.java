@@ -1,13 +1,12 @@
 package co.edu.unicauca.administracionDocumental_ms.service;
 
+import co.edu.unicauca.administracionDocumental_ms.entities.AnteProyecto;
 import co.edu.unicauca.administracionDocumental_ms.entities.Coordinador;
 import co.edu.unicauca.administracionDocumental_ms.entities.Profesor;
 import co.edu.unicauca.administracionDocumental_ms.entities.ProyectoDeGrado;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.PersonaDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoDto;
-import co.edu.unicauca.administracionDocumental_ms.repository.DepartamentoRepository;
-import co.edu.unicauca.administracionDocumental_ms.repository.ProfesorRepository;
-import co.edu.unicauca.administracionDocumental_ms.repository.ProyectoReposiroty;
+import co.edu.unicauca.administracionDocumental_ms.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,10 @@ public class ProfesorService implements BaseService<Profesor,String>{
     private ProyectoService proyectoService;
     @Autowired
     private DepartamentoRepository departamentoRepository;
-
+    @Autowired
+    private AnteProyectoRepository  anteProyectoRepository;
+    @Autowired
+    private JefeDepartamentoRepository jefeDepartamentoRepository;
     @Override
     @Transactional
     public List<Profesor> findAll() throws Exception {
@@ -104,16 +106,17 @@ public class ProfesorService implements BaseService<Profesor,String>{
                 throw new Exception("Profesor no encontrado");
             }
         }catch (Exception ex){
-            throw new Exception("Error al listar proyectos de grado: "+ex.getMessage());
+            throw new Exception("Error al listar proyectos de grado: "+ ex.getMessage());
         }
     }
     public void subirAnteproyecto(ProyectoDeGrado proyectoDeGrado,Profesor profesor,String nombreAnteproyecto) throws Exception
     {
         try
         {
-
-            proyectoReposiroty.save(profesor.subirAnteproyecto(proyectoDeGrado,nombreAnteproyecto));
-
+            AnteProyecto anteProyecto = new AnteProyecto(nombreAnteproyecto);
+            anteProyectoRepository.save(anteProyecto);
+            proyectoReposiroty.save(profesor.subirAnteproyecto(proyectoDeGrado,anteProyecto));
+            jefeDepartamentoRepository.save(profesor.getDepartamento().getJefeDepartamento());
         }catch (Exception ex)
         {
 

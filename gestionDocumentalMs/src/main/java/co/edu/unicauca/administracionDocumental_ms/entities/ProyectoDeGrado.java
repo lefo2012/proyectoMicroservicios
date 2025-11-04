@@ -57,13 +57,10 @@ public class ProyectoDeGrado {
     @OneToMany
     private List<AnteProyecto> anteProyectos;
 
-
-
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_proyecto")
     private TipoProyecto tipoProyecto;
 
-    //nos iba a volver locos
     private String descripcion = "Un proyecto de grado";
 
     public ProyectoDeGrado(TipoProyecto tipoProyecto)

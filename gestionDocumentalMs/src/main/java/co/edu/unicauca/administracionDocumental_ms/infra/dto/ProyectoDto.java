@@ -14,6 +14,7 @@ public class ProyectoDto {
     private String tipoProyecto;
     private String objetivoEspecifico;
     private String archivoAdjunto;
+    private String anteProyecto;
     private String nombreEstudiante1;
     private String nombreEstudiante2;
     private String nombreDirector;

@@ -10,10 +10,10 @@ public class PersonaProducer {
 
     private final RabbitTemplate rabbitTemplate;
 
-    @Value("${rabbitmq.exchange}")
+    @Value("${rabbitmq.exchange1}")
     private String exchange;
 
-    @Value("${rabbitmq.routingKey}")
+    @Value("${rabbitmq.routingKey1}")
     private String routingKey;
 
     public PersonaProducer(RabbitTemplate rabbitTemplate) {

@@ -43,13 +43,14 @@ public class EstudianteDatosFormatosController {
         }
 
 
-        lblEstado.getStyleClass().removeAll("label-pendiente", "label-revision", "label-aprobado", "label-rechazado");
+        lblEstado.getStyleClass().removeAll("label-pendiente", "label-revision", "label-aprobado", "label-rechazado","label-revision-anteproyecto");
         switch (proyectoSeleccionado.getEstado().toLowerCase()) {
             case "pendiente" -> lblEstado.getStyleClass().add("label-pendiente");
             case "revision" -> lblEstado.getStyleClass().add("label-revision");
             case "aprobado" -> lblEstado.getStyleClass().add("label-aprobado");
             case "rechazado" -> lblEstado.getStyleClass().add("label-rechazado");
-            default -> {} // sin estilo extra
+            case "revision_anteproyecto"  -> lblEstado.getStyleClass().add("label-revision-anteproyecto");
+            default -> {}
         }
     }
 

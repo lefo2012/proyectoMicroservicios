@@ -29,24 +29,24 @@ public class DataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         try {
             JefeDepartamento jefeDepartamento = new JefeDepartamento();
-            jefeDepartamento.setNombre("Usuario");
-            jefeDepartamento.setApellido("Apellido");
-            jefeDepartamento.setCorreoElectronico("usuario@unicauca.edu.co");
+            jefeDepartamento.setNombre("Isabella");
+            jefeDepartamento.setApellido("Fernandez Pastrana");
+            jefeDepartamento.setCorreoElectronico("jefe@unicauca.edu.co");
 
             Coordinador coordinador = new Coordinador();
-            coordinador.setNombre("Coordinador");
-            coordinador.setApellido("Apellido");
-            coordinador.setCorreoElectronico("usuario@unicauca.edu.co");
+            coordinador.setNombre("Nicolas");
+            coordinador.setApellido("Rocha");
+            coordinador.setCorreoElectronico("coor@unicauca.edu.co");
 
             Profesor profesor = new Profesor();
-            profesor.setNombre("Usuario");
-            profesor.setApellido("Apellido");
-            profesor.setCorreoElectronico("usuario@unicauca.edu.co");
+            profesor.setNombre("Jorge");
+            profesor.setApellido("Curioso");
+            profesor.setCorreoElectronico("prof@unicauca.edu.co");
 
             Estudiante estudiante = new Estudiante();
-            estudiante.setNombre("Usuario");
-            estudiante.setApellido("Apellido");
-            estudiante.setCorreoElectronico("usuario@unicauca.edu.co");
+            estudiante.setNombre("Luis");
+            estudiante.setApellido("Fierro");
+            estudiante.setCorreoElectronico("est@unicauca.edu.co");
 
             Programa programa = new Programa();
             programa.setNombre("Programa1");

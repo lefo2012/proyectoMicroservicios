@@ -105,13 +105,14 @@ public class Profesor extends Persona{
 
         return director.getProyectoDeGrado();
     }
-    public ProyectoDeGrado subirAnteproyecto(ProyectoDeGrado proyectoDeGrado,String nombre)
+    public ProyectoDeGrado subirAnteproyecto(ProyectoDeGrado proyectoDeGrado,AnteProyecto anteProyecto)
     {
         StateFactory stateFactory = StateFactory.getInstance();
         if(proyectoDeGrado.getEstado().equals("APROBADO"))
         {
             proyectoDeGrado.setJefeDepartamento(this.departamento.getJefeDepartamento());
-            proyectoDeGrado.addAnteProyecto(new AnteProyecto(nombre));
+            this.departamento.getJefeDepartamento().addProyectoDeGrado(proyectoDeGrado);
+            proyectoDeGrado.addAnteProyecto(anteProyecto);
             proyectoDeGrado.setEstadoProyecto(stateFactory.getInstance("REVISION_ANTEPROYECTO"));
         }
         return proyectoDeGrado;

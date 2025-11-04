@@ -29,5 +29,9 @@ public class JefeDepartamento extends Persona{
         }
         return false;
     }
+    public void addProyectoDeGrado(ProyectoDeGrado proyectoDeGrado)
+    {
+        proyectosDeGrado.add(proyectoDeGrado);
+    }
 
 }

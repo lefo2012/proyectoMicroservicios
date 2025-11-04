@@ -1,6 +1,7 @@
 package co.edu.unicauca.administracionDocumental_ms.controller;
 
 import co.edu.unicauca.administracionDocumental_ms.entities.Coordinador;
+import co.edu.unicauca.administracionDocumental_ms.entities.ProyectoDeGrado;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoRequest;
 import co.edu.unicauca.administracionDocumental_ms.repository.ProyectoReposiroty;
@@ -30,6 +31,7 @@ public class ProyectoController {
     @Autowired
     private JefeDepService jefeDepService;
 
+
     @PostMapping("/investigacion")
     public ResponseEntity<?> subirFormatoInvestigacion(@RequestBody ProyectoRequest req) {
         try {
@@ -49,6 +51,7 @@ public class ProyectoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Error al crear proyecto: " + e.getMessage()));
         }
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerProyecto(@PathVariable Long id) {
@@ -157,6 +160,16 @@ public class ProyectoController {
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
+        }
+    }
+    @GetMapping("/anteProyecto/{id}/{nombreAnteProyecto}")
+    public ResponseEntity<?> subirAnterProyecto(@PathVariable Long id, @PathVariable String nombreAnteProyecto ) {
+        try{
+            ProyectoDeGrado anteProyectoDeGrado  = proyectoReposiroty.findById(id).get();
+            profesorService.subirAnteproyecto(anteProyectoDeGrado,anteProyectoDeGrado.getDirector(), nombreAnteProyecto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Error al subir un  anteProyecto: " + e.getMessage()));
         }
     }
 

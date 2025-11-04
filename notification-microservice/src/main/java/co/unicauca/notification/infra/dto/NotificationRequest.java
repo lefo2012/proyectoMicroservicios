@@ -1,7 +1,11 @@
 package co.unicauca.notification.infra.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+
 import java.util.List;
 
+@JsonSerialize
 public class NotificationRequest {
     private List<String> email;
     private String subject;

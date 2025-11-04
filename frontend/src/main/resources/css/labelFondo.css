@@ -25,3 +25,9 @@
     -fx-padding: 3 8 3 8;
     -fx-background-radius: 20px;
 }
+.label-revision-anteproyecto{
+    -fx-background-color: #ff6c37;
+    -fx-text-fill: black;
+    -fx-padding: 3 8 3 8;
+    -fx-background-radius: 20px;
+}

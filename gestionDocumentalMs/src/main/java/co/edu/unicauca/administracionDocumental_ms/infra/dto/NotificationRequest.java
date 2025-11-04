@@ -1,7 +1,9 @@
 package co.edu.unicauca.administracionDocumental_ms.infra.dto;
 
-import java.util.List;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import java.util.List;
+@JsonSerialize
 public class NotificationRequest {
     private List<String> email;
     private String subject;

@@ -36,13 +36,13 @@ public class JefeDepartamentoAnteProyectosController {
         if (contactsLayout.getChildren().size() > 1) {
             contactsLayout.getChildren().remove(1, contactsLayout.getChildren().size());
         }
-        List<ProyectoDto> proyectos = proyectoService.obtenerProyectosEstudiante(FrontendApplication.getPersona());
+        List<ProyectoDto> proyectos = proyectoService.obtenerProyectosJefeDepartamento(FrontendApplication.getPersona());
         try {
             for (ProyectoDto proyecto : proyectos) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/JefeDepartamentoDatosAnteProyecto.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/JefeDepartamentoDatosAnteProyectos.fxml"));
                 HBox hBox = loader.load();
 
-                EstudianteDatosFormatosController datosController = loader.getController();
+                JefeDepartamentoDatosAnteProyectoController datosController = loader.getController();
                 datosController.setData(proyecto);
                 contactsLayout.getChildren().add(hBox);
             }

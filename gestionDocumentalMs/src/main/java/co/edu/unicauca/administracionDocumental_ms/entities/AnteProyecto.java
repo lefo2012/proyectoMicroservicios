@@ -22,4 +22,8 @@ public class AnteProyecto {
     {
         this.nombre = nombre;
     }
+    public AnteProyecto()
+    {
+        
+    }
 }

@@ -6,6 +6,7 @@ import co.edu.unicauca.administracionDocumental_ms.entities.Profesor;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.NotificationRequest;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoRequest;
+import co.edu.unicauca.administracionDocumental_ms.rabbitConfig.NotificationProducer;
 import co.edu.unicauca.administracionDocumental_ms.repository.EstudianteRepository;
 import co.edu.unicauca.administracionDocumental_ms.repository.ProyectoReposiroty;
 import co.edu.unicauca.administracionDocumental_ms.repository.ProfesorRepository;
@@ -30,7 +31,8 @@ public class ProyectoService implements IProyectoService {
     private ProyectoReposiroty proyectoRepository;
 
     @Autowired
-    private NotificationClient notificationClient;
+    private NotificationProducer notificationProducer;
+
     @Override
     @Transactional
     public ProyectoRequest crearProyectoInvestigacion(ProyectoRequest req) throws Exception {
@@ -216,35 +218,48 @@ public class ProyectoService implements IProyectoService {
 
         return respuesta;
     }
-    public ProyectoDto mapearProyecto(ProyectoDeGrado proyectoDeGrado)
-    {
-        ProyectoDto respuesta = new ProyectoDto();
-        respuesta.setId(proyectoDeGrado.getId());
-        respuesta.setTitulo(proyectoDeGrado.getTitulo());
-        respuesta.setEstado(proyectoDeGrado.getEstado());
-        respuesta.setTipoProyecto(proyectoDeGrado.getTipoProyecto().toString());
-        respuesta.setObjetivo(proyectoDeGrado.getObjetivo());
-        respuesta.setObjetivoEspecifico(proyectoDeGrado.getObjetivoEspecifico());
-        respuesta.setArchivoAdjunto(proyectoDeGrado.getArchivoAdjunto());
-        respuesta.setFechaSubida(proyectoDeGrado.getFechaSubida().toString());
-        respuesta.setNombreEstudiante1(proyectoDeGrado.getEstudiante1().getNombre()+" "+proyectoDeGrado.getEstudiante1().getApellido());
-        if(proyectoDeGrado.getEstudiante2()!=null){
-            respuesta.setNombreEstudiante2(proyectoDeGrado.getEstudiante2().getNombre() + " "+ proyectoDeGrado.getEstudiante2().getApellido());
-            respuesta.setIdEstudiante2(proyectoDeGrado.getEstudiante2().getId());
-        }
+    public ProyectoDto mapearProyecto(ProyectoDeGrado proyectoDeGrado) throws Exception {
+        try {
+            ProyectoDto respuesta = new ProyectoDto();
+            respuesta.setId(proyectoDeGrado.getId());
+            respuesta.setTitulo(proyectoDeGrado.getTitulo());
+            respuesta.setEstado(proyectoDeGrado.getEstado());
+            respuesta.setTipoProyecto(proyectoDeGrado.getTipoProyecto().toString());
+            respuesta.setObjetivo(proyectoDeGrado.getObjetivo());
+            respuesta.setObjetivoEspecifico(proyectoDeGrado.getObjetivoEspecifico());
+            respuesta.setArchivoAdjunto(proyectoDeGrado.getArchivoAdjunto());
+            if(!proyectoDeGrado.getAnteProyectos().isEmpty() && proyectoDeGrado.getAnteProyectos().getFirst() != null)
+            {
+                respuesta.setAnteProyecto(proyectoDeGrado.getAnteProyectos().getFirst().getNombre());
+            }else
+            {
+                respuesta.setAnteProyecto("");
+            }
+            respuesta.setFechaSubida(proyectoDeGrado.getFechaSubida().toString());
+            respuesta.setNombreEstudiante1(proyectoDeGrado.getEstudiante1().getNombre()+" "+proyectoDeGrado.getEstudiante1().getApellido());
+            if(proyectoDeGrado.getEstudiante2()!=null){
+                respuesta.setNombreEstudiante2(proyectoDeGrado.getEstudiante2().getNombre() + " "+ proyectoDeGrado.getEstudiante2().getApellido());
+                respuesta.setIdEstudiante2(proyectoDeGrado.getEstudiante2().getId());
+            }
 
-        respuesta.setNombreDirector(proyectoDeGrado.getDirector().getNombre()+ " " + proyectoDeGrado.getDirector().getApellido());
-        for(Profesor p : proyectoDeGrado.getCodirectores())
+            respuesta.setNombreDirector(proyectoDeGrado.getDirector().getNombre()+ " " + proyectoDeGrado.getDirector().getApellido());
+            for(Profesor p : proyectoDeGrado.getCodirectores())
+            {
+                String nombre = p.getNombre()+" "+p.getApellido();
+                respuesta.addCodirector(nombre, p.getId());
+            }
+            respuesta.setNombreCoordinador(proyectoDeGrado.getCoordinador().getNombre()+" "+proyectoDeGrado.getCoordinador().getApellido());
+            respuesta.setIdEstudiante1(proyectoDeGrado.getEstudiante1().getId());
+
+            respuesta.setDirecretorId(proyectoDeGrado.getDirector().getId());
+            respuesta.setCoordinadorId(proyectoDeGrado.getCoordinador().getId());
+            return respuesta;
+        }catch (Exception ex)
         {
-            String nombre = p.getNombre()+" "+p.getApellido();
-            respuesta.addCodirector(nombre, p.getId());
+            ex.printStackTrace();
+            throw new Exception("Error al mapear proyecto");
         }
-        respuesta.setNombreCoordinador(proyectoDeGrado.getCoordinador().getNombre()+" "+proyectoDeGrado.getCoordinador().getApellido());
-        respuesta.setIdEstudiante1(proyectoDeGrado.getEstudiante1().getId());
 
-        respuesta.setDirecretorId(proyectoDeGrado.getDirector().getId());
-        respuesta.setCoordinadorId(proyectoDeGrado.getCoordinador().getId());
-        return respuesta;
     }
 
     private void enviarNotificacionProyecto(ProyectoDeGrado proyecto, Profesor director, Estudiante est1, Estudiante est2, List<Profesor> codirectores, String titulo) {
@@ -273,7 +288,7 @@ public class ProyectoService implements IProyectoService {
         );
 
         try {
-            notificationClient.sendNotification(notification);
+            notificationProducer.enviarNotificacion(notification);
         } catch (Exception e) {
             System.err.println("No se pudo enviar la notificación: " + e.getMessage());
         }

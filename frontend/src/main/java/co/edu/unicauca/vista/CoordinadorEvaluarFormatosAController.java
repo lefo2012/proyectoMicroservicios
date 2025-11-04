@@ -3,6 +3,7 @@ package co.edu.unicauca.vista;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import co.edu.unicauca.frontend.FrontendApplication;
@@ -90,20 +91,19 @@ public class CoordinadorEvaluarFormatosAController {
     {
         FrontendApplication.goLogin();
     }
-
     @FXML
     void verDocumento(ActionEvent event) {
         if (proyectoDto != null && proyectoDto.getArchivoAdjunto() != null) {
             try {
-                File file = new File(proyectoDto.getArchivoAdjunto()); // aquí tienes la ruta completa
+                File file = new File(proyectoDto.getArchivoAdjunto());
 
                 if (!file.exists()) {
                     System.out.println("No se encontró el archivo en: " + file.getAbsolutePath());
                     return;
                 }
 
-                // Abrir con el visor de PDF predeterminado del SO
-                Desktop.getDesktop().open(file);
+                // Solución directa con Runtime
+                abrirArchivoDirecto(file);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -111,12 +111,27 @@ public class CoordinadorEvaluarFormatosAController {
         }
     }
 
+    private void abrirArchivoDirecto(File file) {
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+
+            if (os.contains("win")) {
+                Runtime.getRuntime().exec(new String[]{"cmd", "/c", "start", "\"\"", "\"" + file.getAbsolutePath() + "\""});
+            } else if (os.contains("mac")) {
+                Runtime.getRuntime().exec(new String[]{"open", file.getAbsolutePath()});
+            } else {
+                Runtime.getRuntime().exec(new String[]{"xdg-open", file.getAbsolutePath()});
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public void setFormato(ProyectoDto proyectoDto) {
         this.proyectoDto = proyectoDto;
 
 
         textFieldTituloProyecto.setText(proyectoDto.getTitulo());
-        textFieldModalidad.setText(proyectoDto.getTipo());
+        textFieldModalidad.setText(proyectoDto.getTipoProyecto());
         textAreaObjetivoGeneral.setText(proyectoDto.getObjetivo());
         textAreaObjetivosEspecificos.setText(proyectoDto.getObjetivoEspecifico());
 

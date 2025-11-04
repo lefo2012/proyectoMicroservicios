@@ -182,7 +182,7 @@
                   <Image url="@../imagenes/check-gif.gif" />
                </image>
             </ImageView>
-            <Text layoutX="54.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Formato A subido con exito">
+            <Text layoutX="54.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Anteproyecto subido exito">
                <font>
                   <Font size="32.0" />
                </font>

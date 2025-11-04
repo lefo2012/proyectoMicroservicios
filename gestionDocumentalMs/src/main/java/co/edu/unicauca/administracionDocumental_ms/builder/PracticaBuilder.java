@@ -2,7 +2,6 @@ package co.edu.unicauca.administracionDocumental_ms.builder;
 
 import co.edu.unicauca.administracionDocumental_ms.entities.Estudiante;
 import co.edu.unicauca.administracionDocumental_ms.entities.ProyectoDeGrado;
-import co.edu.unicauca.administracionDocumental_ms.entities.ProyectoDeGradoInvestigacion;
 import co.edu.unicauca.administracionDocumental_ms.entities.TipoProyecto;
 import co.edu.unicauca.administracionDocumental_ms.state.EstadoInicio;
 
