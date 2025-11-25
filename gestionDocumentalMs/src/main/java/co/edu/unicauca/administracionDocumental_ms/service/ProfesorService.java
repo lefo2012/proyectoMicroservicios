@@ -5,6 +5,7 @@ import co.edu.unicauca.administracionDocumental_ms.entities.Coordinador;
 import co.edu.unicauca.administracionDocumental_ms.entities.Profesor;
 import co.edu.unicauca.administracionDocumental_ms.entities.ProyectoDeGrado;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.PersonaDto;
+import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProfesorDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoDto;
 import co.edu.unicauca.administracionDocumental_ms.repository.*;
 import jakarta.transaction.Transactional;
@@ -137,4 +138,35 @@ public class ProfesorService implements BaseService<Profesor,String>{
         profesor.setDepartamento(departamentoRepository.getById(personaDto.getIdDepartamento()));
         return profesor;
     }
+
+    public List<ProfesorDto> obtenerProfesoresDisponiblesDto(long idProyecto) {
+
+        ProyectoDeGrado proyecto = proyectoReposiroty.findById(idProyecto)
+                .orElseThrow(() -> new RuntimeException("Proyecto no encontrado"));
+
+        List<Profesor> profesores = obtenerProfesoresDisponibles(proyecto);
+
+        return profesores.stream()
+                .map(p -> new ProfesorDto(
+                        p.getId(),
+                        p.getNombre(),
+                        p.getCorreoElectronico()
+                ))
+                .toList();
+    }
+
+    public List<Profesor> obtenerProfesoresDisponibles(ProyectoDeGrado proyecto) {
+        Profesor director = proyecto.getDirector();
+        Coordinador coordinador = proyecto.getCoordinador();
+        List<Profesor> codirectores = proyecto.getCodirectores();
+
+        return profesorRepository.findAll()
+                .stream()
+                .filter(p -> p.getId() != director.getId())
+                .filter(p -> p.getId() != coordinador.getId())
+                .filter(p -> codirectores.stream()
+                        .noneMatch(cd -> cd.getId() == p.getId()))
+                .toList();
+    }
+
 }

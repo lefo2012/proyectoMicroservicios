@@ -2,6 +2,7 @@ package co.edu.unicauca.administracionDocumental_ms.controller;
 
 import co.edu.unicauca.administracionDocumental_ms.entities.Coordinador;
 import co.edu.unicauca.administracionDocumental_ms.entities.ProyectoDeGrado;
+import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProfesorDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoRequest;
 import co.edu.unicauca.administracionDocumental_ms.repository.ProyectoReposiroty;
@@ -173,4 +174,14 @@ public class ProyectoController {
         }
     }
 
+    @GetMapping("/disponibles/{idProyecto}")
+    public List<ProfesorDto> obtenerProfesoresDisponibles(@PathVariable long idProyecto) {
+        try{
+            return profesorService.obtenerProfesoresDisponiblesDto(idProyecto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
+    }
 }
