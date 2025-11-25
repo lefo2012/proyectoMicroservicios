@@ -128,7 +128,7 @@
                   <ComboBox fx:id="evaluador1" layoutX="125.0" layoutY="670.0" prefHeight="27.0" prefWidth="193.0" style="-fx-background-color: white; -fx-border-color: #dddddd;" />
                   <ComboBox fx:id="evaluador2" layoutX="125.0" layoutY="723.0" prefHeight="27.0" prefWidth="193.0" style="-fx-background-color: white; -fx-border-color: #dddddd;" />
                   <Text layoutX="173.0" layoutY="652.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Asginar evaluadores" />
-                  <Button fx:id="botonVerArchivo1" layoutX="169.0" layoutY="766.0" mnemonicParsing="false" onAction="#verDocumento" prefHeight="47.0" prefWidth="118.0" style="-fx-background-color: #1B21D4; -fx-background-radius: 30px;" stylesheets="@../css/sombraBoton.css" text="Asignar" textFill="WHITE">
+                  <Button fx:id="botonAsignar" layoutX="169.0" layoutY="766.0" mnemonicParsing="false" onAction="#asignar" prefHeight="47.0" prefWidth="118.0" style="-fx-background-color: #1B21D4; -fx-background-radius: 30px;" stylesheets="@../css/sombraBoton.css" text="Asignar" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -139,12 +139,7 @@
                   </Button>
                </children>
             </Pane>
-            <Text fx:id="advertencia" fill="RED" layoutX="1007.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="396.1029052734375">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Text>
-            <TextArea fx:id="textAreaObservaciones" layoutX="1012.0" layoutY="474.0" prefHeight="188.0" prefWidth="418.0" />
+            <TextArea fx:id="textAreaObservaciones" editable="false" layoutX="1012.0" layoutY="474.0" prefHeight="188.0" prefWidth="418.0" />
             <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="25.0" layoutY="25.0">
                <image>
                   <Image url="@../imagenes/flecha-izquierda.png" />
@@ -158,6 +153,11 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Rectangle>
+            <Text fx:id="advertencia" fill="RED" layoutX="1017.0" layoutY="907.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="396.1029052734375">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
       <Pane fx:id="panelInformacion" layoutX="64.0" layoutY="38.0" opacity="0.2" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black; visibility: false;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
