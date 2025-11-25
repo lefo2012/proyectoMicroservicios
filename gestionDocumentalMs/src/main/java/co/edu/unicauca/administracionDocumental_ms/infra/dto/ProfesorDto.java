@@ -11,5 +11,8 @@ public class ProfesorDto {
     private String correo;
 
     public ProfesorDto(long id, String nombre, String correoElectronico) {
+        this.id = id;
+        this.nombre = nombre;
+        this.correo = correo;
     }
 }

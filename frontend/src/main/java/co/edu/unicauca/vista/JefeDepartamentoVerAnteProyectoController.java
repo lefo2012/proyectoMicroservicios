@@ -1,12 +1,20 @@
 package co.edu.unicauca.vista;
 
 import co.edu.unicauca.frontend.FrontendApplication;
+import co.edu.unicauca.infra.dto.ProfesorDto;
 import co.edu.unicauca.infra.dto.ProyectoDto;
+import co.edu.unicauca.service.ProyectoService;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.util.StringConverter;
 
 import java.awt.*;
+import java.util.List;
 import java.io.File;
 import java.io.IOException;
 
@@ -39,8 +47,11 @@ public class JefeDepartamentoVerAnteProyectoController {
     @FXML
     private Label labelObservaciones;
 
+    @FXML
+    private ComboBox<ProfesorDto> evaluador1;
 
     private ProyectoDto proyectoDto;
+    private ProyectoService proyectoService;
 
     public void setFormato(ProyectoDto proyectoDto) {
 
@@ -60,6 +71,7 @@ public class JefeDepartamentoVerAnteProyectoController {
 
         textFieldEstudiante.setText(proyectoDto.getNombreEstudiante1());
         textFieldEstudiante1.setText(proyectoDto.getNombreEstudiante2());
+        cargarProfesoresDisponibles(proyectoDto.getId());
 
     }
     @FXML
@@ -94,6 +106,36 @@ public class JefeDepartamentoVerAnteProyectoController {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void cargarProfesoresDisponibles(long idProyecto) {
+        try {
+            proyectoService = ProyectoService.getIntance();
+
+            List<ProfesorDto> lista = proyectoService.getIntance().obtenerProfesoresDisponibles(idProyecto);
+            System.out.println("Profesores recibidos:");
+            lista.forEach(p -> System.out.println(p.getId() + " - " + p.getNombre()));
+            ObservableList<ProfesorDto> observableList = FXCollections.observableArrayList(lista);
+            evaluador1.setItems(observableList);
+
+            evaluador1.setConverter(new StringConverter<>() {
+                @Override
+                public String toString(ProfesorDto profesor) {
+                    return profesor != null ? profesor.getNombre() : "";
+                }
+
+                @Override
+                public ProfesorDto fromString(String s) {
+                    return null; // No se necesita
+                }
+            });
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error cargando profesores: " + e.getMessage());
         }
     }
 
