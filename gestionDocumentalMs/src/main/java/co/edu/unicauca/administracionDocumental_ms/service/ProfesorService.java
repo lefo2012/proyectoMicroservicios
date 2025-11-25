@@ -7,6 +7,7 @@ import co.edu.unicauca.administracionDocumental_ms.entities.ProyectoDeGrado;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.PersonaDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProfesorDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoDto;
+import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoRequest;
 import co.edu.unicauca.administracionDocumental_ms.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,34 +140,38 @@ public class ProfesorService implements BaseService<Profesor,String>{
         return profesor;
     }
 
-    public List<ProfesorDto> obtenerProfesoresDisponiblesDto(long idProyecto) {
+    public List<ProfesorDto> obtenerProfesoresDisponiblesDto(long idProyecto) throws Exception {
 
-        ProyectoDeGrado proyecto = proyectoReposiroty.findById(idProyecto)
-                .orElseThrow(() -> new RuntimeException("Proyecto no encontrado"));
+        try{
 
-        List<Profesor> profesores = obtenerProfesoresDisponibles(proyecto);
+            ProyectoDeGrado proyecto = proyectoReposiroty.findById(idProyecto).orElseThrow(() -> new RuntimeException("Proyecto no encontrado"));
 
-        return profesores.stream()
-                .map(p -> new ProfesorDto(
-                        p.getId(),
-                        p.getNombre(),
-                        p.getCorreoElectronico()
-                ))
-                .toList();
+            List<Profesor> profesores = obtenerProfesoresDisponibles(proyecto);
+
+            return profesores.stream()
+                    .map(profesor -> new ProfesorDto(
+                            profesor.getId(),
+                            profesor.getNombre(),
+                            profesor.getApellido(),
+                            profesor.getCorreoElectronico()
+                    )).toList();
+        }catch (Exception ex){
+            ex.printStackTrace();
+            System.out.println(ex.getMessage());
+            throw new Exception("Error al obtener los profesores: "+ex.getMessage());
+        }
+
+
     }
 
     public List<Profesor> obtenerProfesoresDisponibles(ProyectoDeGrado proyecto) {
         Profesor director = proyecto.getDirector();
-        Coordinador coordinador = proyecto.getCoordinador();
         List<Profesor> codirectores = proyecto.getCodirectores();
 
         return profesorRepository.findAll()
                 .stream()
-                .filter(p -> p.getId() != director.getId())
-                .filter(p -> p.getId() != coordinador.getId())
-                .filter(p -> codirectores.stream()
-                        .noneMatch(cd -> cd.getId() == p.getId()))
-                .toList();
+                .filter(profesor -> profesor.getId() != director.getId())
+                .filter(profesor -> codirectores.stream().noneMatch(cd -> cd.getId() == profesor.getId())).toList();
     }
 
 }

@@ -43,6 +43,11 @@ public class DataLoader implements CommandLineRunner {
             profesor.setApellido("Curioso");
             profesor.setCorreoElectronico("prof@unicauca.edu.co");
 
+            Profesor profesor2 = new Profesor();
+            profesor2.setNombre("Calamardo");
+            profesor2.setApellido("Tentaculos");
+            profesor2.setCorreoElectronico("prof2@unicauca.edu.co");
+
             Estudiante estudiante = new Estudiante();
             estudiante.setNombre("Luis");
             estudiante.setApellido("Fierro");
@@ -66,12 +71,14 @@ public class DataLoader implements CommandLineRunner {
             estudiante.relacionarPrograma(programa);
             jefeDepartamento.relacionarDepartamento(departamento);
             profesor.relacionarDepartamento(departamento);
+            profesor2.relacionarDepartamento(departamento);
             coordinador.relacionarDepartamento(departamento);
 
             coordinadorRepository.save(coordinador);
             estudianteRepository.save(estudiante);
             jefeDepartamentoRepository.save(jefeDepartamento);
             profesorRepository.save(profesor);
+            profesorRepository.save(profesor2);
 
             programaRepository.save(programa);
             departamentoRepository.save(departamento);

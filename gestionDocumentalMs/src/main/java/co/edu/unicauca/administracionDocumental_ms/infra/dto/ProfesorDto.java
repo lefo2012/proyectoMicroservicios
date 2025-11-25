@@ -7,12 +7,12 @@ import lombok.Setter;
 @Setter
 public class ProfesorDto {
     private long id;
-    private String nombre;
+    private String nombreCompleto;
     private String correo;
 
-    public ProfesorDto(long id, String nombre, String correoElectronico) {
+    public ProfesorDto(long id, String nombre, String apellido, String correoElectronico) {
         this.id = id;
-        this.nombre = nombre;
-        this.correo = correo;
+        this.nombreCompleto = nombre+" "+apellido;
+        this.correo = correoElectronico;
     }
 }
