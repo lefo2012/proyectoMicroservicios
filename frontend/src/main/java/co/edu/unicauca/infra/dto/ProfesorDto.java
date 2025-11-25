@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class ProfesorDto {
     private long id;
-    private String nombre;
+    private String nombreCompleto;
     private String correo;
 }

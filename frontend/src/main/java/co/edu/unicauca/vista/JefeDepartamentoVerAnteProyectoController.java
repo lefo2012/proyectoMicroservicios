@@ -48,7 +48,7 @@ public class JefeDepartamentoVerAnteProyectoController {
     private Label labelObservaciones;
 
     @FXML
-    private ComboBox<ProfesorDto> evaluador1;
+    private ComboBox<ProfesorDto> evaluador1,evaluador2;
 
     private ProyectoDto proyectoDto;
     private ProyectoService proyectoService;
@@ -114,15 +114,27 @@ public class JefeDepartamentoVerAnteProyectoController {
             proyectoService = ProyectoService.getIntance();
 
             List<ProfesorDto> lista = proyectoService.getIntance().obtenerProfesoresDisponibles(idProyecto);
-            System.out.println("Profesores recibidos:");
-            lista.forEach(p -> System.out.println(p.getId() + " - " + p.getNombre()));
             ObservableList<ProfesorDto> observableList = FXCollections.observableArrayList(lista);
+
             evaluador1.setItems(observableList);
+            evaluador2.setItems(observableList);
 
             evaluador1.setConverter(new StringConverter<>() {
                 @Override
                 public String toString(ProfesorDto profesor) {
-                    return profesor != null ? profesor.getNombre() : "";
+                    return profesor != null ? profesor.getNombreCompleto() : "";
+                }
+
+                @Override
+                public ProfesorDto fromString(String s) {
+                    return null; // No se necesita
+                }
+            });
+
+            evaluador2.setConverter(new StringConverter<>() {
+                @Override
+                public String toString(ProfesorDto profesor) {
+                    return profesor != null ? profesor.getNombreCompleto() : "";
                 }
 
                 @Override
