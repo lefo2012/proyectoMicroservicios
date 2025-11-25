@@ -26,11 +26,10 @@ public class EstudianteService implements BaseService<Estudiante,String>{
     @Transactional
     public Estudiante findById(String correo) throws Exception {
         try{
-            System.out.println("buscando estudiante finById (id=correo): " + correo);
             Optional<Estudiante> estudiante = estudianteRepository.findByCorreoElectronico(correo);
             return estudiante.orElse(null);
         }catch(Exception ex){
-            throw new Exception("Error al buscar al estudiante con id (id=correo): "+correo+" "+ ex.getMessage());
+            throw new Exception("Error al buscar al estudiante con correo: "+correo+" "+ ex.getMessage());
         }
     }
 

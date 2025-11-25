@@ -6,7 +6,7 @@ import co.edu.unicauca.administracionDocumental_ms.entities.Profesor;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.NotificationRequest;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoRequest;
-import co.edu.unicauca.administracionDocumental_ms.rabbitConfig.NotificationProducer;
+import co.edu.unicauca.administracionDocumental_ms.infra.rabbitConfig.NotificationProducer;
 import co.edu.unicauca.administracionDocumental_ms.repository.EstudianteRepository;
 import co.edu.unicauca.administracionDocumental_ms.repository.ProyectoReposiroty;
 import co.edu.unicauca.administracionDocumental_ms.repository.ProfesorRepository;

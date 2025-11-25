@@ -13,7 +13,7 @@ public class PersonaDto {
     private String apellido;
     private String celular;
     private String correoElectronico;
-    private List<String> roles = new ArrayList<>();
+    private String token;
     private String nombreDepartamento;
     private int idDepartamento;
     private String nombreProgama;

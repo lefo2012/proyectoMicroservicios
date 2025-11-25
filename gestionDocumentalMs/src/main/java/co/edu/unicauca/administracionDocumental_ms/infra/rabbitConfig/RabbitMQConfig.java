@@ -1,4 +1,4 @@
-package co.edu.unicauca.administracionDocumental_ms.rabbitConfig;
+package co.edu.unicauca.administracionDocumental_ms.infra.rabbitConfig;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;

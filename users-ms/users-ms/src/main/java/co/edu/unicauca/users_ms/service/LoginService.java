@@ -5,10 +5,19 @@ import co.edu.unicauca.users_ms.entity.Estudiante;
 import co.edu.unicauca.users_ms.entity.JefeDepartamento;
 import co.edu.unicauca.users_ms.entity.Profesor;
 import co.edu.unicauca.users_ms.infra.dto.PersonaDto;
-import co.edu.unicauca.users_ms.util.Encriptador;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+
+
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+import java.util.Map;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,93 +33,111 @@ public class LoginService {
     ProfesorService profesorService;
     @Autowired
     EstudianteService estudianteService;
+
     @Autowired
-    private Encriptador encriptador;
+    private RestTemplate restTemplate;
 
+    public String solicitarToken(String username, String password) throws Exception {
+
+        String tokenUrl = "http://localhost:8080/realms/usuarios/protocol/openid-connect/token";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("client_id", "users-ms-client");
+        body.add("grant_type", "password");
+        body.add("username", username);
+        body.add("password", password);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
+
+        ResponseEntity<Map> response = restTemplate.postForEntity(
+                tokenUrl,
+                request,
+                Map.class
+        );
+
+        Map<String, Object> responseBody = response.getBody();
+
+        if (responseBody == null || responseBody.get("access_token") == null) {
+            throw new Exception("Error credenciales invalidas.");
+        }
+
+        return (String) responseBody.get("access_token");
+
+    }
     public PersonaDto iniciarSesion(String username,String password) throws Exception {
+        try {
+            String token = solicitarToken(username, password);
+            System.out.println("Token: " + token);
+            PersonaDto personaDto = new PersonaDto();
+            boolean usuarioValido = false;
+            Profesor profesor = profesorService.findById(username);
+            if(profesor != null)
+            {
+                usuarioValido = true;
+                personaDto.setId(profesor.getId());
+                personaDto.setNombre(profesor.getNombre());
+                personaDto.setApellido(profesor.getApellido());
+                personaDto.setCelular(profesor.getCelular());
+                personaDto.setNombreDepartamento(profesor.getDepartamento().getNombre());
+                personaDto.setIdDepartamento(profesor.getDepartamento().getId());
+                personaDto.setCorreoElectronico(profesor.getCorreoElectronico());
+            }
+            Coordinador coordinador = coordinadorService.findById(username);
+            if(coordinador!=null)
+            {
+                usuarioValido = true;
+                personaDto.setId(coordinador.getId());
+                personaDto.setNombre(coordinador.getNombre());
+                personaDto.setApellido(coordinador.getApellido());
+                personaDto.setCelular(coordinador.getCelular());
+                personaDto.setNombreDepartamento(coordinador.getDepartamento().getNombre());
+                personaDto.setIdDepartamento(coordinador.getDepartamento().getId());
+                personaDto.setCorreoElectronico(coordinador.getCorreoElectronico());
 
-        List<String> listaDeRoles = new ArrayList<>();
-        PersonaDto personaDto = new PersonaDto();
-        boolean usuarioValido = false;
+            }
+            Estudiante estudiante = estudianteService.findById(username);
+            if(estudiante!=null)
+            {
+                usuarioValido = true;
+                personaDto.setId(estudiante.getId());
+                personaDto.setNombre(estudiante.getNombre());
+                personaDto.setApellido(estudiante.getApellido());
+                personaDto.setCelular(estudiante.getCelular());
+                personaDto.setCorreoElectronico(estudiante.getCorreoElectronico());
+                personaDto.setNombreProgama(estudiante.getPrograma().getNombre());
+                personaDto.setIdPrograma(estudiante.getPrograma().getId());
 
-        Profesor profesor = profesorService.findById(username);
+            }
+            JefeDepartamento jefeDepartamento = jefeDepartamentoService.findById(username);
+            if (jefeDepartamento!=null) {
 
-        if(profesor != null && verificarContrasenia(profesor.getPassword(),password))
+                usuarioValido = true;
+                personaDto.setId(jefeDepartamento.getId());
+                personaDto.setNombre(jefeDepartamento.getNombre());
+                personaDto.setApellido(jefeDepartamento.getApellido());
+                personaDto.setCelular(jefeDepartamento.getCelular());
+                personaDto.setNombreDepartamento(jefeDepartamento.getDepartamento().getNombre());
+                personaDto.setIdDepartamento(jefeDepartamento.getDepartamento().getId());
+                personaDto.setCorreoElectronico(jefeDepartamento.getCorreoElectronico());
+            }
+            if(usuarioValido)
+            {
+
+                personaDto.setToken(token);
+                return personaDto;
+            }else
+            {
+                return null;
+            }
+        }catch(Exception e)
         {
-
-            usuarioValido = true;
-            listaDeRoles.add("PROFESOR");
-            personaDto.setId(profesor.getId());
-            personaDto.setNombre(profesor.getNombre());
-            personaDto.setApellido(profesor.getApellido());
-            personaDto.setCelular(profesor.getCelular());
-            personaDto.setNombreDepartamento(profesor.getDepartamento().getNombre());
-            personaDto.setIdDepartamento(profesor.getDepartamento().getId());
-            personaDto.setCorreoElectronico(profesor.getCorreoElectronico());
-
+            throw new Exception("Error al iniciar sesion " + e.getMessage());
         }
-
-        Coordinador coordinador = coordinadorService.findById(username);
-
-        if(coordinador!=null && verificarContrasenia(coordinador.getPassword(),password))
-        {
-            usuarioValido = true;
-            listaDeRoles.add("COORDINADOR");
-            personaDto.setId(coordinador.getId());
-            personaDto.setNombre(coordinador.getNombre());
-            personaDto.setApellido(coordinador.getApellido());
-            personaDto.setCelular(coordinador.getCelular());
-            personaDto.setNombreDepartamento(coordinador.getDepartamento().getNombre());
-            personaDto.setIdDepartamento(coordinador.getDepartamento().getId());
-            personaDto.setCorreoElectronico(coordinador.getCorreoElectronico());
-
-        }
-
-        Estudiante estudiante = estudianteService.findById(username);
-        if(estudiante!=null && verificarContrasenia(estudiante.getPassword(),password))
-        {
-            usuarioValido = true;
-            listaDeRoles.add("ESTUDIANTE");
-            personaDto.setId(estudiante.getId());
-            personaDto.setNombre(estudiante.getNombre());
-            personaDto.setApellido(estudiante.getApellido());
-            personaDto.setCelular(estudiante.getCelular());
-            personaDto.setCorreoElectronico(estudiante.getCorreoElectronico());
-            personaDto.setNombreProgama(estudiante.getPrograma().getNombre());
-            personaDto.setIdPrograma(estudiante.getPrograma().getId());
-
-        }
-
-        JefeDepartamento jefeDepartamento = jefeDepartamentoService.findById(username);
-
-
-        if (jefeDepartamento!=null && verificarContrasenia(jefeDepartamento.getPassword(),password)) {
-            usuarioValido = true;
-            listaDeRoles.add("JEFEDEPARTAMENTO");
-            personaDto.setId(jefeDepartamento.getId());
-            personaDto.setNombre(jefeDepartamento.getNombre());
-            personaDto.setApellido(jefeDepartamento.getApellido());
-            personaDto.setCelular(jefeDepartamento.getCelular());
-            personaDto.setNombreDepartamento(jefeDepartamento.getDepartamento().getNombre());
-            personaDto.setIdDepartamento(jefeDepartamento.getDepartamento().getId());
-            personaDto.setCorreoElectronico(jefeDepartamento.getCorreoElectronico());
-
-        }
-        if(usuarioValido)
-        {
-            personaDto.setRoles(listaDeRoles);
-            return personaDto;
-
-        }else
-        {
-            return null;
-        }
-
     }
 
-    private boolean verificarContrasenia (String contraseniaEncriptada, String contraseniaDigitada){
-        return encriptador.passwordEncoder().matches(contraseniaDigitada,contraseniaEncriptada);
-    }
 
 
 }

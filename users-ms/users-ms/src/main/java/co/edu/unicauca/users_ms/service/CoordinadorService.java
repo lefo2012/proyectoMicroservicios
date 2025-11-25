@@ -25,7 +25,6 @@ public class CoordinadorService implements BaseService<Coordinador,String>{
     @Transactional
     public Coordinador findById(String correo) throws Exception {
         try {
-            System.out.println("Estoy entrando a coordinador finById id (id=correo) :"+correo);
             Optional<Coordinador> coordinador = coordinadorRepository.findByCorreoElectronico(correo);
             return coordinador.orElse(null);
         }catch(Exception ex){

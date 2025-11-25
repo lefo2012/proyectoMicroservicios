@@ -1,4 +1,4 @@
-package co.edu.unicauca.administracionDocumental_ms.rabbitConfig;
+package co.edu.unicauca.administracionDocumental_ms.infra.rabbitConfig;
 
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.NotificationRequest;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

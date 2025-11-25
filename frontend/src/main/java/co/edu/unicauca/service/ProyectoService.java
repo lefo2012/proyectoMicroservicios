@@ -15,7 +15,7 @@ import org.springframework.http.*;
 import java.util.List;
 
 public class ProyectoService {
-    private static final String USUARIO_URL = "http://localhost:8080/Proyecto";
+    private static final String USUARIO_URL = "http://localhost:8082/Proyecto";
     private final RestTemplate restTemplate = RestTemplateConfig.getInstance();
     private static ProyectoService intance = null;
 

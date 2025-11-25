@@ -14,20 +14,21 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 @RequestMapping(path = "/Persona")
 public class PersonaController {
+
     @Autowired
     private PersonaService personaService;
 
     @PostMapping("/registrar")
     public ResponseEntity<?> registrarPersona(@RequestBody PersonaDto persona)
     {
-        try{
+        try
+        {
             System.out.println(personaService.guardar(personaService.mapearDto(persona)));
             return ResponseEntity.status(HttpStatus.CREATED).body(persona);
-        }catch (Exception e)
+        }
+        catch (Exception e)
         {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Error al guardar persona: " + e.getMessage()));
         }
-
-
     }
 }

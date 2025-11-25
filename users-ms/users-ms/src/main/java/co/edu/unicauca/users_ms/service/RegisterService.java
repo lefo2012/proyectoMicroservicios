@@ -7,7 +7,6 @@ import co.edu.unicauca.users_ms.infra.dto.PersonaRegistrarDto;
 import co.edu.unicauca.users_ms.rabbitConfig.PersonaProducer;
 import co.edu.unicauca.users_ms.repository.DepartamentoRepository;
 import co.edu.unicauca.users_ms.repository.ProgramaRepository;
-import co.edu.unicauca.users_ms.util.Encriptador;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,28 +29,40 @@ public class RegisterService {
     @Autowired
     DepartamentoRepository departamentoRepository;
     @Autowired
-    Encriptador encriptador;
-    @Autowired
     private GestionProyectoCliente gestionProyectoCliente;
     @Autowired
     private PersonaProducer personaProducer;
+    @Autowired
+    private KeycloakRegisterService keycloakRegisterService;
 
     @Transactional
     public PersonaDto registrarPersona(PersonaRegistrarDto personaDto) throws Exception {
-        String rol = personaDto.getRol();
-        Persona persona;
-        PersonaDto personaSegura = new PersonaDto();
-        String passwordEncripted = encriptador.passwordEncoder().encode(personaDto.getPassword());
 
+        try{
+            keycloakRegisterService.registrarEnKeycloak(
+                    personaDto.getCorreoElectronico(),
+                    personaDto.getPassword(),
+                    personaDto.getRol(),
+                    personaDto.getNombre(),
+                    personaDto.getApellido()
+            );
+        }catch (Exception ex)
+        {
+            System.out.println("El usuario ya existe en keycloak");
+        }
         try {
-            persona = crearPersonaPorRol(personaDto, passwordEncripted);
+
+
+
+            String rol = personaDto.getRol();
+            Persona persona;
+            PersonaDto personaSegura = new PersonaDto();
+            persona = crearPersonaPorRol(personaDto);
 
             personaSegura.setNombre(personaDto.getNombre());
             personaSegura.setApellido(personaDto.getApellido());
             personaSegura.setCelular(personaDto.getCelular());
             personaSegura.setCorreoElectronico(personaDto.getCorreoElectronico());
-            personaSegura.setRoles(List.of(rol));
-
 
             if (persona instanceof Estudiante estudiante) {
                 Programa programa = estudiante.getPrograma();
@@ -70,7 +81,6 @@ public class RegisterService {
                 personaSegura.setIdDepartamento(dep.getId());
                 personaSegura.setNombreDepartamento(dep.getNombre());
             }
-
             try{
                 personaProducer.enviarPersona(personaSegura);
             } catch (Exception e) {
@@ -81,11 +91,10 @@ public class RegisterService {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Error al registrar al usuario");
+            throw new RuntimeException("Error al registrar al usuario "+ e.getMessage());
         }
     }
-
-    private Persona crearPersonaPorRol(PersonaRegistrarDto dto, String passwordEncripted)  throws Exception{
+    private Persona crearPersonaPorRol(PersonaRegistrarDto dto)  throws Exception{
         Persona persona;
 
         boolean correoExiste = false;
@@ -103,28 +112,28 @@ public class RegisterService {
         switch (dto.getRol()) {
             case "ESTUDIANTE" -> {
                 Estudiante estudiante = new Estudiante();
-                setDatosBase(estudiante, dto, passwordEncripted);
+                setDatosBase(estudiante, dto);
                 Programa programa = programaRepository.findById(dto.getIdPrograma()).orElseThrow(() -> new RuntimeException("Programa no encontrado"));
                 estudiante.relacionarPrograma(programa);
                 persona = estudianteService.save(estudiante);
             }
             case "PROFESOR" -> {
                 Profesor profesor = new Profesor();
-                setDatosBase(profesor, dto, passwordEncripted);
+                setDatosBase(profesor, dto);
                 Departamento dep = departamentoRepository.findById(dto.getIdDepartamento()).orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
                 profesor.setDepartamento(dep);
                 persona = profesorService.save(profesor);
             }
             case "COORDINADOR" -> {
                 Coordinador coordinador = new Coordinador();
-                setDatosBase(coordinador, dto, passwordEncripted);
+                setDatosBase(coordinador, dto);
                 Departamento dep = departamentoRepository.findById(dto.getIdDepartamento()).orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
                 coordinador.setDepartamento(dep);
                 persona = coordinadorService.save(coordinador);
             }
             case "JEFEDEPARTAMENTO" -> {
                 JefeDepartamento jefe = new JefeDepartamento();
-                setDatosBase(jefe, dto, passwordEncripted);
+                setDatosBase(jefe, dto);
                 Departamento dep = departamentoRepository.findById(dto.getIdDepartamento()).orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
                 jefe.setDepartamento(dep);
                 persona = jefeDepartamentoService.save(jefe);
@@ -133,13 +142,11 @@ public class RegisterService {
         }
         return persona;
     }
-
-    private void setDatosBase(Persona persona, PersonaRegistrarDto dto, String passwordEncripted) {
+    private void setDatosBase(Persona persona, PersonaRegistrarDto dto) {
         persona.setNombre(dto.getNombre());
         persona.setApellido(dto.getApellido());
         persona.setCelular(dto.getCelular());
         persona.setCorreoElectronico(dto.getCorreoElectronico());
-        persona.setPassword(passwordEncripted);
     }
 
 }
