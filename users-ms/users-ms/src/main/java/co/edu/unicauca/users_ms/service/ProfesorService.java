@@ -30,12 +30,12 @@ public class ProfesorService implements BaseService<Profesor,String>{
     public Profesor findById(String correo) throws Exception {
         try
         {
-            System.out.println("Estoy entrando a findById profesor finById id (id=correo) :"+ correo);
+
             Optional<Profesor> profesor = profesorRepository.findByCorreoElectronico(correo);
             return profesor.orElse(null);
         }catch(Exception ex)
         {
-            throw new Exception("Error al buscar el profesor con id (id=correo) : "+correo+" :"+ex.getMessage());
+            throw new Exception("Error al buscar el profesor con correo : "+correo+" :"+ex.getMessage());
         }
 
     }

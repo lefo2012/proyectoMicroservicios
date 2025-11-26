@@ -2,7 +2,6 @@ package co.edu.unicauca.users_ms.service;
 
 import co.edu.unicauca.users_ms.entity.*;
 import co.edu.unicauca.users_ms.infra.dto.PersonaDto;
-import co.edu.unicauca.users_ms.util.Encriptador;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

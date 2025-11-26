@@ -4,10 +4,14 @@ package co.edu.unicauca.vista;
 import co.edu.unicauca.frontend.FrontendApplication;
 import co.edu.unicauca.infra.dto.PersonaDto;
 import co.edu.unicauca.service.PersonaService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javax.swing.*;
+import java.util.List;
+import co.edu.unicauca.util.DecodificadorJWT;
 
 public class SeleccionadorDeModoController {
 
@@ -24,7 +28,7 @@ public class SeleccionadorDeModoController {
             if(personaDto != null)
             {
                 personaService = PersonaService.getInstance();
-                comboBoxRol.setItems(FXCollections.observableArrayList(personaDto.getRoles()));
+                comboBoxRol.setItems(FXCollections.observableArrayList(DecodificadorJWT.getRoles(personaDto.getToken())));
                 comboBoxRol.getSelectionModel().selectFirst();
             }
 
@@ -38,6 +42,7 @@ public class SeleccionadorDeModoController {
         this.personaDto = personaDto;
         initialize();
     }
+
     public void ir()
     {
         FrontendApplication.setUsuario(personaService.mapearDto(personaDto,comboBoxRol.getValue()));

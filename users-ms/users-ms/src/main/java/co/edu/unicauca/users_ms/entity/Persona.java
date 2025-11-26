@@ -21,9 +21,6 @@ public class Persona {
     @Column(name = "correoElectronico",unique = true,nullable = false)
     private String correoElectronico;
 
-    @Column(name = "password",nullable = false)
-    private String password;
-
     @Column(name="celular",nullable = true)
     private String celular;
 

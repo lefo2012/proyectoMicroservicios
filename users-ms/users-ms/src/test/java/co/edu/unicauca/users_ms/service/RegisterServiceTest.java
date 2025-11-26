@@ -6,7 +6,6 @@ import co.edu.unicauca.users_ms.infra.dto.PersonaRegistrarDto;
 import co.edu.unicauca.users_ms.rabbitConfig.PersonaProducer;
 import co.edu.unicauca.users_ms.repository.DepartamentoRepository;
 import co.edu.unicauca.users_ms.repository.ProgramaRepository;
-import co.edu.unicauca.users_ms.util.Encriptador;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;

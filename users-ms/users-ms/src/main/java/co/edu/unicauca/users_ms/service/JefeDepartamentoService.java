@@ -25,12 +25,10 @@ public class JefeDepartamentoService implements BaseService<JefeDepartamento,Str
     @Transactional
     public JefeDepartamento findById(String correo) throws Exception {
         try{
-            System.out.println("Entrando a buscar jefe de departamento finById id (id=correo): "+ correo);
             Optional<JefeDepartamento> jefeDepartamento = jefeDepartamentoRepository.findByCorreoElectronico(correo);
-            System.out.println(jefeDepartamento);
             return jefeDepartamento.orElse(null);
         } catch (Exception ex) {
-            throw new RuntimeException("Error al buscar al jefe de departamento con id (id=correo): "+correo+" "+ ex.getMessage());
+            throw new RuntimeException("Error al buscar al jefe de departamento con correo: "+correo+" "+ ex.getMessage());
         }
 
     }
