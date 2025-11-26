@@ -164,6 +164,9 @@ public class ProyectoDeGrado {
     }
     public void addAnteProyecto(AnteProyecto anteProyecto)
     {
-        anteProyectos.add(anteProyecto);
+        if (!this.anteProyectos.contains(anteProyecto)) {
+            this.anteProyectos.add(anteProyecto);
+            anteProyecto.setProyectoDeGrado(this);
+        }
     }
 }

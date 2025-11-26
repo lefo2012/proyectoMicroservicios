@@ -31,3 +31,10 @@
     -fx-padding: 3 8 3 8;
     -fx-background-radius: 20px;
 }
+
+.label-evaluadores-anteproyecto{
+    -fx-background-color: #bbcc3f;
+    -fx-text-fill: black;
+    -fx-padding: 3 8 3 8;
+    -fx-background-radius: 20px;
+}

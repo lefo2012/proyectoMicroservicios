@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 @Service
 public class ProyectoService implements IProyectoService {
 
+
     @Autowired
     private ProfesorRepository profesorRepository;
 
@@ -293,5 +294,6 @@ public class ProyectoService implements IProyectoService {
             System.err.println("No se pudo enviar la notificación: " + e.getMessage());
         }
     }
+
 
 }

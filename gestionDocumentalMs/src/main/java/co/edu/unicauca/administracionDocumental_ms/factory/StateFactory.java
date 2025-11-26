@@ -22,9 +22,11 @@ public class StateFactory {
 
     public EstadoProyecto getInstance(String nombre)
     {
+        if(nombre.equals("EVALUADORES_ANTEPROYECTO")){
+            return new EstadoEvaluadoresAnteProyecto();
+        }
         if(nombre.equals("REVISION_ANTEPROYECTO"))
         {
-
             return new EstadoRevisionAnteProyecto();
 
         } else if (nombre.equals("REVISION")) {

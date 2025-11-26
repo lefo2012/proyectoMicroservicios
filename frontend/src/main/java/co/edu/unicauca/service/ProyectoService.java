@@ -4,6 +4,8 @@ import co.edu.unicauca.entities.Persona;
 import co.edu.unicauca.infra.config.RestTemplateConfig;
 
 
+import co.edu.unicauca.infra.dto.AsignarEvaluadoresRequest;
+import co.edu.unicauca.infra.dto.ProfesorDto;
 import co.edu.unicauca.infra.dto.ProyectoDto;
 import co.edu.unicauca.infra.dto.ProyectoRequest;
 
@@ -175,6 +177,35 @@ public class ProyectoService {
             return response.getBody();
         } catch (Exception e) {
             throw new RuntimeException("Error al obtener proyectos del profesor", e);
+        }
+    }
+
+    public List<ProfesorDto> obtenerProfesoresDisponibles(long idProyecto) {
+        try {
+            ResponseEntity<List<ProfesorDto>> response = restTemplate.exchange(
+                    USUARIO_URL + "/disponibles/" + idProyecto,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<ProfesorDto>>() {}
+            );
+
+            return response.getBody();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error al obtener profesores disponibles", e);
+        }
+    }
+
+    public boolean asignarEvaluadores (AsignarEvaluadoresRequest asignarEvaluadoresRequest) {
+        try {
+            restTemplate.postForEntity(
+                    USUARIO_URL+ "/asignarEvaluadores",
+                    asignarEvaluadoresRequest,
+                    Void.class);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
         }
     }
 }

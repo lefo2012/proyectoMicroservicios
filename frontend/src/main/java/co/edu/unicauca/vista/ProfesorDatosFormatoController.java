@@ -38,13 +38,14 @@ public class ProfesorDatosFormatoController {
             lblName.setLayoutY(22.5);
         }
 
-        lblEstado.getStyleClass().removeAll("label-pendiente", "label-revision", "label-aprobado", "label-rechazado","label-revision-anteproyecto");
+        lblEstado.getStyleClass().removeAll("label-pendiente", "label-revision", "label-aprobado", "label-rechazado","label-revision-anteproyecto","label-evaluadores-anteproyecto");
         switch (proyectoSeleccionado.getEstado().toLowerCase()) {
             case "pendiente" -> lblEstado.getStyleClass().add("label-pendiente");
             case "revision" -> lblEstado.getStyleClass().add("label-revision");
             case "aprobado" -> lblEstado.getStyleClass().add("label-aprobado");
             case "rechazado" -> lblEstado.getStyleClass().add("label-rechazado");
             case "revision_anteproyecto"  -> lblEstado.getStyleClass().add("label-revision-anteproyecto");
+            case "evaluadores_anteproyecto" ->  lblEstado.getStyleClass().add("label-evaluadores-anteproyecto");
             default -> {} // sin estilo extra
         }
     }

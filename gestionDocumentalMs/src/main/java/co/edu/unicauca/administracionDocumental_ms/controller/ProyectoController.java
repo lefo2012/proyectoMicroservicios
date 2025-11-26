@@ -1,7 +1,10 @@
 package co.edu.unicauca.administracionDocumental_ms.controller;
 
+import co.edu.unicauca.administracionDocumental_ms.entities.AnteProyecto;
 import co.edu.unicauca.administracionDocumental_ms.entities.Coordinador;
 import co.edu.unicauca.administracionDocumental_ms.entities.ProyectoDeGrado;
+import co.edu.unicauca.administracionDocumental_ms.infra.dto.AsignarEvaluadoresRequest;
+import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProfesorDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoRequest;
 import co.edu.unicauca.administracionDocumental_ms.repository.ProyectoReposiroty;
@@ -30,7 +33,6 @@ public class ProyectoController {
     private ProyectoReposiroty proyectoReposiroty;
     @Autowired
     private JefeDepService jefeDepService;
-
 
     @PostMapping("/investigacion")
     public ResponseEntity<?> subirFormatoInvestigacion(@RequestBody ProyectoRequest req) {
@@ -173,4 +175,24 @@ public class ProyectoController {
         }
     }
 
+    @GetMapping("/disponibles/{idProyecto}")
+    public List<ProfesorDto> obtenerProfesoresDisponibles(@PathVariable long idProyecto) {
+        try{
+            return profesorService.obtenerProfesoresDisponiblesDto(idProyecto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @PostMapping("/asignarEvaluadores")
+    public ResponseEntity<?> asignarEvaluadorse(@RequestBody AsignarEvaluadoresRequest asignarEvaluadoresRequest) {
+        try{
+            jefeDepService.asignarEvaluadores(asignarEvaluadoresRequest);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Error asignar evaluadores: " + e.getMessage()));
+        }
+    }
 }

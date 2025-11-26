@@ -21,6 +21,11 @@ public class Profesor extends Persona{
     @OneToMany
     List<AnteProyecto> anteProyectos;
 
+    @OneToMany(mappedBy = "evaluador1")
+    private List<AnteProyecto> anteProyectosEvaluadosComo1 = new ArrayList<>();
+
+    @OneToMany(mappedBy = "evaluador2")
+    private List<AnteProyecto> anteProyectosEvaluadosComo2 = new ArrayList<>();
     @OneToMany
     List<ProyectoDeGrado> proyectosDeGradoDirigidos;
 
@@ -116,7 +121,6 @@ public class Profesor extends Persona{
             proyectoDeGrado.setEstadoProyecto(stateFactory.getInstance("REVISION_ANTEPROYECTO"));
         }
         return proyectoDeGrado;
-
     }
 
     public boolean addProyectoDeGradoDirigido(ProyectoDeGrado proyectoDeGrado)

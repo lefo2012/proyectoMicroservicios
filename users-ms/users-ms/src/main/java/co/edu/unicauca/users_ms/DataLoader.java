@@ -79,6 +79,18 @@ public class DataLoader implements CommandLineRunner {
             prof.setIdDepartamento(1);
             prof.setRol("PROFESOR");
 
+            Profesor profesor2 = new Profesor();
+            profesor2.setNombre("Calamardo");
+            profesor2.setApellido("Tentaculos");
+            profesor2.setCorreoElectronico("prof2@unicauca.edu.co");
+            profesor2.setPassword(encriptador.passwordEncoder().encode("123456"));
+
+            Profesor profesor3 = new Profesor();
+            profesor3.setNombre("Tenta");
+            profesor3.setApellido("Culos");
+            profesor3.setCorreoElectronico("prof3@unicauca.edu.co");
+            profesor3.setPassword(encriptador.passwordEncoder().encode("123456"));
+
             Estudiante estudiante = new Estudiante();
             estudiante.setNombre("Luis");
             estudiante.setApellido("Fierro");
@@ -111,6 +123,8 @@ public class DataLoader implements CommandLineRunner {
             estudiante.relacionarPrograma(programa);
             jefeDepartamento.relacionarDepartamento(departamento);
             profesor.relacionarDepartamento(departamento);
+            profesor2.relacionarDepartamento(departamento);
+            profesor3.relacionarDepartamento(departamento);
             coordinador.relacionarDepartamento(departamento);
 
             registerService.registrarPersona(coor);

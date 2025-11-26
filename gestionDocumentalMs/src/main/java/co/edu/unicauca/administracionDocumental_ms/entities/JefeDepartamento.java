@@ -1,5 +1,6 @@
 package co.edu.unicauca.administracionDocumental_ms.entities;
 
+import co.edu.unicauca.administracionDocumental_ms.factory.StateFactory;
 import co.edu.unicauca.administracionDocumental_ms.service.ProyectoService;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -34,4 +35,13 @@ public class JefeDepartamento extends Persona{
         proyectosDeGrado.add(proyectoDeGrado);
     }
 
+    public ProyectoDeGrado asignagEvaluadores(ProyectoDeGrado proyectoDeGrado)
+    {
+        StateFactory stateFactory = StateFactory.getInstance();
+        if(proyectoDeGrado.getEstado().equals("REVISION_ANTEPROYECTO"))
+        {
+            proyectoDeGrado.setEstadoProyecto(stateFactory.getInstance("EVALUADORES_ANTEPROYECTO"));
+        }
+        return proyectoDeGrado;
+    }
 }
