@@ -33,13 +33,14 @@ public class RegisterService {
     @Autowired
     private PersonaProducer personaProducer;
     @Autowired
-    private KeycloakRegisterService keycloakRegisterService;
+    private KeycloakService keycloakService;
 
     @Transactional
-    public PersonaDto registrarPersona(PersonaRegistrarDto personaDto) throws Exception {
+    public PersonaDto registrarParaDataLoader(PersonaRegistrarDto personaDto) throws Exception
+    {
 
         try{
-            keycloakRegisterService.registrarEnKeycloak(
+            keycloakService.registrarEnKeycloak(
                     personaDto.getCorreoElectronico(),
                     personaDto.getPassword(),
                     personaDto.getRol(),
@@ -81,6 +82,60 @@ public class RegisterService {
                 personaSegura.setIdDepartamento(dep.getId());
                 personaSegura.setNombreDepartamento(dep.getNombre());
             }
+            personaSegura.setToken(keycloakService.solicitarToken(personaDto.getCorreoElectronico(), personaDto.getPassword()));
+            return personaSegura;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al registrar al usuario "+ e.getMessage());
+        }
+    }
+    public PersonaDto registrarPersona(PersonaRegistrarDto personaDto) throws Exception {
+
+        try{
+            keycloakService.registrarEnKeycloak(
+                    personaDto.getCorreoElectronico(),
+                    personaDto.getPassword(),
+                    personaDto.getRol(),
+                    personaDto.getNombre(),
+                    personaDto.getApellido()
+            );
+        }catch (Exception ex)
+        {
+            System.out.println("El usuario ya existe en keycloak");
+        }
+        try {
+
+
+
+            String rol = personaDto.getRol();
+            Persona persona;
+            PersonaDto personaSegura = new PersonaDto();
+            persona = crearPersonaPorRol(personaDto);
+
+            personaSegura.setNombre(personaDto.getNombre());
+            personaSegura.setApellido(personaDto.getApellido());
+            personaSegura.setCelular(personaDto.getCelular());
+            personaSegura.setCorreoElectronico(personaDto.getCorreoElectronico());
+
+            if (persona instanceof Estudiante estudiante) {
+                Programa programa = estudiante.getPrograma();
+                personaSegura.setIdPrograma(programa.getId());
+                personaSegura.setNombreProgama(programa.getNombre());
+            } else if (persona instanceof Profesor profesor) {
+                Departamento dep = profesor.getDepartamento();
+                personaSegura.setIdDepartamento(dep.getId());
+                personaSegura.setNombreDepartamento(dep.getNombre());
+            } else if (persona instanceof Coordinador coordinador) {
+                Departamento dep = coordinador.getDepartamento();
+                personaSegura.setIdDepartamento(dep.getId());
+                personaSegura.setNombreDepartamento(dep.getNombre());
+            } else if (persona instanceof JefeDepartamento jefe) {
+                Departamento dep = jefe.getDepartamento();
+                personaSegura.setIdDepartamento(dep.getId());
+                personaSegura.setNombreDepartamento(dep.getNombre());
+            }
+            personaSegura.setToken(keycloakService.solicitarToken(personaDto.getCorreoElectronico(), personaDto.getPassword()));
             try{
                 personaProducer.enviarPersona(personaSegura);
             } catch (Exception e) {

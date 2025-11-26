@@ -6,7 +6,7 @@ import co.edu.unicauca.administracionDocumental_ms.infra.dto.AsignarEvaluadoresR
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.NotificationRequest;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.PersonaDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoDto;
-import co.edu.unicauca.administracionDocumental_ms.rabbitConfig.NotificationProducer;
+import co.edu.unicauca.administracionDocumental_ms.infra.rabbitConfig.NotificationProducer;
 import co.edu.unicauca.administracionDocumental_ms.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -14,13 +14,10 @@ public class PersonaDto {
     private String apellido;
     private String celular;
     private String correoElectronico;
-    private List<String> roles;
+    private String token;
     private String nombreDepartamento;
     private int idDepartamento;
     private String nombreProgama;
     private int idPrograma;
-    public PersonaDto()
-    {
-        roles = new ArrayList<>();
-    }
+
 }

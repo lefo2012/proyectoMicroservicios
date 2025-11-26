@@ -1,5 +1,6 @@
 package co.edu.unicauca.users_ms.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -13,14 +14,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 @Service
-public class KeycloakRegisterService {
+public class KeycloakService {
 
-    private final RestTemplate restTemplate = new RestTemplate();
+
+    @Autowired
+    private RestTemplate restTemplate;
+
     private final String serverUrl = "http://localhost:8080";
     private final String realm = "usuarios";
     private final String adminUser = "lefo";
     private final String adminPass = "123ASD.";
     private final String clientId = "admin-cli";
+
 
     public void registrarEnKeycloak(String correo, String password, String rol,String nombre,String apellido) throws Exception {
         String token = obtenerTokenAdmin();
@@ -70,6 +75,36 @@ public class KeycloakRegisterService {
 
 
         asignarRol(token, userId, rol);
+    }
+    public String solicitarToken(String username, String password) throws Exception {
+
+        String tokenUrl = "http://localhost:8080/realms/usuarios/protocol/openid-connect/token";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("client_id", "users-ms-client");
+        body.add("grant_type", "password");
+        body.add("username", username);
+        body.add("password", password);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
+
+        ResponseEntity<Map> response = restTemplate.postForEntity(
+                tokenUrl,
+                request,
+                Map.class
+        );
+
+        Map<String, Object> responseBody = response.getBody();
+
+        if (responseBody == null || responseBody.get("access_token") == null) {
+            throw new Exception("Error credenciales invalidas.");
+        }
+
+        return (String) responseBody.get("access_token");
+
     }
 
     public String obtenerTokenAdmin() {

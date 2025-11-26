@@ -1,0 +1,45 @@
+package co.edu.unicauca.administracionDocumental_ms.util;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Service;
+
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+
+
+public class DecodificadorJWT {
+
+    public static JsonNode decodeJwt(String token) throws Exception {
+        String[] parts = token.split("\\.");
+        if (parts.length < 2) {
+            throw new IllegalArgumentException("Token JWT inválido");
+        }
+
+
+        byte[] decodedBytes = Base64.getUrlDecoder().decode(parts[1]);
+        String payloadJson = new String(decodedBytes, StandardCharsets.UTF_8);
+
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readTree(payloadJson);
+    }
+    public static List<String> getRoles(String token) throws Exception {
+
+        JsonNode root = decodeJwt(token);
+        JsonNode rolesNode = root.path("resource_access")
+                .path("users-ms-client")
+                .path("roles");
+
+        List<String> roles = new ArrayList<>();
+
+        if (rolesNode.isArray()) {
+            for (JsonNode role : rolesNode) {
+                roles.add(role.asText());
+            }
+        }
+
+        return roles;
+    }
+}

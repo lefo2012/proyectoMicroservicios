@@ -6,21 +6,9 @@ import co.edu.unicauca.users_ms.entity.JefeDepartamento;
 import co.edu.unicauca.users_ms.entity.Profesor;
 import co.edu.unicauca.users_ms.infra.dto.PersonaDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-
-
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import java.util.Map;
-
-import java.util.ArrayList;
-import java.util.List;
+import co.edu.unicauca.users_ms.service.KeycloakService;
 
 @Service
 public class LoginService {
@@ -33,43 +21,14 @@ public class LoginService {
     ProfesorService profesorService;
     @Autowired
     EstudianteService estudianteService;
-
     @Autowired
-    private RestTemplate restTemplate;
+    KeycloakService keycloakService;
 
-    public String solicitarToken(String username, String password) throws Exception {
 
-        String tokenUrl = "http://localhost:8080/realms/usuarios/protocol/openid-connect/token";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("client_id", "users-ms-client");
-        body.add("grant_type", "password");
-        body.add("username", username);
-        body.add("password", password);
-
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
-
-        ResponseEntity<Map> response = restTemplate.postForEntity(
-                tokenUrl,
-                request,
-                Map.class
-        );
-
-        Map<String, Object> responseBody = response.getBody();
-
-        if (responseBody == null || responseBody.get("access_token") == null) {
-            throw new Exception("Error credenciales invalidas.");
-        }
-
-        return (String) responseBody.get("access_token");
-
-    }
     public PersonaDto iniciarSesion(String username,String password) throws Exception {
         try {
-            String token = solicitarToken(username, password);
+            String token = keycloakService.solicitarToken(username, password);
             System.out.println("Token: " + token);
             PersonaDto personaDto = new PersonaDto();
             boolean usuarioValido = false;

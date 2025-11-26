@@ -4,10 +4,12 @@ import co.edu.unicauca.administracionDocumental_ms.entities.*;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.PersonaDto;
 import co.edu.unicauca.administracionDocumental_ms.repository.DepartamentoRepository;
 import co.edu.unicauca.administracionDocumental_ms.repository.FacultadRepository;
-import co.edu.unicauca.administracionDocumental_ms.repository.PersonaRepository;
 import co.edu.unicauca.administracionDocumental_ms.repository.ProgramaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import co.edu.unicauca.administracionDocumental_ms.util.DecodificadorJWT;
+
+import java.util.List;
 
 @Service
 public class PersonaService {
@@ -30,22 +32,24 @@ public class PersonaService {
     @Autowired
     private ProgramaRepository programaRepository;
 
+
     public Persona mapearDto(PersonaDto personaDto) throws Exception {
         try
         {
-            if(personaDto.getRoles().getFirst().equals("ESTUDIANTE"))
+            List<String> roles = DecodificadorJWT.getRoles(personaDto.getToken());
+            if(roles.getFirst().equals("ESTUDIANTE"))
             {
                 return estudianteService.mapearDto(personaDto);
             }
-            else if (personaDto.getRoles().getFirst().equals("PROFESOR"))
+            else if (roles.getFirst().equals("PROFESOR"))
             {
                 return profesorService.mapearDto(personaDto);
             }
-            else if (personaDto.getRoles().getFirst().equals("COORDINADOR"))
+            else if (roles.getFirst().equals("COORDINADOR"))
             {
                 return coordinadorService.mapearDto(personaDto);
             }
-            else if (personaDto.getRoles().getFirst().equals("JEFEDEPARTAMENTO"))
+            else if (roles.getFirst().equals("JEFEDEPARTAMENTO"))
             {
                 return jefeDepService.mapearDto(personaDto);
             }
