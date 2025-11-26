@@ -1,6 +1,7 @@
 package co.edu.unicauca.vista;
 
 import co.edu.unicauca.frontend.FrontendApplication;
+import co.edu.unicauca.infra.dto.AsignarEvaluadoresRequest;
 import co.edu.unicauca.infra.dto.ProfesorDto;
 import co.edu.unicauca.infra.dto.ProyectoDto;
 import co.edu.unicauca.service.ProyectoService;
@@ -160,10 +161,19 @@ public class JefeDepartamentoVerAnteProyectoController {
             return;
         }
 
-        System.out.println("Asignando:");
-        System.out.println("Evaluador 1: " + profesor1.getCorreo());
-        System.out.println("Evaluador 2: " + profesor2.getCorreo());
-        advertencia.setText("");
+        AsignarEvaluadoresRequest asignarEvaluadoresRequest = new AsignarEvaluadoresRequest();
+        asignarEvaluadoresRequest.setIdProyecto(proyectoDto.getId());
+        asignarEvaluadoresRequest.setCorreoElectronicoEvaluador1(profesor1.getCorreo());
+        asignarEvaluadoresRequest.setCorreoElectronicoEvaluador2(profesor2.getCorreo());
+
+        boolean bandera = proyectoService.asignarEvaluadores(asignarEvaluadoresRequest);
+
+        if (bandera) {
+            System.out.println("Se pudo");
+        }
+        else  {
+            System.out.println("No se pudo ");
+        }
 
     }
 
