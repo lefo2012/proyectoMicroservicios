@@ -6,7 +6,7 @@ public class EstadoRevisionAnteProyecto implements EstadoProyecto{
     private final String nombre = "REVISION_ANTEPROYECTO";
     @Override
     public void avanzar(ProyectoDeGrado proyectoDeGrado) {
-        proyectoDeGrado.setEstadoProyecto(new EstadoAnteProyectoAprobado());
+        proyectoDeGrado.setEstadoProyecto(new EstadoEvaluadoresAnteProyecto());
     }
 
     @Override

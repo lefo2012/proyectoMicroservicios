@@ -26,4 +26,20 @@ public class AnteProyecto {
     {
         
     }
+
+    public void setEvaluador1(Profesor evaluador1) {
+        this.evaluador1 = evaluador1;
+
+        if (evaluador1 != null) {
+            evaluador1.getAnteProyectosEvaluadosComo1().add(this);
+        }
+    }
+
+    public void setEvaluador2(Profesor evaluador2) {
+        this.evaluador2 = evaluador2;
+
+        if (evaluador2 != null) {
+            evaluador2.getAnteProyectosEvaluadosComo2().add(this);
+        }
+    }
 }
