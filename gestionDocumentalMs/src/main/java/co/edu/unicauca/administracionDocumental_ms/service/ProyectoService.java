@@ -1,15 +1,12 @@
 package co.edu.unicauca.administracionDocumental_ms.service;
 
-import co.edu.unicauca.administracionDocumental_ms.entities.AnteProyecto;
 import co.edu.unicauca.administracionDocumental_ms.entities.Estudiante;
 import co.edu.unicauca.administracionDocumental_ms.entities.ProyectoDeGrado;
 import co.edu.unicauca.administracionDocumental_ms.entities.Profesor;
-import co.edu.unicauca.administracionDocumental_ms.infra.dto.AsignarEvaluadoresRequest;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.NotificationRequest;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoRequest;
 import co.edu.unicauca.administracionDocumental_ms.rabbitConfig.NotificationProducer;
-import co.edu.unicauca.administracionDocumental_ms.repository.AnteProyectoRepository;
 import co.edu.unicauca.administracionDocumental_ms.repository.EstudianteRepository;
 import co.edu.unicauca.administracionDocumental_ms.repository.ProyectoReposiroty;
 import co.edu.unicauca.administracionDocumental_ms.repository.ProfesorRepository;
@@ -24,8 +21,7 @@ import java.util.stream.Collectors;
 @Service
 public class ProyectoService implements IProyectoService {
 
-    @Autowired
-    ProyectoReposiroty proyectoReposiroty;
+
     @Autowired
     private ProfesorRepository profesorRepository;
 
@@ -34,8 +30,7 @@ public class ProyectoService implements IProyectoService {
 
     @Autowired
     private ProyectoReposiroty proyectoRepository;
-    @Autowired
-    private AnteProyectoRepository anteProyectoRepository;
+
     @Autowired
     private NotificationProducer notificationProducer;
 
@@ -300,26 +295,5 @@ public class ProyectoService implements IProyectoService {
         }
     }
 
-    public AnteProyecto asignarEvaluadores(AsignarEvaluadoresRequest asignarEvaluadoresRequest) throws Exception {
-        try{
-            AnteProyecto  anteProyecto = anteProyectoRepository.findById(asignarEvaluadoresRequest.getIdProyecto()).orElseThrow(() -> new RuntimeException("AnteProyecto no encontrado"));
-            Profesor evaluador1 = profesorRepository.findByCorreoElectronico(asignarEvaluadoresRequest.getCorreoElectronicoEvaluador1()).orElseThrow(() -> new RuntimeException("Evaluador 1 no encontrado"));
-            Profesor evaluador2 = profesorRepository.findByCorreoElectronico(asignarEvaluadoresRequest.getCorreoElectronicoEvaluador2()).orElseThrow(() -> new RuntimeException("Evaluador 2 no encontrado"));
-
-            if (evaluador1==evaluador2)
-            {
-                throw new Exception("Los dos evaluadores no pueden ser el mismo profesor");
-            }
-
-            anteProyecto.setEvaluador1(evaluador1);
-            anteProyecto.setEvaluador2(evaluador2);
-            proyectoReposiroty.save(anteProyecto.getProyectoDeGrado().getJefeDepartamento().asignagEvaluadores(anteProyecto.getProyectoDeGrado()));
-            return anteProyectoRepository.save(anteProyecto);
-        }catch (Exception e) {
-            e.printStackTrace();
-            throw new Exception("Error al asignar evaluadores"+e.getMessage());
-        }
-
-    }
 
 }

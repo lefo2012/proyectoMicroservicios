@@ -189,7 +189,7 @@ public class ProyectoController {
     @PostMapping("/asignarEvaluadores")
     public ResponseEntity<?> asignarEvaluadorse(@RequestBody AsignarEvaluadoresRequest asignarEvaluadoresRequest) {
         try{
-            proyectoService.asignarEvaluadores(asignarEvaluadoresRequest);
+            jefeDepService.asignarEvaluadores(asignarEvaluadoresRequest);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Error asignar evaluadores: " + e.getMessage()));
