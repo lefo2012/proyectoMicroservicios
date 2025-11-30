@@ -1,15 +1,12 @@
 package co.edu.unicauca.users_ms.entity;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
 public class Coordinador extends Persona{
 
-    @OneToOne
     private Departamento departamento;
 
     public boolean relacionarDepartamento(Departamento departamento)

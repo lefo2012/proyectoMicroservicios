@@ -1,61 +1,49 @@
 package co.edu.unicauca.users_ms.service;
 
 import co.edu.unicauca.users_ms.entity.JefeDepartamento;
-import co.edu.unicauca.users_ms.repository.JefeDepartamentoRepository;
-import jakarta.transaction.Transactional;
+import co.edu.unicauca.users_ms.repository.JefeDepartamentoDomainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class JefeDepartamentoService implements BaseService<JefeDepartamento,String>
-{
+public class JefeDepartamentoService implements BaseService<JefeDepartamento, Long> {
+
     @Autowired
-    JefeDepartamentoRepository jefeDepartamentoRepository;
+    private JefeDepartamentoDomainRepository repository;
 
     @Override
-    @Transactional
-    public List<JefeDepartamento> findAll() throws Exception {
-        return List.of();
+    public List<JefeDepartamento> findAll() {
+        return repository.findAll();
     }
 
     @Override
-    @Transactional
-    public JefeDepartamento findById(String correo) throws Exception {
-        try{
-            Optional<JefeDepartamento> jefeDepartamento = jefeDepartamentoRepository.findByCorreoElectronico(correo);
-            return jefeDepartamento.orElse(null);
-        } catch (Exception ex) {
-            throw new RuntimeException("Error al buscar al jefe de departamento con correo: "+correo+" "+ ex.getMessage());
-        }
-
+    public JefeDepartamento findById(Long id) {
+        return repository.findById(id).orElse(null);
     }
 
-    @Override
-    @Transactional
-    public JefeDepartamento save(JefeDepartamento entity) throws Exception {
-        try{
-            return jefeDepartamentoRepository.save(entity);
-        } catch (Exception ex) {
-            throw new RuntimeException("Error al guardar jefe de departamento: "+ex.getMessage());
-        }
-    }
-
-    @Override
-    @Transactional
-    public JefeDepartamento updateById(JefeDepartamento entity) throws Exception {
-        return null;
-    }
-
-    @Override
-    @Transactional
-    public boolean deleteById(String id) throws Exception {
-        return false;
+    public JefeDepartamento findByCorreo(String correo) {
+        return repository.findByCorreo(correo).orElse(null);
     }
 
     public boolean existsByCorreo(String correo) {
-        return jefeDepartamentoRepository.findByCorreoElectronico(correo).isPresent();
+        return repository.existsByCorreo(correo);
+    }
+
+    @Override
+    public JefeDepartamento save(JefeDepartamento jefe) {
+        return repository.save(jefe);
+    }
+
+    @Override
+    public JefeDepartamento updateById(JefeDepartamento jefe) {
+        return repository.save(jefe);
+    }
+
+    @Override
+    public boolean deleteById(Long id) {
+        return false;
     }
 }
+

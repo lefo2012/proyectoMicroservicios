@@ -1,61 +1,45 @@
 package co.edu.unicauca.users_ms.service;
 
 import co.edu.unicauca.users_ms.entity.Coordinador;
-import co.edu.unicauca.users_ms.repository.CoordinadorRepository;
-import jakarta.transaction.Transactional;
+import co.edu.unicauca.users_ms.repository.CoordinadorDomainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class CoordinadorService implements BaseService<Coordinador,String>{
+public class CoordinadorService implements BaseService<Coordinador,String> {
 
     @Autowired
-    CoordinadorRepository coordinadorRepository;
+    private CoordinadorDomainRepository repository;
 
     @Override
-    @Transactional
-    public List<Coordinador> findAll() throws Exception {
-        return List.of();
+    public List<Coordinador> findAll() {
+        return repository.findAll();
     }
 
     @Override
-    @Transactional
-    public Coordinador findById(String correo) throws Exception {
-        try {
-            Optional<Coordinador> coordinador = coordinadorRepository.findByCorreoElectronico(correo);
-            return coordinador.orElse(null);
-        }catch(Exception ex){
-            throw new Exception("Error al buscar el coordinador con id (id=correo) : "+correo+" :"+ex.getMessage());
-        }
-
+    public Coordinador findById(String correo) {
+        return repository.findByCorreo(correo).orElse(null);
     }
 
     @Override
-    @Transactional
-    public Coordinador save(Coordinador entity) throws Exception {
-        try{
-            return coordinadorRepository.save(entity);
-        } catch (Exception ex) {
-            throw new RuntimeException("Error al guardar coordinador: "+ex.getMessage());
-        }
+    public Coordinador save(Coordinador coordinador) {
+        return repository.save(coordinador);
     }
 
     @Override
-    @Transactional
-    public Coordinador updateById(Coordinador entity) throws Exception {
-        return null;
+    public Coordinador updateById(Coordinador entity) {
+        return repository.save(entity);
     }
 
     @Override
-    @Transactional
-    public boolean deleteById(String id) throws Exception {
+    public boolean deleteById(String correo) {
         return false;
     }
 
     public boolean existsByCorreo(String correo) {
-        return coordinadorRepository.findByCorreoElectronico(correo).isPresent();
+        return repository.findByCorreo(correo).isPresent();
     }
 }
+

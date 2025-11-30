@@ -1,9 +1,12 @@
 package co.edu.unicauca.users_ms;
 
 import co.edu.unicauca.users_ms.entity.*;
-import co.edu.unicauca.users_ms.infra.dto.PersonaDto;
+import co.edu.unicauca.users_ms.infra.adapters.mappers.*;
 import co.edu.unicauca.users_ms.infra.dto.PersonaRegistrarDto;
-import co.edu.unicauca.users_ms.repository.*;
+import co.edu.unicauca.users_ms.infra.jpa.DepartamentoJpa;
+import co.edu.unicauca.users_ms.infra.jpa.FacultadJpa;
+import co.edu.unicauca.users_ms.infra.jpa.ProgramaJpa;
+import co.edu.unicauca.users_ms.infra.repositoryJpa.*;
 import co.edu.unicauca.users_ms.service.RegisterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +30,18 @@ public class DataLoader implements CommandLineRunner {
     private RegisterService registerService;
     @Autowired
     private FacultadRepository facultadRepository;
-
-
+    @Autowired
+    private ProgramaMapper programaMapper;
+    @Autowired
+    private DepartamentoMapper departamentoMapper;
+    @Autowired
+    private EstudianteMapper estudianteMapper;
+    @Autowired
+    private ProfesorMapper profesorMapper;
+    @Autowired
+    private CoordinadorMapper coordinadorMapper;
+    @Autowired
+    private JefeDepartamentoMapper jefeDepartamentoMapper;
 
     @Autowired
     private CoordinadorRepository coordinadorRepository;
@@ -94,25 +107,30 @@ public class DataLoader implements CommandLineRunner {
             est.setIdPrograma(1);
             est.setRol("ESTUDIANTE");
 
-            Programa programa = new Programa();
+            ProgramaJpa programa = new ProgramaJpa();
             programa.setNombre("Programa1");
 
-            Departamento departamento = new Departamento();
+            DepartamentoJpa departamento = new DepartamentoJpa();
             departamento.setNombre("Departamento1");
 
-            Facultad facultad = new Facultad();
+            FacultadJpa facultad = new FacultadJpa();
             facultad.setNombre("Facultad");
 
             facultadRepository.save(facultad);
-            departamento.relacionarFacultad(facultad);
+            departamento.setFacultad(facultad);
             departamentoRepository.save(departamento);
-            programa.relacionarDepartamento(departamento);
+            programa.setDepartamento(departamento);
             programaRepository.save(programa);
 
-            estudiante.relacionarPrograma(programa);
-            jefeDepartamento.relacionarDepartamento(departamento);
-            profesor.relacionarDepartamento(departamento);
-            coordinador.relacionarDepartamento(departamento);
+            estudiante.setPrograma(programaMapper.jpaToDomain(programa));
+            jefeDepartamento.relacionarDepartamento(departamentoMapper.jpaToDomain(departamento));
+            profesor.relacionarDepartamento(departamentoMapper.jpaToDomain(departamento));
+            coordinador.relacionarDepartamento(departamentoMapper.jpaToDomain(departamento));
+
+            programa.getEstudiantes().add(estudianteMapper.domainToJpa(estudiante));
+            departamento.setJefeDepartamento(jefeDepartamentoMapper.domainToJpa(jefeDepartamento));
+            departamento.setCoordinador(coordinadorMapper.domainToJpa(coordinador));
+            departamento.getProfesores().add(profesorMapper.domainToJpa(profesor));
 
             registerService.registrarParaDataLoader(coor);
             registerService.registrarParaDataLoader(est);

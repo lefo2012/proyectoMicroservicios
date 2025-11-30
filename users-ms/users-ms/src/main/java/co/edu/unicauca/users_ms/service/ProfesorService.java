@@ -1,73 +1,45 @@
 package co.edu.unicauca.users_ms.service;
 
 import co.edu.unicauca.users_ms.entity.Profesor;
-import co.edu.unicauca.users_ms.repository.ProfesorRepository;
-import jakarta.transaction.Transactional;
+import co.edu.unicauca.users_ms.repository.ProfesorDomainRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class ProfesorService implements BaseService<Profesor,String>{
+public class ProfesorService implements BaseService<Profesor, String> {
+
     @Autowired
-    ProfesorRepository profesorRepository;
+    private ProfesorDomainRepository repository;
 
     @Override
-    @Transactional
-    public List<Profesor> findAll() throws Exception {
-        try{
-            return profesorRepository.findAll();
-        }catch (Exception ex)
-        {
-            throw new Exception("Error al buscar todos los profesores: "+ex.getMessage());
-        }
+    public List<Profesor> findAll() {
+        return repository.findAll();
     }
 
     @Override
-    @Transactional
-    public Profesor findById(String correo) throws Exception {
-        try
-        {
-
-            Optional<Profesor> profesor = profesorRepository.findByCorreoElectronico(correo);
-            return profesor.orElse(null);
-        }catch(Exception ex)
-        {
-            throw new Exception("Error al buscar el profesor con correo : "+correo+" :"+ex.getMessage());
-        }
-
+    public Profesor findById(String correo) {
+        return repository.findByCorreo(correo).orElse(null);
     }
 
     @Override
-    @Transactional
-    public Profesor save(Profesor entity) throws Exception {
-        try{
-            return profesorRepository.save(entity);
-        } catch (Exception ex) {
-            throw new RuntimeException("Error al guardar profesor: "+ex.getMessage());
-        }
+    public Profesor save(Profesor profesor) {
+        return repository.save(profesor);
     }
 
     @Override
-    @Transactional
-    public Profesor updateById(Profesor entity) throws Exception {
-        try {
-            return profesorRepository.save(entity);
-        }catch (Exception ex){
-            throw new Exception("Error al guardar profesor: "+ex.getMessage());
-        }
-
+    public Profesor updateById(Profesor profesor) {
+        return repository.save(profesor);
     }
 
     @Override
-    @Transactional
-    public boolean deleteById(String id) throws Exception {
-        return false;
+    public boolean deleteById(String correo) {
+        return false; // según tu estructura
     }
 
     public boolean existsByCorreo(String correo) {
-        return profesorRepository.findByCorreoElectronico(correo).isPresent();
+        return repository.existsByCorreo(correo);
     }
 }

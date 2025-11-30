@@ -57,7 +57,7 @@ public class LoginService {
                 personaDto.setCorreoElectronico(coordinador.getCorreoElectronico());
 
             }
-            Estudiante estudiante = estudianteService.findById(username);
+            Estudiante estudiante = estudianteService.findByCorreo(username);
             if(estudiante!=null)
             {
                 usuarioValido = true;
@@ -70,7 +70,7 @@ public class LoginService {
                 personaDto.setIdPrograma(estudiante.getPrograma().getId());
 
             }
-            JefeDepartamento jefeDepartamento = jefeDepartamentoService.findById(username);
+            JefeDepartamento jefeDepartamento = jefeDepartamentoService.findByCorreo(username);
             if (jefeDepartamento!=null) {
 
                 usuarioValido = true;

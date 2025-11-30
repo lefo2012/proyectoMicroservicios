@@ -1,36 +1,27 @@
 package co.edu.unicauca.users_ms.entity;
 
-import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
 public class Departamento {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private int id;
+
     private String nombre;
 
-    @OneToOne
     private Coordinador coordinador;
 
-    @OneToOne
     private JefeDepartamento jefeDepartamento;
 
-    @OneToMany(mappedBy = "departamento")
     private List<Profesor> profesores;
 
-    @ManyToOne
-    @JoinColumn (name = "facultad_id")
     private Facultad facultad;
 
-    @OneToMany(mappedBy = "departamento")
     private List<Programa> programas;
 
     public Departamento(){

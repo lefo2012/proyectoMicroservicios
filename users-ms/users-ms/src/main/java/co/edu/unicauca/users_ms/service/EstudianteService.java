@@ -1,61 +1,50 @@
 package co.edu.unicauca.users_ms.service;
 
 import co.edu.unicauca.users_ms.entity.Estudiante;
-import co.edu.unicauca.users_ms.repository.EstudianteRepository;
-import jakarta.transaction.Transactional;
+
+import co.edu.unicauca.users_ms.repository.EstudianteDomainRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class EstudianteService implements BaseService<Estudiante,String>{
+public class EstudianteService implements BaseService<Estudiante, Long> {
 
     @Autowired
-    EstudianteRepository estudianteRepository;
+    private EstudianteDomainRepository repository;
 
     @Override
-    @Transactional
-    public List<Estudiante> findAll() throws Exception {
-
-        return List.of();
+    public List<Estudiante> findAll() {
+        return repository.findAll();
     }
 
     @Override
-    @Transactional
-    public Estudiante findById(String correo) throws Exception {
-        try{
-            Optional<Estudiante> estudiante = estudianteRepository.findByCorreoElectronico(correo);
-            return estudiante.orElse(null);
-        }catch(Exception ex){
-            throw new Exception("Error al buscar al estudiante con correo: "+correo+" "+ ex.getMessage());
-        }
+    public Estudiante findById(Long id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    public Estudiante findByCorreo(String correo) {
+        return repository.findByCorreo(correo).orElse(null);
     }
 
     @Override
-    @Transactional
-    public Estudiante save(Estudiante entity) throws Exception {
-        try{
-            return estudianteRepository.save(entity);
-        } catch (Exception ex) {
-            throw new RuntimeException("Error al guardar estudiante: "+ex.getMessage());
-        }
+    public Estudiante save(Estudiante e) {
+        return repository.save(e);
     }
 
     @Override
-    @Transactional
-    public Estudiante updateById(Estudiante entity) throws Exception {
-        return null;
+    public Estudiante updateById(Estudiante e) {
+        return repository.save(e); // update = save
     }
 
     @Override
-    @Transactional
-    public boolean deleteById(String id) throws Exception {
-        return false;
+    public boolean deleteById(Long id) {
+        return false; 
     }
 
     public boolean existsByCorreo(String correo) {
-        return estudianteRepository.findByCorreoElectronico(correo).isPresent();
+        return repository.existsByCorreo(correo);
     }
 }

@@ -4,14 +4,13 @@ package co.edu.unicauca.users_ms.service;
 import co.edu.unicauca.users_ms.entity.*;
 import co.edu.unicauca.users_ms.infra.dto.PersonaDto;
 import co.edu.unicauca.users_ms.infra.dto.PersonaRegistrarDto;
+import co.edu.unicauca.users_ms.infra.jpa.ProgramaJpa;
 import co.edu.unicauca.users_ms.rabbitConfig.PersonaProducer;
-import co.edu.unicauca.users_ms.repository.DepartamentoRepository;
-import co.edu.unicauca.users_ms.repository.ProgramaRepository;
+import co.edu.unicauca.users_ms.infra.repositoryJpa.DepartamentoRepository;
+import co.edu.unicauca.users_ms.infra.repositoryJpa.ProgramaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 
 @Service
@@ -34,6 +33,11 @@ public class RegisterService {
     private PersonaProducer personaProducer;
     @Autowired
     private KeycloakService keycloakService;
+    @Autowired
+    private ProgramaService programaService;
+
+    @Autowired
+    private DepartamentoService departamentoService;
 
     @Transactional
     public PersonaDto registrarParaDataLoader(PersonaRegistrarDto personaDto) throws Exception
@@ -168,28 +172,29 @@ public class RegisterService {
             case "ESTUDIANTE" -> {
                 Estudiante estudiante = new Estudiante();
                 setDatosBase(estudiante, dto);
-                Programa programa = programaRepository.findById(dto.getIdPrograma()).orElseThrow(() -> new RuntimeException("Programa no encontrado"));
+                Programa programa = programaService.findById(dto.getIdPrograma());
+
                 estudiante.relacionarPrograma(programa);
                 persona = estudianteService.save(estudiante);
             }
             case "PROFESOR" -> {
                 Profesor profesor = new Profesor();
                 setDatosBase(profesor, dto);
-                Departamento dep = departamentoRepository.findById(dto.getIdDepartamento()).orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
+                Departamento dep = departamentoService.findById(dto.getIdDepartamento());
                 profesor.setDepartamento(dep);
                 persona = profesorService.save(profesor);
             }
             case "COORDINADOR" -> {
                 Coordinador coordinador = new Coordinador();
                 setDatosBase(coordinador, dto);
-                Departamento dep = departamentoRepository.findById(dto.getIdDepartamento()).orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
+                Departamento dep = departamentoService.findById(dto.getIdDepartamento());
                 coordinador.setDepartamento(dep);
                 persona = coordinadorService.save(coordinador);
             }
             case "JEFEDEPARTAMENTO" -> {
                 JefeDepartamento jefe = new JefeDepartamento();
                 setDatosBase(jefe, dto);
-                Departamento dep = departamentoRepository.findById(dto.getIdDepartamento()).orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
+                Departamento dep = departamentoService.findById(dto.getIdDepartamento());
                 jefe.setDepartamento(dep);
                 persona = jefeDepartamentoService.save(jefe);
             }
