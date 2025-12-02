@@ -5,36 +5,76 @@ import co.edu.unicauca.administracionDocumental_ms.builder.Director;
 import co.edu.unicauca.administracionDocumental_ms.builder.InvestigacionBuilder;
 import co.edu.unicauca.administracionDocumental_ms.builder.PracticaBuilder;
 import co.edu.unicauca.administracionDocumental_ms.factory.StateFactory;
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Getter
-@Setter
+
 public class Profesor extends Persona{
 
-    @OneToMany
     List<AnteProyecto> anteProyectos;
-
-    @OneToMany(mappedBy = "evaluador1")
-    private List<AnteProyecto> anteProyectosEvaluadosComo1 = new ArrayList<>();
-
-    @OneToMany(mappedBy = "evaluador2")
-    private List<AnteProyecto> anteProyectosEvaluadosComo2 = new ArrayList<>();
-    @OneToMany
+    private List<AnteProyecto> anteProyectosEvaluadosComo1 ;
+    private List<AnteProyecto> anteProyectosEvaluadosComo2 ;
     List<ProyectoDeGrado> proyectosDeGradoDirigidos;
-
-    @ManyToMany
     List<ProyectoDeGrado> proyectosDeGradoCodirigidos;
-
-    @ManyToOne
-    @JoinColumn(name = "departamento_id")
     Departamento departamento;
+
+    public Profesor()
+    {
+        this.anteProyectos=new ArrayList<>();
+        this.anteProyectosEvaluadosComo1=new ArrayList<>();
+        this.anteProyectosEvaluadosComo2=new ArrayList<>();
+        this.proyectosDeGradoDirigidos=new ArrayList<>();
+        this.proyectosDeGradoCodirigidos=new ArrayList<>();
+    }
+
+    public List<AnteProyecto> getAnteProyectos() {
+        return anteProyectos;
+    }
+
+    public void setAnteProyectos(List<AnteProyecto> anteProyectos) {
+        this.anteProyectos = anteProyectos;
+    }
+
+    public List<AnteProyecto> getAnteProyectosEvaluadosComo1() {
+        return anteProyectosEvaluadosComo1;
+    }
+
+    public void setAnteProyectosEvaluadosComo1(List<AnteProyecto> anteProyectosEvaluadosComo1) {
+        this.anteProyectosEvaluadosComo1 = anteProyectosEvaluadosComo1;
+    }
+
+    public List<AnteProyecto> getAnteProyectosEvaluadosComo2() {
+        return anteProyectosEvaluadosComo2;
+    }
+
+    public void setAnteProyectosEvaluadosComo2(List<AnteProyecto> anteProyectosEvaluadosComo2) {
+        this.anteProyectosEvaluadosComo2 = anteProyectosEvaluadosComo2;
+    }
+
+    public List<ProyectoDeGrado> getProyectosDeGradoDirigidos() {
+        return proyectosDeGradoDirigidos;
+    }
+
+    public void setProyectosDeGradoDirigidos(List<ProyectoDeGrado> proyectosDeGradoDirigidos) {
+        this.proyectosDeGradoDirigidos = proyectosDeGradoDirigidos;
+    }
+
+    public List<ProyectoDeGrado> getProyectosDeGradoCodirigidos() {
+        return proyectosDeGradoCodirigidos;
+    }
+
+    public void setProyectosDeGradoCodirigidos(List<ProyectoDeGrado> proyectosDeGradoCodirigidos) {
+        this.proyectosDeGradoCodirigidos = proyectosDeGradoCodirigidos;
+    }
+
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
+    }
 
     public boolean relacionarDepartamento(Departamento departamento)
     {
@@ -47,11 +87,7 @@ public class Profesor extends Persona{
         return false;
     }
 
-    public Profesor()
-    {
-        this.anteProyectos=new ArrayList<>();
-        this.proyectosDeGradoDirigidos=new ArrayList<>();
-    }
+
 
     public ProyectoDeGrado iniciarProyectoDeGradoInvestigacion(String titulo, String objetivo, String objetivoEspecifico, String archivoAdjunto, Estudiante estudiante1, Estudiante estudiante2, List<Profesor> codirectores) throws Exception {
 

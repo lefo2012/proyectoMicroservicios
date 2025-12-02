@@ -1,15 +1,14 @@
 package co.edu.unicauca.administracionDocumental_ms.service;
 
 import co.edu.unicauca.administracionDocumental_ms.entities.Estudiante;
+import co.edu.unicauca.administracionDocumental_ms.entities.JefeDepartamento;
 import co.edu.unicauca.administracionDocumental_ms.entities.ProyectoDeGrado;
 import co.edu.unicauca.administracionDocumental_ms.entities.Profesor;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.NotificationRequest;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoRequest;
 import co.edu.unicauca.administracionDocumental_ms.infra.rabbitConfig.NotificationProducer;
-import co.edu.unicauca.administracionDocumental_ms.repository.EstudianteRepository;
-import co.edu.unicauca.administracionDocumental_ms.repository.ProyectoReposiroty;
-import co.edu.unicauca.administracionDocumental_ms.repository.ProfesorRepository;
+import co.edu.unicauca.administracionDocumental_ms.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,15 +20,16 @@ import java.util.stream.Collectors;
 @Service
 public class ProyectoService implements IProyectoService {
 
+    @Autowired
+    private JefeDepartamentoDomainRepository jefeDepartamentoRepository;
+    @Autowired
+    private ProfesorDomainRepository profesorRepository;
 
     @Autowired
-    private ProfesorRepository profesorRepository;
+    private EstudianteDomainRepository estudianteRepository;
 
     @Autowired
-    private EstudianteRepository estudianteRepository;
-
-    @Autowired
-    private ProyectoReposiroty proyectoRepository;
+    private ProyectoDomainReposiroty proyectoRepository;
 
     @Autowired
     private NotificationProducer notificationProducer;
@@ -38,10 +38,9 @@ public class ProyectoService implements IProyectoService {
     @Transactional
     public ProyectoRequest crearProyectoInvestigacion(ProyectoRequest req) throws Exception {
         try {
-            Profesor prof = profesorRepository.findByCorreoElectronico(req.getCorreoDirector()).orElseThrow(() -> new Exception("Director no encontrado"));
-
-            Estudiante est1 = estudianteRepository.findByCorreoElectronico(req.getCorreoEstudiante1()).orElseThrow(() -> new Exception("Estudiante 1 no encontrado"));
-
+            Profesor prof = profesorRepository.findByCorreo(req.getCorreoDirector()).orElseThrow(() -> new Exception("Director no encontrado"));
+            Estudiante est1 = estudianteRepository.findByCorreo(req.getCorreoEstudiante1()).orElseThrow(() -> new Exception("Estudiante 1 no encontrado"));
+            //JefeDepartamento jefe = jefeDepartamentoRepository.findByCorreo(req.getCorreoJefeDepartamento()).orElseThrow(() -> new Exception("Jefe de Departamento no encontrado"));
             List<Profesor> codirectores = null;
 
             
@@ -50,7 +49,7 @@ public class ProyectoService implements IProyectoService {
                 for (String correo : req.getCorreoCodirectores()) {
                     if(!correo.isEmpty())
                     {
-                        Profesor codirector = profesorRepository.findByCorreoElectronico(correo).orElseThrow(() -> new Exception("Codirector no encontrado: " + correo));
+                        Profesor codirector = profesorRepository.findByCorreo(correo).orElseThrow(() -> new Exception("Codirector no encontrado: " + correo));
                         codirectores.add(codirector);
                     }
                 }
@@ -58,7 +57,7 @@ public class ProyectoService implements IProyectoService {
 
             Estudiante est2 = null;
             if (req.getCorreoEstudiante2() != null &&  !req.getCorreoEstudiante2().isEmpty()) {
-                est2 = estudianteRepository.findByCorreoElectronico(req.getCorreoEstudiante2()).orElseThrow(() -> new Exception("Estudiante 2 no encontrado"));
+                est2 = estudianteRepository.findByCorreo(req.getCorreoEstudiante2()).orElseThrow(() -> new Exception("Estudiante 2 no encontrado"));
             }
 
             ProyectoDeGrado proyecto = prof.iniciarProyectoDeGradoInvestigacion(
@@ -71,6 +70,7 @@ public class ProyectoService implements IProyectoService {
                     codirectores
             );
 
+            //proyecto.setJefeDepartamento(jefe);
             enviarNotificacionProyecto(proyecto, prof, est1, est2, codirectores, req.getTitulo());
             
             proyectoRepository.save(proyecto);
@@ -86,9 +86,9 @@ public class ProyectoService implements IProyectoService {
     @Transactional
     public ProyectoRequest crearProyectoPractica(ProyectoRequest req) throws Exception {
         try {
-            Profesor prof = profesorRepository.findByCorreoElectronico(req.getCorreoDirector()).orElseThrow(() -> new Exception("Director no encontrado"));
+            Profesor prof = profesorRepository.findByCorreo(req.getCorreoDirector()).orElseThrow(() -> new Exception("Director no encontrado"));
 
-            Estudiante est1 = estudianteRepository.findByCorreoElectronico(req.getCorreoEstudiante1()).orElseThrow(() -> new Exception("Estudiante 1 no encontrado"));
+            Estudiante est1 = estudianteRepository.findByCorreo(req.getCorreoEstudiante1()).orElseThrow(() -> new Exception("Estudiante 1 no encontrado"));
 
             List<Profesor> codirectores = null;
             if (req.getCorreoCodirectores() != null && !req.getCorreoCodirectores().isEmpty()) {
@@ -96,7 +96,7 @@ public class ProyectoService implements IProyectoService {
                 for (String correo : req.getCorreoCodirectores()) {
                     if(!correo.isEmpty())
                     {
-                        Profesor codirector = profesorRepository.findByCorreoElectronico(correo).orElseThrow(() -> new Exception("Codirector no encontrado: " + correo));
+                        Profesor codirector = profesorRepository.findByCorreo(correo).orElseThrow(() -> new Exception("Codirector no encontrado: " + correo));
                         codirectores.add(codirector);
                     }
 
@@ -205,7 +205,7 @@ public class ProyectoService implements IProyectoService {
         List<String> listaCodirectores = new ArrayList<>();
         if (proyecto.getCodirectores() != null) {
             for (Profesor codirector : proyecto.getCodirectores()) {
-                System.out.println("EL CORREO ES: "+codirector.getCorreoElectronico());
+                System.out.println("EL CORREO ES: "+codirector.getId());
                 listaCodirectores.add(codirector.getCorreoElectronico());
             }
         }

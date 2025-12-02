@@ -1,26 +1,12 @@
 package co.edu.unicauca.administracionDocumental_ms.entities;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
-@Entity
-@Getter
-@Setter
 public class AnteProyecto {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private long id;
-
     private String nombre;
-
-    @ManyToOne
     private ProyectoDeGrado proyectoDeGrado;
-
-    @ManyToOne
     private Profesor evaluador1;
-
-    @ManyToOne
     private Profesor evaluador2;
 
     public AnteProyecto(String nombre)
@@ -32,6 +18,22 @@ public class AnteProyecto {
     {
         
     }
+
+    public long getId() {return id;}
+
+    public void setId(long id) {this.id = id;}
+
+    public Profesor getEvaluador2() {return evaluador2;}
+
+    public Profesor getEvaluador1() {return evaluador1;}
+
+    public ProyectoDeGrado getProyectoDeGrado() {return proyectoDeGrado;}
+
+    public void setProyectoDeGrado(ProyectoDeGrado proyectoDeGrado) {this.proyectoDeGrado = proyectoDeGrado;}
+
+    public String getNombre() {return nombre;}
+
+    public void setNombre(String nombre) {this.nombre = nombre;}
 
     public void setEvaluador1(Profesor evaluador1) {
         this.evaluador1 = evaluador1;

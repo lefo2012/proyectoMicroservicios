@@ -1,30 +1,44 @@
 package co.edu.unicauca.administracionDocumental_ms.entities;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Getter
-@Setter
+
 public class Facultad {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private int id;
-
-    @Column
     private String nombre;
-
-    @OneToMany
     private List<Departamento> departamentos;
 
     public Facultad()
     {
         departamentos = new ArrayList<Departamento>();
+    }
+
+    public List<Departamento> getDepartamentos() {
+        return departamentos;
+    }
+
+    public void setDepartamentos(List<Departamento> departamentos) {
+        this.departamentos = departamentos;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public boolean relacionarDepartamento(Departamento departamento){

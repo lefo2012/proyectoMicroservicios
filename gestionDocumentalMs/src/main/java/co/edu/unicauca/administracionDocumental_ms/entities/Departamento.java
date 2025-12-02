@@ -1,35 +1,18 @@
 package co.edu.unicauca.administracionDocumental_ms.entities;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Getter
-@Setter
+
 public class Departamento {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private int id;
     private String nombre;
-
-    @OneToOne
     private Coordinador coordinador;
-
-    @OneToOne
     private JefeDepartamento jefeDepartamento;
-
-    @OneToMany(mappedBy = "departamento")
     private List<Profesor> profesores;
-
-    @ManyToOne
-    @JoinColumn (name = "facultad_id")
     private Facultad facultad;
-
-    @OneToMany(mappedBy = "departamento")
     private List<Programa> programas;
 
     public Departamento(){
@@ -37,6 +20,61 @@ public class Departamento {
         programas=new ArrayList<>();
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public List<Programa> getProgramas() {
+        return programas;
+    }
+
+    public void setProgramas(List<Programa> programas) {
+        this.programas = programas;
+    }
+
+    public Facultad getFacultad() {
+        return facultad;
+    }
+
+    public void setFacultad(Facultad facultad) {
+        this.facultad = facultad;
+    }
+
+    public List<Profesor> getProfesores() {
+        return profesores;
+    }
+
+    public void setProfesores(List<Profesor> profesores) {
+        this.profesores = profesores;
+    }
+
+    public JefeDepartamento getJefeDepartamento() {
+        return jefeDepartamento;
+    }
+
+    public void setJefeDepartamento(JefeDepartamento jefeDepartamento) {
+        this.jefeDepartamento = jefeDepartamento;
+    }
+
+    public Coordinador getCoordinador() {
+        return coordinador;
+    }
+
+    public void setCoordinador(Coordinador coordinador) {
+        this.coordinador = coordinador;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
     public boolean relacionarProfesor(Profesor profesor) {
         if(!profesores.contains(profesor))

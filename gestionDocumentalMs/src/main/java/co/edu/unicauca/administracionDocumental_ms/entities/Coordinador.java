@@ -1,38 +1,48 @@
 package co.edu.unicauca.administracionDocumental_ms.entities;
 
 import co.edu.unicauca.administracionDocumental_ms.factory.StateFactory;
-import co.edu.unicauca.administracionDocumental_ms.infra.dto.NotificationRequest;
-import co.edu.unicauca.administracionDocumental_ms.service.NotificationClient;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Transient;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Entity
-@Getter
+
+
 public class Coordinador extends Persona{
 
-    @OneToOne
+
     private Departamento departamento;
-
-    @OneToMany
     private List<ProyectoDeGrado> proyectosDeGrado;
-
-    @Transient
     private StateFactory stateFactory;
-
 
     public Coordinador()
     {
         proyectosDeGrado = new ArrayList<>();
     }
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
+    }
+
+    public StateFactory getStateFactory() {
+        return stateFactory;
+    }
+
+    public void setStateFactory(StateFactory stateFactory) {
+        this.stateFactory = stateFactory;
+    }
+
+    public List<ProyectoDeGrado> getProyectosDeGrado() {
+        return proyectosDeGrado;
+    }
+
+    public void setProyectosDeGrado(List<ProyectoDeGrado> proyectosDeGrado) {
+        this.proyectosDeGrado = proyectosDeGrado;
+    }
+
+
 
     public ProyectoDeGrado aprobarFormatoA(ProyectoDeGrado proyectoDeGrado) {
         proyectoDeGrado.setEstadoProyecto(stateFactory.getInstance().getInstance(proyectoDeGrado.getEstado()));

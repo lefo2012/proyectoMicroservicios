@@ -1,21 +1,15 @@
 package co.edu.unicauca.administracionDocumental_ms.entities;
 
 import co.edu.unicauca.administracionDocumental_ms.state.EstadoProyecto;
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Getter
-@Setter
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+
 public class ProyectoDeGrado {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private long id;
 
     private String titulo;
@@ -30,35 +24,28 @@ public class ProyectoDeGrado {
 
     private String archivoAdjunto;
 
-    @ManyToOne
     private JefeDepartamento jefeDepartamento;
-    @ManyToOne
+
     private Estudiante estudiante1;
 
-    @ManyToOne
     private Estudiante estudiante2;
 
-    @ManyToOne
+    private List<Estudiante> estudiantes;
+
     private Coordinador coordinador;
 
-    @ManyToOne
     private Profesor director;
 
-    @ManyToMany
     private List<Profesor> codirectores;
 
-    @Transient
     private EstadoProyecto estadoProyecto;
 
     private String estado;
-    @OneToMany
+
     private List<FormatoA> formatosA;
 
-    @OneToMany
     private List<AnteProyecto> anteProyectos;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_proyecto")
     private TipoProyecto tipoProyecto;
 
     private String descripcion = "Un proyecto de grado";
@@ -66,6 +53,76 @@ public class ProyectoDeGrado {
     public ProyectoDeGrado(TipoProyecto tipoProyecto)
     {
         this.tipoProyecto=tipoProyecto;
+    }
+
+    public long getId() {return id;}
+
+    public void setId(long id) {this.id = id;}
+
+    public String getTitulo() {return titulo;}
+
+    public void setTitulo(String titulo) {this.titulo = titulo;}
+
+    public String getObjetivo() {return objetivo;}
+
+    public void setObjetivo(String objetivo) {this.objetivo = objetivo;}
+
+    public String getObjetivoEspecifico() {return objetivoEspecifico;}
+
+    public void setObjetivoEspecifico(String objetivoEspecifico) {this.objetivoEspecifico = objetivoEspecifico;}
+
+    public Date getFechaSubida() {return fechaSubida;}
+
+    public void setFechaSubida(Date fechaSubida) {this.fechaSubida = fechaSubida;}
+
+    public Date getFechaRevision() {return fechaRevision;}
+
+    public void setFechaRevision(Date fechaRevision) {this.fechaRevision = fechaRevision;}
+
+    public String getArchivoAdjunto() {return archivoAdjunto;}
+
+    public void setArchivoAdjunto(String archivoAdjunto) {this.archivoAdjunto = archivoAdjunto;}
+
+    public JefeDepartamento getJefeDepartamento() {return jefeDepartamento;}
+
+    public void setJefeDepartamento(JefeDepartamento jefeDepartamento) {this.jefeDepartamento = jefeDepartamento;}
+
+    public Estudiante getEstudiante1() {return estudiante1;}
+
+    public Estudiante getEstudiante2() {return estudiante2;}
+
+    public Coordinador getCoordinador() {return coordinador;}
+
+    public Profesor getDirector() {return director;}
+
+    public List<Profesor> getCodirectores() {return codirectores;}
+
+    public String getEstado() {return estado;}
+
+    public void setEstado(String estado) {this.estado = estado;}
+
+    public List<FormatoA> getFormatosA() {return formatosA;}
+
+    public void setFormatosA(List<FormatoA> formatosA) {this.formatosA = formatosA;}
+
+    public List<AnteProyecto> getAnteProyectos() {return anteProyectos;}
+
+    public void setAnteProyectos(List<AnteProyecto> anteProyectos) {this.anteProyectos = anteProyectos;}
+
+    public TipoProyecto getTipoProyecto() {return tipoProyecto;}
+
+    public void setTipoProyecto(TipoProyecto tipoProyecto) {this.tipoProyecto = tipoProyecto;}
+
+    public String getDescripcion() {return descripcion;}
+
+    public void setDescripcion(String descripcion) {this.descripcion = descripcion;}
+
+    public List<Estudiante> getEstudiantes() {
+        return estudiantes;
+    }
+
+    public void setEstudiantes(List<Estudiante> estudiantes) {
+        this.estudiantes = estudiantes;
     }
 
     public void setEstudiante2 (Estudiante estudiante){
@@ -77,6 +134,7 @@ public class ProyectoDeGrado {
         codirectores = new ArrayList<>();
         formatosA = new ArrayList<>();
         anteProyectos = new ArrayList<>();
+        estudiantes = new ArrayList<>();
     }
 
     public void setDirector(Profesor director){

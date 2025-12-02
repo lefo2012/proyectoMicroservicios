@@ -1,13 +1,12 @@
 package co.edu.unicauca.administracionDocumental_ms.controller;
 
-import co.edu.unicauca.administracionDocumental_ms.entities.AnteProyecto;
 import co.edu.unicauca.administracionDocumental_ms.entities.Coordinador;
 import co.edu.unicauca.administracionDocumental_ms.entities.ProyectoDeGrado;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.AsignarEvaluadoresRequest;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProfesorDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoRequest;
-import co.edu.unicauca.administracionDocumental_ms.repository.ProyectoReposiroty;
+import co.edu.unicauca.administracionDocumental_ms.repository.ProyectoDomainReposiroty;
 import co.edu.unicauca.administracionDocumental_ms.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,7 +29,7 @@ public class ProyectoController {
     @Autowired
     private CoordinadorService coordinadorService;
     @Autowired
-    private ProyectoReposiroty proyectoReposiroty;
+    private ProyectoDomainReposiroty proyectoReposiroty;
     @Autowired
     private JefeDepService jefeDepService;
 
@@ -40,6 +39,7 @@ public class ProyectoController {
             ProyectoRequest formatoCreado = proyectoService.crearProyectoInvestigacion(req);
             return ResponseEntity.status(HttpStatus.CREATED).body(formatoCreado);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Error al crear proyecto: " + e.getMessage()));
         }
     }
@@ -168,7 +168,8 @@ public class ProyectoController {
     public ResponseEntity<?> subirAnterProyecto(@PathVariable Long id, @PathVariable String nombreAnteProyecto ) {
         try{
             ProyectoDeGrado anteProyectoDeGrado  = proyectoReposiroty.findById(id).get();
-            profesorService.subirAnteproyecto(anteProyectoDeGrado,anteProyectoDeGrado.getDirector(), nombreAnteProyecto);
+
+            profesorService.subirAnteproyecto(anteProyectoDeGrado,profesorService.findById(anteProyectoDeGrado.getDirector().getCorreoElectronico()), nombreAnteProyecto);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Error al subir un  anteProyecto: " + e.getMessage()));

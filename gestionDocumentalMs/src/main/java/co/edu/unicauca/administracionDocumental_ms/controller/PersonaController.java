@@ -1,6 +1,6 @@
 package co.edu.unicauca.administracionDocumental_ms.controller;
 
-import co.edu.unicauca.administracionDocumental_ms.entities.Persona;
+
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.PersonaDto;
 import co.edu.unicauca.administracionDocumental_ms.service.PersonaService;
 import org.springframework.beans.factory.annotation.Autowired;

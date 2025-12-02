@@ -9,8 +9,8 @@ import co.edu.unicauca.administracionDocumental_ms.infra.dto.NotificationRequest
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.PersonaDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.rabbitConfig.NotificationProducer;
-import co.edu.unicauca.administracionDocumental_ms.repository.CoordinadorRepository;
-import co.edu.unicauca.administracionDocumental_ms.repository.DepartamentoRepository;
+import co.edu.unicauca.administracionDocumental_ms.repository.CoordinadorDomainRepository;
+import co.edu.unicauca.administracionDocumental_ms.repository.DepartamentoDomainRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,12 +22,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class CoordinadorService implements BaseService<Coordinador,String> {
+
     @Autowired
-    CoordinadorRepository coordinadorRepository;
+    private CoordinadorDomainRepository coordinadorRepository;
     @Autowired
     private ProyectoService proyectoService;
     @Autowired
-    private DepartamentoRepository departamentoRepository;
+    private DepartamentoDomainRepository departamentoRepository;
     @Autowired
     private NotificationClient notificationClient;
     @Autowired
@@ -43,14 +44,14 @@ public class CoordinadorService implements BaseService<Coordinador,String> {
 
     @Override
     @Transactional
-    public Coordinador findById(String id) throws Exception {
+    public Coordinador findById(String correo) throws Exception {
         try {
-            Optional<Coordinador> coordinador = coordinadorRepository.findByCorreoElectronico(id);
+            Optional<Coordinador> coordinador = coordinadorRepository.findByCorreo(correo);
 
             System.out.println(coordinador);
             return coordinador.orElse(null);
         }catch(Exception ex){
-            throw new Exception("Error al buscar el coordinador con id: "+id+" :"+ex.getMessage());
+            throw new Exception("Error al buscar el coordinador con correo: "+correo+" :"+ex.getMessage());
         }
 
     }
@@ -81,7 +82,7 @@ public class CoordinadorService implements BaseService<Coordinador,String> {
     public List<ProyectoDto> listaProyecto(String correoElectronico) throws Exception{
         try{
             List<ProyectoDto> listaProyectos;
-            Optional<Coordinador> coordinadorC = coordinadorRepository.findByCorreoElectronico(correoElectronico);
+            Optional<Coordinador> coordinadorC = coordinadorRepository.findByCorreo(correoElectronico);
             Coordinador coordinador = coordinadorC.orElse(null);
             if(coordinador != null)
             {
@@ -184,8 +185,8 @@ public class CoordinadorService implements BaseService<Coordinador,String> {
         coordinador.setNombre(personaDto.getNombre());
         coordinador.setApellido(personaDto.getApellido());
         coordinador.setCelular(personaDto.getCelular());
-        coordinador.setCorreoElectronico(personaDto.getCorreoElectronico());
-        coordinador.relacionarDepartamento(departamentoRepository.getById(personaDto.getIdDepartamento()));
+        coordinador.setId(personaDto.getId());
+        coordinador.relacionarDepartamento(departamentoRepository.findById(personaDto.getIdDepartamento()).orElse(null));
         return coordinador;
     }
 }

@@ -20,17 +20,17 @@ import java.util.stream.Collectors;
 @Service
 public class JefeDepService implements  BaseService <JefeDepartamento,String>{
     @Autowired
-    private AnteProyectoRepository anteProyectoRepository;
+    private AnteProyectoDomainRepository anteProyectoRepository;
     @Autowired
-    private JefeDepartamentoRepository JefeDepRepository;
+    private JefeDepartamentoDomainRepository JefeDepRepository;
     @Autowired
-    private ProfesorRepository profesorRepository;
+    private ProfesorDomainRepository profesorRepository;
     @Autowired
     private ProyectoService proyectoService;
     @Autowired
-    private ProyectoReposiroty proyectoRepository;
+    private ProyectoDomainReposiroty proyectoRepository;
     @Autowired
-    private DepartamentoRepository departamentoRepository;
+    private DepartamentoDomainRepository departamentoRepository;
     @Autowired
     private NotificationProducer notificationProducer;
     @Override
@@ -49,7 +49,7 @@ public class JefeDepService implements  BaseService <JefeDepartamento,String>{
     public JefeDepartamento findById(String id) throws Exception {
         try
         {
-            Optional<JefeDepartamento> profesor = JefeDepRepository.findByCorreoElectronico(id);
+            Optional<JefeDepartamento> profesor = JefeDepRepository.findByCorreo(id);
             System.out.println(profesor);
             return profesor.orElse(null);
         }catch(Exception ex)
@@ -90,7 +90,7 @@ public class JefeDepService implements  BaseService <JefeDepartamento,String>{
     public List<ProyectoDto> listaProyecto(String correoElectronico) throws Exception{
         try{
             List<ProyectoDto> listaProyectos;
-            Optional<JefeDepartamento> jefeDepartamentoR = JefeDepRepository.findByCorreoElectronico(correoElectronico);
+            Optional<JefeDepartamento> jefeDepartamentoR = JefeDepRepository.findByCorreo(correoElectronico);
             JefeDepartamento jefeDepartamento = jefeDepartamentoR.orElse(null);
             if(jefeDepartamento != null)
             {
@@ -109,14 +109,13 @@ public class JefeDepService implements  BaseService <JefeDepartamento,String>{
             throw new Exception("Error al listar proyectos de grado: "+ex.getMessage());
         }
     }
-    public JefeDepartamento mapearDto(PersonaDto personaDto)
-    {
+    public JefeDepartamento mapearDto(PersonaDto personaDto) throws Exception {
         JefeDepartamento jefeDepartamento = new JefeDepartamento();
         jefeDepartamento.setNombre(personaDto.getNombre());
         jefeDepartamento.setApellido(personaDto.getApellido());
         jefeDepartamento.setCelular(personaDto.getCelular());
         jefeDepartamento.setCorreoElectronico(personaDto.getCorreoElectronico());
-        jefeDepartamento.setDepartamento(departamentoRepository.getById(personaDto.getIdDepartamento()));
+        jefeDepartamento.setDepartamento(departamentoRepository.findById(personaDto.getIdDepartamento()).orElseThrow(() -> new Exception("Departamento no encontrado")));
         return jefeDepartamento;
     }
 
@@ -124,8 +123,8 @@ public class JefeDepService implements  BaseService <JefeDepartamento,String>{
     public AnteProyecto asignarEvaluadores(AsignarEvaluadoresRequest asignarEvaluadoresRequest) throws Exception {
         try{
             AnteProyecto  anteProyecto = anteProyectoRepository.findById(asignarEvaluadoresRequest.getIdProyecto()).orElseThrow(() -> new RuntimeException("AnteProyecto no encontrado"));
-            Profesor evaluador1 = profesorRepository.findByCorreoElectronico(asignarEvaluadoresRequest.getCorreoElectronicoEvaluador1()).orElseThrow(() -> new RuntimeException("Evaluador 1 no encontrado"));
-            Profesor evaluador2 = profesorRepository.findByCorreoElectronico(asignarEvaluadoresRequest.getCorreoElectronicoEvaluador2()).orElseThrow(() -> new RuntimeException("Evaluador 2 no encontrado"));
+            Profesor evaluador1 = profesorRepository.findByCorreo(asignarEvaluadoresRequest.getCorreoElectronicoEvaluador1()).orElseThrow(() -> new RuntimeException("Evaluador 1 no encontrado"));
+            Profesor evaluador2 = profesorRepository.findByCorreo(asignarEvaluadoresRequest.getCorreoElectronicoEvaluador2()).orElseThrow(() -> new RuntimeException("Evaluador 2 no encontrado"));
 
             if (evaluador1==evaluador2)
             {
@@ -152,7 +151,7 @@ public class JefeDepService implements  BaseService <JefeDepartamento,String>{
             emails.add(evaluador1.getCorreoElectronico());
 
         Profesor evaluador2 = anteproyecto.getEvaluador2();
-        if (evaluador2 != null && evaluador2 != null)
+        if (evaluador2 != null && evaluador2.getCorreoElectronico() != null)
             emails.add(evaluador2.getCorreoElectronico());
 
         ProyectoDeGrado proyectoDeGrado = anteproyecto.getProyectoDeGrado();

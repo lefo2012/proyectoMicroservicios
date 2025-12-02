@@ -17,6 +17,7 @@ public class ProyectoRequest {
     private String correoEstudiante2;
     private String correoDirector;
     private List<String> correoCodirectores;
+    //private String correoJefeDepartamento;
     public ProyectoRequest()
     {
         correoCodirectores = new ArrayList<>();

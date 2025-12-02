@@ -4,8 +4,8 @@ import co.edu.unicauca.administracionDocumental_ms.entities.Estudiante;
 import co.edu.unicauca.administracionDocumental_ms.entities.ProyectoDeGrado;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.PersonaDto;
 import co.edu.unicauca.administracionDocumental_ms.infra.dto.ProyectoDto;
-import co.edu.unicauca.administracionDocumental_ms.repository.EstudianteRepository;
-import co.edu.unicauca.administracionDocumental_ms.repository.ProgramaRepository;
+import co.edu.unicauca.administracionDocumental_ms.repository.EstudianteDomainRepository;
+import co.edu.unicauca.administracionDocumental_ms.repository.ProgramaDomainRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,11 +18,11 @@ import java.util.Optional;
 public class EstudianteService implements BaseService<Estudiante,String>{
 
     @Autowired
-    EstudianteRepository estudianteRepository;
+    EstudianteDomainRepository estudianteRepository;
     @Autowired
     ProyectoService proyectoService;
     @Autowired
-    ProgramaRepository programaRepository;
+    ProgramaDomainRepository programaRepository;
     @Override
     @Transactional
     public List<Estudiante> findAll() throws Exception {
@@ -34,7 +34,7 @@ public class EstudianteService implements BaseService<Estudiante,String>{
     @Transactional
     public Estudiante findById(String id) throws Exception {
         try{
-            Optional<Estudiante> estudiante = estudianteRepository.findByCorreoElectronico(id);
+            Optional<Estudiante> estudiante = estudianteRepository.findByCorreo(id);
             System.out.println(estudiante);
             return estudiante.orElse(null);
         }catch(Exception ex){
@@ -68,7 +68,7 @@ public class EstudianteService implements BaseService<Estudiante,String>{
     public List<ProyectoDto> listaProyecto(String correoElectronico) throws Exception{
         try{
             List<ProyectoDto> listaProyectos;
-            Optional<Estudiante> estudianteC = estudianteRepository.findByCorreoElectronico(correoElectronico);
+            Optional<Estudiante> estudianteC = estudianteRepository.findByCorreoLista(correoElectronico);
             Estudiante estudiante = estudianteC.orElse(null);
             if(estudiante != null)
             {
@@ -93,8 +93,8 @@ public class EstudianteService implements BaseService<Estudiante,String>{
         estudiante.setNombre(personaDto.getNombre());
         estudiante.setApellido(personaDto.getApellido());
         estudiante.setCelular(personaDto.getCelular());
-        estudiante.setCorreoElectronico(personaDto.getCorreoElectronico());
-        estudiante.setPrograma(programaRepository.getById(personaDto.getIdPrograma()));
+        estudiante.setId(personaDto.getId());
+        estudiante.setPrograma(programaRepository.findById(personaDto.getIdPrograma()).orElse(null));
         return estudiante;
     }
 }

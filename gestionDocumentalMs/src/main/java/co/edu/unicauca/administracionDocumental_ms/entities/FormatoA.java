@@ -1,18 +1,25 @@
 package co.edu.unicauca.administracionDocumental_ms.entities;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
-@Entity
-@Getter
-@Setter
-public class FormatoA extends  File{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+public class FormatoA extends File{
+
     long id;
-
-    @ManyToOne
     ProyectoDeGrado proyectoDeGrado;
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public ProyectoDeGrado getProyectoDeGrado() {
+        return proyectoDeGrado;
+    }
+
+    public void setProyectoDeGrado(ProyectoDeGrado proyectoDeGrado) {
+        this.proyectoDeGrado = proyectoDeGrado;
+    }
 }

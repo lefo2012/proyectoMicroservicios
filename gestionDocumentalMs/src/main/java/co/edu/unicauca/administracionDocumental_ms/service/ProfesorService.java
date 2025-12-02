@@ -20,17 +20,17 @@ import java.util.Optional;
 @Service
 public class ProfesorService implements BaseService<Profesor,String>{
     @Autowired
-    ProyectoReposiroty proyectoReposiroty;
+    ProyectoDomainReposiroty proyectoReposiroty;
     @Autowired
-    ProfesorRepository profesorRepository;
+    ProfesorDomainRepository profesorRepository;
     @Autowired
     private ProyectoService proyectoService;
     @Autowired
-    private DepartamentoRepository departamentoRepository;
+    private DepartamentoDomainRepository departamentoRepository;
     @Autowired
-    private AnteProyectoRepository  anteProyectoRepository;
+    private AnteProyectoDomainRepository anteProyectoRepository;
     @Autowired
-    private JefeDepartamentoRepository jefeDepartamentoRepository;
+    private JefeDepartamentoDomainRepository jefeDepartamentoRepository;
     @Override
     @Transactional
     public List<Profesor> findAll() throws Exception {
@@ -47,7 +47,8 @@ public class ProfesorService implements BaseService<Profesor,String>{
     public Profesor findById(String id) throws Exception {
         try
         {
-            Optional<Profesor> profesor = profesorRepository.findByCorreoElectronico(id);
+            Optional<Profesor> profesor = profesorRepository.findByCorreo(id);
+            System.out.println(id);
             System.out.println(profesor);
             return profesor.orElse(null);
         }catch(Exception ex)
@@ -88,10 +89,11 @@ public class ProfesorService implements BaseService<Profesor,String>{
     public List<ProyectoDto> listaProyecto(String correoElectronico) throws Exception{
         try{
             List<ProyectoDto> listaProyectos;
-            Optional<Profesor> profesorOptional = profesorRepository.findByCorreoElectronico(correoElectronico);
+            Optional<Profesor> profesorOptional = profesorRepository.findByCorreo(correoElectronico);
             Profesor profesor = profesorOptional.orElse(null);
 
             if (profesor != null) {
+
                 listaProyectos = new ArrayList<>();
                 for (ProyectoDeGrado proyectoDeGrado: profesor.getProyectosDeGradoDirigidos()){
                     listaProyectos.add(proyectoService.mapearProyecto(proyectoDeGrado));
@@ -116,8 +118,7 @@ public class ProfesorService implements BaseService<Profesor,String>{
         try
         {
             AnteProyecto anteProyecto = new AnteProyecto(nombreAnteproyecto);
-            anteProyectoRepository.save(anteProyecto);
-            proyectoReposiroty.save(profesor.subirAnteproyecto(proyectoDeGrado,anteProyecto));
+            proyectoReposiroty.save(profesor.subirAnteproyecto(proyectoDeGrado,anteProyectoRepository.save(anteProyecto)));
             jefeDepartamentoRepository.save(profesor.getDepartamento().getJefeDepartamento());
         }catch (Exception ex)
         {
@@ -129,14 +130,13 @@ public class ProfesorService implements BaseService<Profesor,String>{
         }
 
     }
-    public Profesor mapearDto(PersonaDto personaDto)
-    {
+    public Profesor mapearDto(PersonaDto personaDto) throws Exception {
         Profesor profesor = new Profesor();
         profesor.setNombre(personaDto.getNombre());
         profesor.setApellido(personaDto.getApellido());
         profesor.setCelular(personaDto.getCelular());
-        profesor.setCorreoElectronico(personaDto.getCorreoElectronico());
-        profesor.setDepartamento(departamentoRepository.getById(personaDto.getIdDepartamento()));
+        profesor.setId(personaDto.getId());
+        profesor.setDepartamento(departamentoRepository.findById(personaDto.getIdDepartamento()).orElseThrow(() -> new Exception("Director no encontrado")));
         return profesor;
     }
 

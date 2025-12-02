@@ -1,26 +1,52 @@
 package co.edu.unicauca.administracionDocumental_ms.entities;
 
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
+import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@Entity
+
 public class Estudiante extends Persona{
 
-    @ManyToOne
     Programa programa;
-    @Column
     int cantidadIntentosInvestigacion;
-    @Column
     int cantidadIntentosPracticaLaboral;
 
-    @ManyToMany
     List<ProyectoDeGrado> proyectosDeGrado;
+
+    public Estudiante(){
+        proyectosDeGrado = new ArrayList<>();
+    }
+    public List<ProyectoDeGrado> getProyectosDeGrado() {
+        return proyectosDeGrado;
+    }
+
+    public void setProyectosDeGrado(List<ProyectoDeGrado> proyectosDeGrado) {
+        this.proyectosDeGrado = proyectosDeGrado;
+    }
+
+    public int getCantidadIntentosPracticaLaboral() {
+        return cantidadIntentosPracticaLaboral;
+    }
+
+    public void setCantidadIntentosPracticaLaboral(int cantidadIntentosPracticaLaboral) {
+        this.cantidadIntentosPracticaLaboral = cantidadIntentosPracticaLaboral;
+    }
+
+    public int getCantidadIntentosInvestigacion() {
+        return cantidadIntentosInvestigacion;
+    }
+
+    public void setCantidadIntentosInvestigacion(int cantidadIntentosInvestigacion) {
+        this.cantidadIntentosInvestigacion = cantidadIntentosInvestigacion;
+    }
+
+    public Programa getPrograma() {
+        return programa;
+    }
+
+    public void setPrograma(Programa programa) {
+        this.programa = programa;
+    }
 
     public boolean relacionarPrograma(Programa programa)
     {
@@ -65,4 +91,5 @@ public class Estudiante extends Persona{
     {
         return this.cantidadIntentosPracticaLaboral < 3;
     }
+
 }

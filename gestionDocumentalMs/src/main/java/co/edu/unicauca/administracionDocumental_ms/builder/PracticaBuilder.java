@@ -18,8 +18,10 @@ public class PracticaBuilder extends Builder{
     public void setEstudiantes(Estudiante estudiante1, Estudiante estudiante2){
             if(estudiante1==null)
                 throw new IllegalArgumentException("El formatoA debe tener un estudiante obligatoriamente");
-            if(estudiante1.disponible())
+            if(estudiante1.disponible()) {
                 this.proyectoDeGrado.setEstudiante1(estudiante1);
+                this.proyectoDeGrado.getEstudiantes().add(estudiante1);
+            }
             else
                 throw new IllegalArgumentException("Estudiante: "+estudiante1.getNombre()+" no disponible");
 
