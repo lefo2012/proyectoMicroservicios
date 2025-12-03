@@ -35,6 +35,9 @@ public class ProfesorMapper {
             {
                 JefeDepartamento jefeDepartamento =new JefeDepartamento();
                 jefeDepartamento.setId(p.getDepartamento().getJefeDepartamento().getId());
+                jefeDepartamento.setNombre(p.getDepartamento().getJefeDepartamento().getNombre());
+                jefeDepartamento.setApellido(p.getDepartamento().getJefeDepartamento().getApellido());
+                jefeDepartamento.setCorreoElectronico(p.getDepartamento().getJefeDepartamento().getCorreoElectronico());
                 departamento.setJefeDepartamento(jefeDepartamento);
             }
 
@@ -118,6 +121,9 @@ public class ProfesorMapper {
             {
                 JefeDepartamentoJpa jefeDepartamento =new JefeDepartamentoJpa();
                 jefeDepartamento.setId(departamento.getJefeDepartamento().getId());
+                jefeDepartamento.setNombre(p.getDepartamento().getJefeDepartamento().getNombre());
+                jefeDepartamento.setApellido(p.getDepartamento().getJefeDepartamento().getApellido());
+                jefeDepartamento.setCorreoElectronico(p.getDepartamento().getJefeDepartamento().getCorreoElectronico());
                 departamento.setJefeDepartamento(jefeDepartamento);
             }
 

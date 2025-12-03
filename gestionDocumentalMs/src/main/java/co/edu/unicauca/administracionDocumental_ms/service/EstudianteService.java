@@ -94,6 +94,7 @@ public class EstudianteService implements BaseService<Estudiante,String>{
         estudiante.setApellido(personaDto.getApellido());
         estudiante.setCelular(personaDto.getCelular());
         estudiante.setId(personaDto.getId());
+        estudiante.setCorreoElectronico(personaDto.getCorreoElectronico());
         estudiante.setPrograma(programaRepository.findById(personaDto.getIdPrograma()).orElse(null));
         return estudiante;
     }

@@ -118,6 +118,7 @@ public class ProfesorService implements BaseService<Profesor,String>{
         try
         {
             AnteProyecto anteProyecto = new AnteProyecto(nombreAnteproyecto);
+            anteProyecto.setProyectoDeGrado(proyectoDeGrado);
             proyectoReposiroty.save(profesor.subirAnteproyecto(proyectoDeGrado,anteProyectoRepository.save(anteProyecto)));
             jefeDepartamentoRepository.save(profesor.getDepartamento().getJefeDepartamento());
         }catch (Exception ex)
@@ -136,6 +137,7 @@ public class ProfesorService implements BaseService<Profesor,String>{
         profesor.setApellido(personaDto.getApellido());
         profesor.setCelular(personaDto.getCelular());
         profesor.setId(personaDto.getId());
+        profesor.setCorreoElectronico(personaDto.getCorreoElectronico());
         profesor.setDepartamento(departamentoRepository.findById(personaDto.getIdDepartamento()).orElseThrow(() -> new Exception("Director no encontrado")));
         return profesor;
     }

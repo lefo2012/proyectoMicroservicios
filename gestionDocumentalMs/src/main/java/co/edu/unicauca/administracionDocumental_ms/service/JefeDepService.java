@@ -115,6 +115,7 @@ public class JefeDepService implements  BaseService <JefeDepartamento,String>{
         jefeDepartamento.setApellido(personaDto.getApellido());
         jefeDepartamento.setCelular(personaDto.getCelular());
         jefeDepartamento.setCorreoElectronico(personaDto.getCorreoElectronico());
+        jefeDepartamento.setId(personaDto.getId());
         jefeDepartamento.setDepartamento(departamentoRepository.findById(personaDto.getIdDepartamento()).orElseThrow(() -> new Exception("Departamento no encontrado")));
         return jefeDepartamento;
     }
@@ -125,7 +126,8 @@ public class JefeDepService implements  BaseService <JefeDepartamento,String>{
             AnteProyecto  anteProyecto = anteProyectoRepository.findById(asignarEvaluadoresRequest.getIdProyecto()).orElseThrow(() -> new RuntimeException("AnteProyecto no encontrado"));
             Profesor evaluador1 = profesorRepository.findByCorreo(asignarEvaluadoresRequest.getCorreoElectronicoEvaluador1()).orElseThrow(() -> new RuntimeException("Evaluador 1 no encontrado"));
             Profesor evaluador2 = profesorRepository.findByCorreo(asignarEvaluadoresRequest.getCorreoElectronicoEvaluador2()).orElseThrow(() -> new RuntimeException("Evaluador 2 no encontrado"));
-
+            System.out.println("Evaluador 1: "+evaluador1.getDepartamento().getJefeDepartamento().getId());
+            System.out.println("Evaluador 1: "+evaluador1.getDepartamento().getJefeDepartamento().getNombre());
             if (evaluador1==evaluador2)
             {
                 throw new Exception("Los dos evaluadores no pueden ser el mismo profesor");

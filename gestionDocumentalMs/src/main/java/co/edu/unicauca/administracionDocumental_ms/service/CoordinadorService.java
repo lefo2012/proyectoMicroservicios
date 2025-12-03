@@ -186,6 +186,7 @@ public class CoordinadorService implements BaseService<Coordinador,String> {
         coordinador.setApellido(personaDto.getApellido());
         coordinador.setCelular(personaDto.getCelular());
         coordinador.setId(personaDto.getId());
+        coordinador.setCorreoElectronico(personaDto.getCorreoElectronico());
         coordinador.relacionarDepartamento(departamentoRepository.findById(personaDto.getIdDepartamento()).orElse(null));
         return coordinador;
     }

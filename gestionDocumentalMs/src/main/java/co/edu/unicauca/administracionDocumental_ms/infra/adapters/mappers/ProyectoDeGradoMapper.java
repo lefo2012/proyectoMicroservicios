@@ -131,6 +131,8 @@ public class ProyectoDeGradoMapper {
         if(proyectoDeGrado.getJefeDepartamento() != null){
             JefeDepartamentoJpa jefeDepartamento = new JefeDepartamentoJpa();
             jefeDepartamento.setId(proyectoDeGrado.getJefeDepartamento().getId());
+            jefeDepartamento.setNombre(proyectoDeGrado.getJefeDepartamento().getNombre());
+            jefeDepartamento.setApellido(proyectoDeGrado.getJefeDepartamento().getApellido());
             proyectoDeGradojpa.setJefeDepartamento(jefeDepartamento);
         }
 

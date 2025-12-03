@@ -36,6 +36,9 @@ public class DepartamentoMapper {
         if(dep.getJefeDepartamento() != null){
             JefeDepartamentoJpa jefe = new JefeDepartamentoJpa();
             jefe.setId(departamento.getJefeDepartamento().getId());
+            jefe.setNombre(departamento.getJefeDepartamento().getNombre());
+            jefe.setApellido(departamento.getJefeDepartamento().getApellido());
+            jefe.setCorreoElectronico(departamento.getJefeDepartamento().getCorreoElectronico());
             dep.setJefeDepartamento(jefe);
         }
         if(dep.getProfesores() == null)
@@ -86,6 +89,9 @@ public class DepartamentoMapper {
         if(dep.getJefeDepartamento() != null){
             JefeDepartamento jefeDepartamento = new JefeDepartamento();
             jefeDepartamento.setId(departamento.getJefeDepartamento().getId());
+            jefeDepartamento.setNombre(departamento.getJefeDepartamento().getNombre());
+            jefeDepartamento.setApellido(departamento.getJefeDepartamento().getApellido());
+            jefeDepartamento.setCorreoElectronico(departamento.getJefeDepartamento().getCorreoElectronico());
             dep.setJefeDepartamento(jefeDepartamento);
         }
         if(dep.getProfesores() == null)
