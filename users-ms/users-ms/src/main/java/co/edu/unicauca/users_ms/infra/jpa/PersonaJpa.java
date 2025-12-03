@@ -1,6 +1,5 @@
 package co.edu.unicauca.users_ms.infra.jpa;
 
-import co.edu.unicauca.users_ms.entity.Persona;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

@@ -36,7 +36,7 @@ public class ProfesorService implements BaseService<Profesor, String> {
 
     @Override
     public boolean deleteById(String correo) {
-        return false; // según tu estructura
+        return false;
     }
 
     public boolean existsByCorreo(String correo) {

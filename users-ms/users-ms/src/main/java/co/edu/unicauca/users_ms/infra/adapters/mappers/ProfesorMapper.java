@@ -23,7 +23,6 @@ public class ProfesorMapper {
         {
             Departamento departamento =new Departamento();
             departamento.setId(p.getDepartamento().getId());
-
             profesor.setDepartamento(departamento);
         }
         return profesor;
