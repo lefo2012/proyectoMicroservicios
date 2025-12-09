@@ -82,7 +82,7 @@ public class CoordinadorMapper {
             jpa.setDepartamento(departamento);
         }
 
-        if(coordinador.getProyectosDeGrado()==null)
+        if(coordinador.getProyectosDeGrado()!=null)
         {
             List<ProyectoDeGradoJpa> proyectosDeGrado = new ArrayList<ProyectoDeGradoJpa>();
             for(ProyectoDeGrado proyectoDeGrado : coordinador.getProyectosDeGrado())

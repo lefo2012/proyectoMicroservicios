@@ -39,6 +39,7 @@ public class ProyectoDeGradoMapper {
             estudiante1.setId(proyectoDeGradoJpa.getEstudiante1().getId());
             estudiante1.setNombre(proyectoDeGradoJpa.getEstudiante1().getNombre());
             estudiante1.setApellido(proyectoDeGradoJpa.getEstudiante1().getApellido());
+            estudiante1.setCorreoElectronico(proyectoDeGradoJpa.getEstudiante1().getCorreoElectronico());
             proyectoDeGrado.setEstudiante1(estudiante1);
         }
 
@@ -47,6 +48,7 @@ public class ProyectoDeGradoMapper {
             estudiante2.setId(proyectoDeGradoJpa.getEstudiante2().getId());
             estudiante2.setNombre(proyectoDeGradoJpa.getEstudiante2().getNombre());
             estudiante2.setApellido(proyectoDeGradoJpa.getEstudiante2().getApellido());
+            estudiante2.setCorreoElectronico(proyectoDeGradoJpa.getEstudiante2().getCorreoElectronico());
             proyectoDeGrado.setEstudiante2(estudiante2);
         }
         if(proyectoDeGradoJpa.getEstudiantes() != null)
@@ -66,6 +68,7 @@ public class ProyectoDeGradoMapper {
             coordinador.setId(proyectoDeGradoJpa.getCoordinador().getId());
             coordinador.setNombre(proyectoDeGradoJpa.getCoordinador().getNombre());
             coordinador.setApellido(proyectoDeGradoJpa.getCoordinador().getApellido());
+            coordinador.setCorreoElectronico(proyectoDeGradoJpa.getCoordinador().getCorreoElectronico());
             proyectoDeGrado.setCoordinador(coordinador);
         }
 
@@ -105,6 +108,24 @@ public class ProyectoDeGradoMapper {
             for(AnteProyectoJpa anteProyect:proyectoDeGradoJpa.getAnteProyectos()){
                 AnteProyecto anteProyecto = new AnteProyecto();
                 anteProyecto.setId(anteProyect.getId());
+
+                if (anteProyect.getEvaluador1() != null) {
+                    Profesor eval1 = new Profesor();
+                    eval1.setId(anteProyect.getEvaluador1().getId());
+                    eval1.setNombre(anteProyect.getEvaluador1().getNombre());
+                    eval1.setApellido(anteProyect.getEvaluador1().getApellido());
+                    eval1.setCorreoElectronico(anteProyect.getEvaluador1().getCorreoElectronico());
+                    anteProyecto.setEvaluador1(eval1);
+                }
+
+                if (anteProyect.getEvaluador2() != null) {
+                    Profesor eval2 = new Profesor();
+                    eval2.setId(anteProyect.getEvaluador2().getId());
+                    eval2.setNombre(anteProyect.getEvaluador2().getNombre());
+                    eval2.setApellido(anteProyect.getEvaluador2().getApellido());
+                    eval2.setCorreoElectronico(anteProyect.getEvaluador2().getCorreoElectronico());
+                    anteProyecto.setEvaluador2(eval2);
+                }
                 anteProyectos.add(anteProyecto);
             }
             proyectoDeGrado.setAnteProyectos(anteProyectos);
@@ -139,12 +160,16 @@ public class ProyectoDeGradoMapper {
         if(proyectoDeGrado.getEstudiante1() != null){
             EstudianteJpa estudiante1 = new EstudianteJpa();
             estudiante1.setId(proyectoDeGrado.getEstudiante1().getId());
+            estudiante1.setNombre(proyectoDeGrado.getEstudiante1().getNombre());
+            estudiante1.setApellido(proyectoDeGrado.getEstudiante1().getApellido());
+            estudiante1.setCorreoElectronico(proyectoDeGrado.getEstudiante1().getCorreoElectronico());
             proyectoDeGradojpa.setEstudiante1(estudiante1);
         }
 
         if(proyectoDeGrado.getEstudiante2() != null){
             EstudianteJpa estudiante2 = new EstudianteJpa();
             estudiante2.setId(proyectoDeGrado.getEstudiante2().getId());
+            estudiante2.setCorreoElectronico(proyectoDeGrado.getEstudiante2().getCorreoElectronico());
             proyectoDeGradojpa.setEstudiante2(estudiante2);
         }
         if(proyectoDeGrado.getEstudiantes() != null)
@@ -162,6 +187,7 @@ public class ProyectoDeGradoMapper {
         if(proyectoDeGrado.getCoordinador() != null){
             CoordinadorJpa coordinador = new CoordinadorJpa();
             coordinador.setId(proyectoDeGrado.getCoordinador().getId());
+            coordinador.setCorreoElectronico(proyectoDeGrado.getCoordinador().getCorreoElectronico());
             proyectoDeGradojpa.setCoordinador(coordinador);
         }
 

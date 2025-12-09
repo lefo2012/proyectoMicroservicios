@@ -27,6 +27,8 @@ public class ProyectoDto {
     private List<Long> codirectoresIds;
     private String fechaSubida;
     private String estado;
+    private String nombreEvaluador1;
+    private String nombreEvaluador2;
 
     public ProyectoDto() {
         nombreCodirectores = new ArrayList<>();

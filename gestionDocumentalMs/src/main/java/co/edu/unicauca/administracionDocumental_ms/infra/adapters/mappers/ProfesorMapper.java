@@ -29,6 +29,9 @@ public class ProfesorMapper {
             {
                 Coordinador coordinador =new Coordinador();
                 coordinador.setId(p.getDepartamento().getCoordinador().getId());
+                coordinador.setNombre(p.getDepartamento().getCoordinador().getNombre());
+                coordinador.setApellido(p.getDepartamento().getCoordinador().getApellido());
+                coordinador.setCorreoElectronico(p.getDepartamento().getCoordinador().getCorreoElectronico());
                 departamento.setCoordinador(coordinador);
             }
             if(p.getDepartamento().getJefeDepartamento() != null)

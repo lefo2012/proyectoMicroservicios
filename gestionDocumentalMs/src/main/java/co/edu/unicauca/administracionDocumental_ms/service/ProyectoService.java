@@ -20,8 +20,7 @@ import java.util.stream.Collectors;
 @Service
 public class ProyectoService implements IProyectoService {
 
-    @Autowired
-    private JefeDepartamentoDomainRepository jefeDepartamentoRepository;
+
     @Autowired
     private ProfesorDomainRepository profesorRepository;
 
@@ -40,7 +39,6 @@ public class ProyectoService implements IProyectoService {
         try {
             Profesor prof = profesorRepository.findByCorreo(req.getCorreoDirector()).orElseThrow(() -> new Exception("Director no encontrado"));
             Estudiante est1 = estudianteRepository.findByCorreo(req.getCorreoEstudiante1()).orElseThrow(() -> new Exception("Estudiante 1 no encontrado"));
-            //JefeDepartamento jefe = jefeDepartamentoRepository.findByCorreo(req.getCorreoJefeDepartamento()).orElseThrow(() -> new Exception("Jefe de Departamento no encontrado"));
             List<Profesor> codirectores = null;
 
             
@@ -232,6 +230,10 @@ public class ProyectoService implements IProyectoService {
             if(!proyectoDeGrado.getAnteProyectos().isEmpty() && proyectoDeGrado.getAnteProyectos().getFirst() != null)
             {
                 respuesta.setAnteProyecto(proyectoDeGrado.getAnteProyectos().getFirst().getNombre());
+                if (proyectoDeGrado.getAnteProyectos().getFirst().getEvaluador1() != null && proyectoDeGrado.getAnteProyectos().getFirst().getEvaluador2()!= null) {
+                    respuesta.setNombreEvaluador1(proyectoDeGrado.getAnteProyectos().getFirst().getEvaluador1().getNombre()+ " "+proyectoDeGrado.getAnteProyectos().getFirst().getEvaluador1().getApellido());
+                    respuesta.setNombreEvaluador2(proyectoDeGrado.getAnteProyectos().getFirst().getEvaluador2().getNombre()+ " "+proyectoDeGrado.getAnteProyectos().getFirst().getEvaluador2().getApellido());
+                }
             }else
             {
                 respuesta.setAnteProyecto("");
@@ -267,9 +269,10 @@ public class ProyectoService implements IProyectoService {
         NotificationRequest notification = new NotificationRequest();
 
         List<String> emails = new ArrayList<>();
-        if (proyecto.getCoordinador() != null && proyecto.getCoordinador().getCorreoElectronico() != null)
+        System.out.println("correo: "+proyecto.getCoordinador().getCorreoElectronico());
+        if (proyecto.getCoordinador() != null && proyecto.getCoordinador().getCorreoElectronico() != null){
             emails.add(proyecto.getCoordinador().getCorreoElectronico());
-
+        }
         notification.setEmail(emails);
         notification.setSubject("Nuevo proyecto de grado subido: " + titulo);
         notification.setMessage(

@@ -3,6 +3,7 @@ package co.edu.unicauca.administracionDocumental_ms.entities;
 import co.edu.unicauca.administracionDocumental_ms.factory.StateFactory;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -48,6 +49,7 @@ public class Coordinador extends Persona{
         proyectoDeGrado.setEstadoProyecto(stateFactory.getInstance().getInstance(proyectoDeGrado.getEstado()));
         if(proyectoDeGrado!=null && proyectoDeGrado.getEstadoProyecto().equals("REVISION"))
         {
+            proyectoDeGrado.setFechaRevision(new Date());
             proyectoDeGrado.aprobar();
             return proyectoDeGrado;
         }
@@ -58,6 +60,7 @@ public class Coordinador extends Persona{
         proyectoDeGrado.setEstadoProyecto(stateFactory.getInstance().getInstance(proyectoDeGrado.getEstado()));
         if(proyectoDeGrado!=null && proyectoDeGrado.getEstadoProyecto().equals("REVISION"))
         {
+            proyectoDeGrado.setFechaRevision(new Date());
             proyectoDeGrado.rechazar();
             return proyectoDeGrado;
         }

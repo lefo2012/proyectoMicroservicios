@@ -14,7 +14,7 @@ public class DepartamentoMapper {
         DepartamentoJpa dep = new DepartamentoJpa();
         dep.setId(departamento.getId());
         dep.setNombre(departamento.getNombre());
-        if(dep.getProgramas() == null)
+        if(departamento.getProgramas() != null)
         {
             List<ProgramaJpa> programas = new ArrayList<ProgramaJpa>();
             for(Programa p : departamento.getProgramas())
@@ -25,15 +25,15 @@ public class DepartamentoMapper {
             }
             dep.setProgramas(programas);
         }
-        if(dep.getCoordinador() != null)
+        if(departamento.getCoordinador() != null)
         {
             System.out.println("hola si entre a guardar el coordinador");
             CoordinadorJpa coordinador = new CoordinadorJpa();
             coordinador.setId(departamento.getCoordinador().getId());
-            coordinador.setId(departamento.getCoordinador().getId());
+            coordinador.setCorreoElectronico(departamento.getCoordinador().getCorreoElectronico());
             dep.setCoordinador(coordinador);
         }
-        if(dep.getJefeDepartamento() != null){
+        if(departamento.getJefeDepartamento() != null){
             JefeDepartamentoJpa jefe = new JefeDepartamentoJpa();
             jefe.setId(departamento.getJefeDepartamento().getId());
             jefe.setNombre(departamento.getJefeDepartamento().getNombre());
@@ -41,7 +41,7 @@ public class DepartamentoMapper {
             jefe.setCorreoElectronico(departamento.getJefeDepartamento().getCorreoElectronico());
             dep.setJefeDepartamento(jefe);
         }
-        if(dep.getProfesores() == null)
+        if(departamento.getProfesores() != null)
         {
             List<ProfesorJpa> profesores = new ArrayList<ProfesorJpa>();
             for(Profesor p : departamento.getProfesores())
@@ -52,7 +52,7 @@ public class DepartamentoMapper {
             }
             dep.setProfesores(profesores);
         }
-        if(dep.getFacultad() != null)
+        if(departamento.getFacultad() != null)
         {
             FacultadJpa facultad = new FacultadJpa();
             facultad.setId(departamento.getFacultad().getId());
@@ -67,7 +67,7 @@ public class DepartamentoMapper {
         Departamento dep = new Departamento();
         dep.setId(departamento.getId());
         dep.setNombre(departamento.getNombre());
-        if(dep.getProgramas() == null)
+        if(departamento.getProgramas() != null)
         {
             List<Programa> programas = new ArrayList<Programa>();
             for(ProgramaJpa p : departamento.getProgramas())
@@ -79,14 +79,14 @@ public class DepartamentoMapper {
 
             dep.setProgramas(programas);
         }
-        if(dep.getCoordinador() != null)
+        if(departamento.getCoordinador() != null)
         {
             Coordinador coordinador = new Coordinador();
             coordinador.setId(departamento.getCoordinador().getId());
-            coordinador.setId(departamento.getCoordinador().getId());
+            coordinador.setCorreoElectronico(departamento.getCoordinador().getCorreoElectronico());
             dep.setCoordinador(coordinador);
         }
-        if(dep.getJefeDepartamento() != null){
+        if(departamento.getJefeDepartamento() != null){
             JefeDepartamento jefeDepartamento = new JefeDepartamento();
             jefeDepartamento.setId(departamento.getJefeDepartamento().getId());
             jefeDepartamento.setNombre(departamento.getJefeDepartamento().getNombre());
@@ -94,7 +94,7 @@ public class DepartamentoMapper {
             jefeDepartamento.setCorreoElectronico(departamento.getJefeDepartamento().getCorreoElectronico());
             dep.setJefeDepartamento(jefeDepartamento);
         }
-        if(dep.getProfesores() == null)
+        if(departamento.getProfesores() == null)
         {
             List<Profesor> profesores = new ArrayList<Profesor>();
             for(ProfesorJpa p : departamento.getProfesores())
@@ -105,7 +105,7 @@ public class DepartamentoMapper {
             }
             dep.setProfesores(profesores);
         }
-        if(dep.getFacultad() != null)
+        if(departamento.getFacultad() != null)
         {
             Facultad facultad = new Facultad();
             facultad.setId(departamento.getFacultad().getId());
