@@ -1,0 +1,33 @@
+package co.edu.unicauca.administracionDocumental_ms.state;
+
+import co.edu.unicauca.administracionDocumental_ms.entities.ProyectoDeGrado;
+
+public class EstadoRevisionAnteProyecto implements EstadoProyecto{
+    private final String nombre = "REVISION_ANTEPROYECTO";
+    @Override
+    public void avanzar(ProyectoDeGrado proyectoDeGrado) {
+        proyectoDeGrado.setEstadoProyecto(new EstadoEvaluadoresAnteProyecto());
+    }
+
+    @Override
+    public void correciones(ProyectoDeGrado proyectoDeGrado) {
+
+    }
+
+    @Override
+    public void aprobar(ProyectoDeGrado proyectoDeGrado) {
+
+        avanzar(proyectoDeGrado);
+
+    }
+
+    @Override
+    public void rechazar(ProyectoDeGrado proyectoDeGrado) {
+
+    }
+
+    @Override
+    public String getNombre() {
+        return nombre;
+    }
+}
