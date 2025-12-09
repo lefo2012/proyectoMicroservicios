@@ -14,7 +14,7 @@ public class DepartamentoMapper {
         DepartamentoJpa dep = new DepartamentoJpa();
         dep.setId(departamento.getId());
         dep.setNombre(departamento.getNombre());
-        if(departamento.getProgramas() != null)
+        if(dep.getProgramas() == null)
         {
             List<ProgramaJpa> programas = new ArrayList<ProgramaJpa>();
             for(Programa p : departamento.getProgramas())
@@ -25,7 +25,7 @@ public class DepartamentoMapper {
             }
             dep.setProgramas(programas);
         }
-        if(departamento.getCoordinador() != null)
+        if(dep.getCoordinador() != null)
         {
             System.out.println("hola si entre a guardar el coordinador");
             CoordinadorJpa coordinador = new CoordinadorJpa();
@@ -33,7 +33,7 @@ public class DepartamentoMapper {
             coordinador.setCorreoElectronico(departamento.getCoordinador().getCorreoElectronico());
             dep.setCoordinador(coordinador);
         }
-        if(departamento.getJefeDepartamento() != null){
+        if(dep.getJefeDepartamento() != null){
             JefeDepartamentoJpa jefe = new JefeDepartamentoJpa();
             jefe.setId(departamento.getJefeDepartamento().getId());
             jefe.setNombre(departamento.getJefeDepartamento().getNombre());
@@ -41,7 +41,7 @@ public class DepartamentoMapper {
             jefe.setCorreoElectronico(departamento.getJefeDepartamento().getCorreoElectronico());
             dep.setJefeDepartamento(jefe);
         }
-        if(departamento.getProfesores() != null)
+        if(dep.getProfesores() != null)
         {
             List<ProfesorJpa> profesores = new ArrayList<ProfesorJpa>();
             for(Profesor p : departamento.getProfesores())
@@ -52,7 +52,7 @@ public class DepartamentoMapper {
             }
             dep.setProfesores(profesores);
         }
-        if(departamento.getFacultad() != null)
+        if(dep.getFacultad() != null)
         {
             FacultadJpa facultad = new FacultadJpa();
             facultad.setId(departamento.getFacultad().getId());
@@ -67,7 +67,7 @@ public class DepartamentoMapper {
         Departamento dep = new Departamento();
         dep.setId(departamento.getId());
         dep.setNombre(departamento.getNombre());
-        if(departamento.getProgramas() != null)
+        if(dep.getProgramas() == null)
         {
             List<Programa> programas = new ArrayList<Programa>();
             for(ProgramaJpa p : departamento.getProgramas())
@@ -79,14 +79,14 @@ public class DepartamentoMapper {
 
             dep.setProgramas(programas);
         }
-        if(departamento.getCoordinador() != null)
+        if(dep.getCoordinador() != null)
         {
             Coordinador coordinador = new Coordinador();
             coordinador.setId(departamento.getCoordinador().getId());
             coordinador.setCorreoElectronico(departamento.getCoordinador().getCorreoElectronico());
             dep.setCoordinador(coordinador);
         }
-        if(departamento.getJefeDepartamento() != null){
+        if(dep.getJefeDepartamento() != null){
             JefeDepartamento jefeDepartamento = new JefeDepartamento();
             jefeDepartamento.setId(departamento.getJefeDepartamento().getId());
             jefeDepartamento.setNombre(departamento.getJefeDepartamento().getNombre());
@@ -94,7 +94,7 @@ public class DepartamentoMapper {
             jefeDepartamento.setCorreoElectronico(departamento.getJefeDepartamento().getCorreoElectronico());
             dep.setJefeDepartamento(jefeDepartamento);
         }
-        if(departamento.getProfesores() == null)
+        if(dep.getProfesores() == null)
         {
             List<Profesor> profesores = new ArrayList<Profesor>();
             for(ProfesorJpa p : departamento.getProfesores())
