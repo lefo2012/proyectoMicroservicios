@@ -110,6 +110,9 @@ public class ProfesorVerFormatoAController {
         }
         if(proyectoService.subirAnteProyecto(proyectoDto,archivo.getName()).equals("Anteproyecto subido correctamente")){
             informacionOk();
+            imagenArchivoPlano.setVisible(false);
+            btnSubirAnteproyecto.setVisible(false);
+
         }
     }
     @FXML

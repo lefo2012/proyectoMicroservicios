@@ -5,20 +5,18 @@ import co.edu.unicauca.infra.dto.AsignarEvaluadoresRequest;
 import co.edu.unicauca.infra.dto.ProfesorDto;
 import co.edu.unicauca.infra.dto.ProyectoDto;
 import co.edu.unicauca.service.ProyectoService;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.util.Callback;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
 import java.io.IOException;
@@ -50,15 +48,26 @@ public class JefeDepartamentoVerAnteProyectoController {
     private Label textFieldTituloProyecto;
 
     @FXML
+    private Label textFieldNombreEvaluador1;
+
+    @FXML
+    private Label textFieldNombreEvaluador2;
+
+    @FXML
     private Label labelObservaciones;
     @FXML
     private Text advertencia;
+    @FXML
+    private Text txtAsigarEvaluadores;
     @FXML
     private ComboBox<ProfesorDto> evaluador1,evaluador2;
     private ProyectoDto proyectoDto;
     private ProyectoService proyectoService;
     private List<ProfesorDto> profesoresLista;
-
+    @FXML
+    private Button botonAsignar;
+    @FXML
+    Pane panelInformacionOk,panelInformacion;
 
     public void setFormato(ProyectoDto proyectoDto) {
 
@@ -74,11 +83,30 @@ public class JefeDepartamentoVerAnteProyectoController {
         if (proyectoDto.getNombreCodirectores() != null && !proyectoDto.getNombreCodirectores().isEmpty()) {
             textFieldCodirector.setText(proyectoDto.getNombreCodirectores().getFirst());
         }
-
-
         textFieldEstudiante.setText(proyectoDto.getNombreEstudiante1());
         textFieldEstudiante1.setText(proyectoDto.getNombreEstudiante2());
         cargarProfesores(proyectoDto.getId());
+        if(proyectoDto.getEstado().equalsIgnoreCase("evaluadores_anteproyecto")){
+            evaluador1.setVisible(false);
+            evaluador2.setVisible(false);
+            botonAsignar.setVisible(false);
+            textFieldNombreEvaluador1.setVisible(true);
+            textFieldNombreEvaluador2.setVisible(true);
+            textFieldNombreEvaluador1.setText(proyectoDto.getNombreEvaluador1());
+            textFieldNombreEvaluador2.setText(proyectoDto.getNombreEvaluador2());
+            txtAsigarEvaluadores.setText("Evaluadores asignados");
+        }else {
+            botonAsignar.setVisible(true);
+            evaluador1.setDisable(false);
+            evaluador2.setDisable(false);
+            evaluador1.setVisible(true);
+            evaluador2.setVisible(true);
+            textFieldNombreEvaluador1.setVisible(false);
+            textFieldNombreEvaluador2.setVisible(false);
+            txtAsigarEvaluadores.setText("Asignar evaluadores");
+        }
+
+
     }
     @FXML
     void verDocumento(ActionEvent event) {
@@ -169,14 +197,31 @@ public class JefeDepartamentoVerAnteProyectoController {
         boolean bandera = proyectoService.asignarEvaluadores(asignarEvaluadoresRequest);
 
         if (bandera) {
-            System.out.println("Se pudo");
+            informacionOk();
+            evaluador1.setDisable(true);
+            evaluador2.setDisable(true);
+            botonAsignar.setVisible(false);
         }
         else  {
             System.out.println("No se pudo ");
         }
 
     }
+    public void informacionOk()
+    {
+        panelInformacion.setVisible(true);
+        panelInformacionOk.setVisible(true);
 
+        PauseTransition delay = new PauseTransition(Duration.seconds(1));
+        delay.setOnFinished(e -> {
+            panelInformacion.setVisible(false);
+            panelInformacionOk.setVisible(false);
+            panelInformacion.setManaged(false);
+            panelInformacionOk.setManaged(false);
+        });
+        delay.play();
+
+    }
 
     @FXML
     public void cerrarSesion(ActionEvent event) {

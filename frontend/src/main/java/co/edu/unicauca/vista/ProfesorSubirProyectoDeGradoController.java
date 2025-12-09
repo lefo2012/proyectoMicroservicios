@@ -111,6 +111,12 @@ public class ProfesorSubirProyectoDeGradoController {
         textNombreArchivo.setText("Agrega un archivo PDF de maximo 20MB");
         advertencia.setText("");
         Object archivo = null;
+
+        textFieldTituloProyecto.setStyle("-fx-border-color: gray;-fx-alignment: center;");
+        textFieldEstudiante.setStyle("-fx-border-color: gray;-fx-alignment: center;");
+        textFieldEstudiante1.setStyle("-fx-border-color: gray;-fx-alignment: center;");
+        textAreaObjetivoGeneral.setStyle("-fx-border-color: gray;-fx-alignment: center;");
+        textAreaObjetivosEspecificos.setStyle("-fx-border-color: gray;-fx-alignment: center;");
     }
     public void informacionOk()
     {
@@ -196,6 +202,11 @@ public class ProfesorSubirProyectoDeGradoController {
             textAreaObjetivosEspecificos.setStyle("-fx-prompt-text-fill: red;-fx-alignment: center;");
             bandera=false;
         }
+        if(archivo == null && bandera) {
+            advertencia.setText("Debes subir un archivo PDF");
+            bandera = false;
+        }
+
         return bandera;
     }
 

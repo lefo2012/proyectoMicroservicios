@@ -127,7 +127,7 @@
                   </Text>
                   <ComboBox fx:id="evaluador1" layoutX="125.0" layoutY="670.0" prefHeight="27.0" prefWidth="193.0" style="-fx-background-color: white; -fx-border-color: #dddddd;" />
                   <ComboBox fx:id="evaluador2" layoutX="125.0" layoutY="723.0" prefHeight="27.0" prefWidth="193.0" style="-fx-background-color: white; -fx-border-color: #dddddd;" />
-                  <Text layoutX="173.0" layoutY="652.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Asginar evaluadores" />
+                  <Text fx:id="txtAsigarEvaluadores" layoutX="173.0" layoutY="652.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Asginar evaluadores" />
                   <Button fx:id="botonAsignar" layoutX="169.0" layoutY="766.0" mnemonicParsing="false" onAction="#asignar" prefHeight="47.0" prefWidth="118.0" style="-fx-background-color: #1B21D4; -fx-background-radius: 30px;" stylesheets="@../css/sombraBoton.css" text="Asignar" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -137,6 +137,8 @@
                         <String fx:value="btn-hover-shadow" />
                      </styleClass>
                   </Button>
+                  <Label fx:id="textFieldNombreEvaluador1" alignment="CENTER" layoutX="125.0" layoutY="670.0" prefHeight="27.0" prefWidth="193.0" style="-fx-border-color: gray;" visible="false" />
+                  <Label fx:id="textFieldNombreEvaluador2" alignment="CENTER" layoutX="125.0" layoutY="723.0" prefHeight="27.0" prefWidth="193.0" style="-fx-border-color: gray;" visible="false" />
                </children>
             </Pane>
             <TextArea fx:id="textAreaObservaciones" editable="false" layoutX="1012.0" layoutY="474.0" prefHeight="188.0" prefWidth="418.0" />
@@ -168,7 +170,7 @@
                   <Image url="@../imagenes/check-gif.gif" />
                </image>
             </ImageView>
-            <Text layoutX="54.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Formato A subido con exito">
+            <Text layoutX="98.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Evaluadores Asignados">
                <font>
                   <Font size="32.0" />
                </font>

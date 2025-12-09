@@ -144,7 +144,7 @@ public class CoordinadorEvaluarFormatosAController {
         textFieldEstudiante.setText(proyectoDto.getNombreEstudiante1());
         textFieldEstudiante1.setText(proyectoDto.getNombreEstudiante2());
 
-        if (proyectoDto.getEstado().equals("Aprobado")) {
+        if (proyectoDto.getEstado().equalsIgnoreCase("Aprobado")) {
             botonAceptarFormato.setVisible(false);
             botonRechazarFormato.setVisible(false);
             try {
