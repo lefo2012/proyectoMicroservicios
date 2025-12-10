@@ -12,6 +12,7 @@ import java.io.IOException;
 
 import co.edu.unicauca.entities.Departamento;
 import co.edu.unicauca.entities.Programa;
+import co.edu.unicauca.util.validador;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -189,8 +190,17 @@ public class UserRegisterController {
         {
             passwordFieldContrasenia.setStyle("-fx-prompt-text-fill: red;-fx-alignment: center;");
             resultado+="FALTA EL CAMPO DE CONTRASEÑA\n";
+
             bandera=false;
         }
+        if(!validador.validarContrasena(passwordFieldContrasenia.getText()).equals(""))
+        {
+            passwordFieldContrasenia.setStyle("-fx-prompt-text-fill: red;-fx-alignment: center;");
+            resultado+=validador.validarContrasena(passwordFieldContrasenia.getText());
+            bandera=false;
+
+        }
+
         textoAviso.setText(resultado);
         return bandera;
     }
